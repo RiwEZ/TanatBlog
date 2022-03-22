@@ -2,7 +2,6 @@
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
   import type { Post } from "$lib/type";
-  import 'highlight.js/styles/github.css';
 
   export const load: Load = async ({ params, fetch }) => {
     const { slug } = params;
@@ -16,7 +15,8 @@
     else {
       const res_data = await res.json();
       const d = res_data.data;
-
+      
+      // convert data to type Post
       const data: Post = {
         id: d.id,
         title: d.attributes.title,
@@ -33,30 +33,17 @@
 
 <script lang="ts">
   import { md } from "$lib/markdown";
-  import { onMount } from "svelte/internal";
+  import Content from "./content.svelte";
 
   export let post: Post;
   let content = md(post.content);
 
-  onMount(() => {
-		let script = document.createElement('script');
-    script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
-    document.head.append(script);
-
-		script.onload = () => {
-      MathJax = {
-        tex: {inlineMath: [['$', '$'], ['\\(', '\\)']]},
-        svg: {fontCache: 'global'}
-      };
-		}; 
-	});
-
 </script>
 
 <div class="mt-5">
-  <h1 class="text-2xl font-bold">{post.title}</h1>
-  <p>last updated at: {post.updated_at}</p>
-  <div class="mt-5">
-    {@html content}
-  </div>
+  <h1 class="text-7xl font-bold">{post.title}</h1>
+  <p class="text-zinc-200">last updated at: {post.updated_at}</p>
+  <Content content={content} />
 </div>
+
+

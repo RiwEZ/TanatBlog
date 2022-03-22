@@ -38,9 +38,9 @@
     <div class="container">
         {#each posts as post} 
           <div class="py-4 border-b cursor-pointer border-gray-500" on:click={() => goto("/blog/" + post.id)}>
-            <h3 class="text-2xl">{post.title}</h3>
-            <p class="text-gray-500">{post.description}</p>
-            <p class="text-gray-500">last updated: {post.updated_at}</p>
+            <h3 class="text-2xl font-bold">{post.title}</h3>
+            <p class="text-zinc-200">{post.description}</p>
+            <p class="text-zinc-200">last updated: {post.updated_at}</p>
           </div>
         {/each}
     </div>
