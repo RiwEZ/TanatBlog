@@ -2,6 +2,7 @@
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
   import type { Post } from "$lib/type";
+  import 'highlight.js/styles/github.css';
 
   export const load: Load = async ({ params, fetch }) => {
     const { slug } = params;
@@ -31,17 +32,25 @@
 </script>
 
 <script lang="ts">
+  import { md } from "$lib/markdown";
   import { onMount } from "svelte/internal";
-  import MarkdownIt from "markdown-it";
-  // MDSvex
 
   export let post: Post;
-  let content = post.content;
+  let content = md(post.content);
 
-  onMount(async () => {
-    let md = MarkdownIt();
-    content = md.render(content);
-  })
+  onMount(() => {
+		let script = document.createElement('script');
+    script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+    document.head.append(script);
+
+		script.onload = () => {
+      MathJax = {
+        tex: {inlineMath: [['$', '$'], ['\\(', '\\)']]},
+        svg: {fontCache: 'global'}
+      };
+		}; 
+	});
+
 </script>
 
 <div class="mt-5">

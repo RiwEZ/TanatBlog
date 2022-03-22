@@ -30,6 +30,7 @@
   },
   "type": "module",
   "dependencies": {
+    "highlight.js": "^11.5.0",
     "markdown-it": "^12.3.2",
     "markdown-it-prism": "^2.2.3"
   }
