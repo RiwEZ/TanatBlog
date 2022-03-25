@@ -1,7 +1,7 @@
 
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
-  import type { Post } from "$lib/type";
+  import type { Blog } from "$lib/type";
 
   export const load: Load = async ({ params, fetch }) => {
     const { slug } = params;
@@ -17,7 +17,7 @@
       const d = res_data.data;
       
       // convert data to type Post
-      const data: Post = {
+      const data: Blog = {
         id: d.id,
         title: d.attributes.title,
         description: d.attributes.description,
@@ -35,13 +35,13 @@
   import { md } from "$lib/markdown";
   import Content from "./content.svelte";
 
-  export let post: Post;
+  export let post: Blog;
   let content = md(post.content);
 
 </script>
 
 <div class="mt-5">
-  <h1 class="text-7xl font-bold">{post.title}</h1>
+  <h1 class="text-5xl font-bold">{post.title}</h1>
   <p class="text-zinc-200">last updated at: {post.updated_at}</p>
   <Content content={content} />
 </div>

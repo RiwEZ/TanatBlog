@@ -30,6 +30,7 @@
 
   div :global(pre) {
     padding: 1rem;
+    margin-bottom: 1rem;
   }
 
   div :global(h1),
@@ -69,6 +70,12 @@
   div :global(p) {
     font-size: 1rem;
     margin-bottom: 1.3rem;
+  }
+
+  div :global(ul) {
+    list-style-type: disc;
+    list-style-position: outside;
+    padding-left: 1rem;
   }
 
 </style>
