@@ -29,8 +29,8 @@
   }
 
   div :global(pre) {
-    padding: 1rem;
-    margin-bottom: 1rem;
+    padding: 1em;
+    margin-bottom: 1em;
   }
 
   div :global(h1),

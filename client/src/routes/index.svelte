@@ -16,7 +16,7 @@
         id: item.id,
         title: item.attributes.title,
         description: item.attributes.description,
-        updated_at: item.attributes.updatedAt
+        updated_at: item.attributes.updatedAt.slice(0, 10)
       }
     });
     
@@ -37,15 +37,12 @@
 
 
 <div class="mt-5">
-    <h1 class="text-5xl">Tanat Blog</h1>
-    <p class="mt-1">posts {posts.length}</p>
-    
-    <div class="container">
+    <div class="container courier">
         {#each paginatedItems as post} 
           <div class="py-4 border-b cursor-pointer border-gray-500" on:click={() => goto("/blog/" + post.id)}>
             <h3 class="text-2xl font-bold">{post.title}</h3>
-            <p class="text-zinc-200">{post.description}</p>
-            <p class="text-zinc-200">last updated: {post.updated_at}</p>
+            <p class="text-zinc-400">{post.description}</p>
+            <p class="text-zinc-400">{post.updated_at}</p>
           </div>
         {/each}
     </div>
@@ -64,6 +61,10 @@
 
 
 <style>
+  .courier {
+    font-family: 'Courier New', Courier, monospace;
+  }
+
   .pagination :global(.pagination-nav) {
     display: flex;
     justify-content: center;

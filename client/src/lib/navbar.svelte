@@ -3,8 +3,12 @@
 </script>
 
 <div>
-    <nav class="flex justify-between align-baseline">
-        <a href="{base}/"><h1 class="text-xl">HOME</h1></a>
-        <a href="{base}/about"><h1 class="text-xl">ABOUT</h1></a>
+    <nav class="flex justify-between">
+        <a href="{base}/">
+            <h1 class="text-5xl font-bold">TANAT</h1>
+        </a>
+        <a href="{base}/about" class="inline-block">
+            <h1 class="text-xl text-center align-middle">ABOUT</h1>
+        </a>
     </nav>
 </div>

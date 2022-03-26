@@ -1,3 +1,6 @@
+<svelte:head>
+  <title>{post.title}</title>
+</svelte:head>
 
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
@@ -23,7 +26,7 @@
         description: d.attributes.description,
         content: d.attributes.content,
         created_at: d.attributes.createdAt,
-        updated_at: d.attributes.updatedAt
+        updated_at: d.attributes.updatedAt.slice(0, 10)
       }
       
       return {props: {post: data }};
@@ -40,10 +43,14 @@
 
 </script>
 
-<div class="mt-5">
-  <h1 class="text-5xl font-bold">{post.title}</h1>
-  <p class="text-zinc-200">last updated at: {post.updated_at}</p>
+<div class="mt-10 tracking-tight">
+  <h1 class="text-5xl">{post.title}</h1>
+  <p class="text-zinc-300 mt-2">{post.updated_at}</p>
   <Content content={content} />
 </div>
 
-
+<style>
+  div {
+    font-family: 'Courier New', Courier, monospace;
+  }
+</style>
