@@ -3,5 +3,8 @@
 </svelte:head>
 
 <div class="mt-5">
-  <h1>WHAT IS HAPPENING</h1>
+  <p>
+    I'm currently a Computer Engineering student at Chiang Mai University. <br />
+    I'm interested in machine learning, quantum computer and biomedical computing.
+  </p>
 </div>

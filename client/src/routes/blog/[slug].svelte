@@ -43,14 +43,8 @@
 
 </script>
 
-<div class="mt-10 tracking-tight">
-  <h1 class="text-5xl">{post.title}</h1>
-  <p class="text-zinc-300 mt-2">{post.updated_at}</p>
+<div class="mt-10">
+  <h1 class="text-5xl font-bold">{post.title}</h1>
+  <p class="text-zinc-400 mt-2">{post.updated_at}</p>
   <Content content={content} />
 </div>
-
-<style>
-  div {
-    font-family: 'Courier New', Courier, monospace;
-  }
-</style>

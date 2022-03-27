@@ -37,7 +37,7 @@
 
 
 <div class="mt-5">
-    <div class="container courier">
+    <div class="container">
         {#each paginatedItems as post} 
           <div class="py-4 border-b cursor-pointer border-gray-500" on:click={() => goto("/blog/" + post.id)}>
             <h3 class="text-2xl font-bold">{post.title}</h3>
@@ -61,10 +61,6 @@
 
 
 <style>
-  .courier {
-    font-family: 'Courier New', Courier, monospace;
-  }
-
   .pagination :global(.pagination-nav) {
     display: flex;
     justify-content: center;

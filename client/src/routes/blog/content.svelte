@@ -30,7 +30,20 @@
 
   div :global(pre) {
     padding: 1em;
-    margin-bottom: 1em;
+    margin-bottom: 0.6em;
+    margin-top: 0.6em;
+  }
+
+  div :global(a),
+  div :global(a:visited) {
+    text-decoration: underline;
+    color: #4ade80;
+  }
+
+  div :global(a:hover),
+  div :global(a:focus),
+  div :global(a:active) {
+    color: #16a34a;
   }
 
   div :global(h1),
@@ -38,38 +51,38 @@
   div :global(h3),
   div :global(h4) {
     margin: 1.414rem 0 .5rem;
-    font-weight: inherit;
+    font-weight: bold;
     line-height: 1.42;
   }
 
   div :global(h1) {
     margin-top: 0;
-    font-size: 3.998rem;
+    font-size: 3em;
   }
 
   div :global(h2) {
-    font-size: 2.827rem;
+    font-size: 2.5em;
   }
 
   div :global(h3) {
-    font-size: 1.999rem;
+    font-size: 2em;
   }
 
   div :global(h4) {
-    font-size: 1.414rem;
+    font-size: 1.5em;
   }
   
   div :global(h5) {
-    font-size: 1.121rem;
+    font-size: 1.17em;
   }
 
   div :global(h6) {
-    font-size: .88rem;
+    font-size: .88em;
   }
 
-  div :global(p) {
-    font-size: 1rem;
-    margin-bottom: 1.3rem;
+  div :global(p),
+  div :global(li) {
+    font-size: 1.15em;
   }
 
   div :global(ul) {
