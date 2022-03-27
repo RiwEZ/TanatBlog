@@ -37,13 +37,13 @@
   div :global(a),
   div :global(a:visited) {
     text-decoration: underline;
-    color: #4ade80;
+    color: #60a5fa;
   }
 
   div :global(a:hover),
   div :global(a:focus),
   div :global(a:active) {
-    color: #16a34a;
+    color: #2563eb;
   }
 
   div :global(h1),
@@ -82,6 +82,7 @@
 
   div :global(p),
   div :global(li) {
+    color: #e4e4e7;
     font-size: 1.15em;
   }
 

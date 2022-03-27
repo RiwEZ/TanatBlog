@@ -14,6 +14,7 @@
     const data: BlogCard[] = res_data.map((item: any): BlogCard => {
       return {
         id: item.id,
+        slug: item.attributes.slug,
         title: item.attributes.title,
         description: item.attributes.description,
         updated_at: item.attributes.updatedAt.slice(0, 10)
@@ -39,7 +40,9 @@
 <div class="mt-5">
     <div class="container">
         {#each paginatedItems as post} 
-          <div class="py-4 border-b cursor-pointer border-gray-500" on:click={() => goto("/blog/" + post.id)}>
+          <div 
+            class="py-4 border-b cursor-pointer border-gray-500"
+            on:click={() => goto("/blog/" + post.slug)}>
             <h3 class="text-2xl font-bold">{post.title}</h3>
             <p class="text-zinc-400">{post.description}</p>
             <p class="text-zinc-400">{post.updated_at}</p>

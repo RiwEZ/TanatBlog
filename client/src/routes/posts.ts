@@ -17,7 +17,7 @@ interface APIdata extends JSONObject {
 
 export const get = async (): Promise<RequestHandlerOutput> => {
     const query = qs.stringify({
-        fields: ["title", "description", "updatedAt"],
+        fields: ["title", "description", "updatedAt", "slug"],
         sort: ["createdAt:desc"],
     })
 

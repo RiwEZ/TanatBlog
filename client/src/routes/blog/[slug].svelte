@@ -8,20 +8,21 @@
 
   export const load: Load = async ({ params, fetch }) => {
     const { slug } = params;
-
-    const res = await fetch("http://localhost:1337/api/posts/" + slug);
+    
+    const res = await fetch(`http://localhost:1337/api/posts?filter[slug][$eq]=${slug}`);
     
     if (res.status == 404) {
-      const error = new Error("The post with ID ${slugl} was not found");
+      const error = new Error(`The post with slug ${slug} was not found`);
       return { status: 404, error};
     }
     else {
       const res_data = await res.json();
-      const d = res_data.data;
-      
+      const d = res_data.data[0];
+
       // convert data to type Post
       const data: Blog = {
         id: d.id,
+        slug: d.slug,
         title: d.attributes.title,
         description: d.attributes.description,
         content: d.attributes.content,
@@ -44,7 +45,7 @@
 </script>
 
 <div class="mt-10">
-  <h1 class="text-5xl font-bold">{post.title}</h1>
+  <h1 class="text-5xl font-bold leading-tight">{post.title}</h1>
   <p class="text-zinc-400 mt-2">{post.updated_at}</p>
   <Content content={content} />
 </div>

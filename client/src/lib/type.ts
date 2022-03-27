@@ -1,5 +1,6 @@
 export interface BlogCard {
     id: number;
+    slug: string;
     title: string;
     description: string;
     updated_at: string;

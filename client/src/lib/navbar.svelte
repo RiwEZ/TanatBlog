@@ -1,14 +1,22 @@
 <script>
-    import { base } from "$app/paths";
+  import { base } from "$app/paths";
 </script>
 
-<div>
-    <nav class="flex justify-between font-sans font-thin">
-        <a href="{base}/">
-            <h1 class="text-5xl">TANAT</h1>
-        </a>
-        <a href="{base}/about" class="inline-block">
-            <h1 class="text-xl text-center align-middle">ABOUT</h1>
-        </a>
-    </nav>
-</div>
+<header>
+  <nav class="flex justify-between font-sans font-thin">
+    <a href="{base}/" class="text-5xl text3d font-bold">
+      TANAT
+    </a>
+    <a href="{base}/about" class="text-xl text-center mt-4">
+      ABOUT
+    </a>
+  </nav>
+</header>
+
+<style>
+  .text3d {
+    text-shadow:.01em .03em #4ade80,
+                .03em .05em #2dd4bf,
+                .05em .07em #38bdf8;
+  }
+</style>
