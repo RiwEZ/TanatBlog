@@ -27,7 +27,14 @@
         description: d.attributes.description,
         content: d.attributes.content,
         created_at: d.attributes.createdAt,
-        updated_at: d.attributes.updatedAt.slice(0, 10)
+        updated_at: new Date(d.attributes.updatedAt).toLocaleDateString(
+          'en-gb',
+          {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          }
+        )
       }
       
       return {props: {post: data }};

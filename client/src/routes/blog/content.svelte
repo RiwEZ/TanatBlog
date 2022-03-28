@@ -83,13 +83,20 @@
   div :global(p),
   div :global(li) {
     color: #e4e4e7;
-    font-size: 1.15em;
+    font-size: 1.1em;
   }
 
   div :global(ul) {
     list-style-type: disc;
     list-style-position: outside;
     padding-left: 1rem;
+  }
+
+  div :global(img) {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
   }
 
 </style>

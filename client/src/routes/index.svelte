@@ -12,12 +12,20 @@
     const res_data = await res.json();
 
     const data: BlogCard[] = res_data.map((item: any): BlogCard => {
+      const time = new Date(item.attributes.updatedAt).toLocaleDateString(
+        'en-gb',
+        {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        }
+      )
       return {
         id: item.id,
         slug: item.attributes.slug,
         title: item.attributes.title,
         description: item.attributes.description,
-        updated_at: item.attributes.updatedAt.slice(0, 10)
+        updated_at: time
       }
     });
     

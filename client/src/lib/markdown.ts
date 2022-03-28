@@ -3,6 +3,7 @@ import hljs from "highlight.js";
 
 export const md = (content: string): string => {
   const md = MarkdownIt({
+    html: true,
     breaks: true,
     highlight: (str, lang) => {
       if (lang && hljs.getLanguage(lang)) {
