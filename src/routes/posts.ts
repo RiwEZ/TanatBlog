@@ -21,7 +21,7 @@ export const get = async (): Promise<RequestHandlerOutput> => {
         sort: ["createdAt:desc"],
     })
 
-    const res = await fetch(`http://localhost:1337/api/posts?${query}`);
+    const res = await fetch(`https://tanat-strapi.herokuapp.com/api/posts?${query}`);
     const jsonresp = await res.json();
     const data = jsonresp.data;
 

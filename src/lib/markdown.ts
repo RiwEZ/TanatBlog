@@ -1,29 +1,44 @@
 import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
+import texmath from "markdown-it-texmath";
+import katex from "katex";
 
-export const md = (content: string): string => {
-  const md = MarkdownIt({
-    html: true,
-    breaks: true,
-    highlight: (str, lang) => {
-      if (lang && hljs.getLanguage(lang)) {
-        try {
-          return (
-            '<pre class="hljs"><code>' +
-            hljs.highlight(str, {
-              language: lang,
-              ignoreIllegals: true,
-            }).value +
-            "</code></pre>"
-          );
-        } catch (__) { }
+const markdown: MarkdownIt = MarkdownIt({
+  html: true,
+  breaks: true,
+  highlight: (str, lang) => {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return (
+          '<pre class="hljs"><code>' +
+          hljs.highlight(str, {
+            language: lang,
+            ignoreIllegals: true,
+          }).value +
+          "</code></pre>"
+        );
       }
-      return (
-        '<pre class="hljs"><code>' +
-        md.utils.escapeHtml(str) +
-        "</code></pre>"
-      );
-    },
-  });
-  return md.render(content);
+      catch (e) {
+        console.log(e);
+      } 
+    }
+    return (
+      '<pre class="hljs"><code>' +
+      markdown.utils.escapeHtml(str) +
+      "</code></pre>"
+    );
+  },
+});
+
+markdown.use(texmath, {
+  engine: katex,
+})
+
+/**
+ * 
+ * @param content markdown content to render
+ * @returns html of that content
+ */
+export const md = (content: string): string => {
+  return markdown.render(content);
 };

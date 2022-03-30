@@ -9,7 +9,7 @@
   export const load: Load = async ({ params, fetch }) => {
     const { slug } = params;
     
-    const res = await fetch(`http://localhost:1337/api/posts?filter[slug][$eq]=${slug}`);
+    const res = await fetch(`https://tanat-strapi.herokuapp.com/api/posts?filter[slug][$eq]=${slug}`);
     
     if (res.status == 404) {
       const error = new Error(`The post with slug ${slug} was not found`);

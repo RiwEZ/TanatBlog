@@ -1,20 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte/internal";
-  export let content;
-
-  // loading MathJax
-  onMount(() => {
-		let script = document.createElement('script');
-    script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
-    document.head.append(script);
-
-		script.onload = () => {
-      MathJax = {
-        tex: {inlineMath: [['$', '$'], ['\\(', '\\)']]},
-        svg: {fontCache: 'global'}
-      };
-		}; 
-	});
+  export let content: string;
 </script>
 
 <div class="mt-5">
@@ -22,10 +7,39 @@
 </div>
 
 <style >
-  /* from this https://github.com/markdowncss/retro */
-  div :global(mjx-container) {
-    color: whitesmoke;
-    font-size: 130% !important;
+  /* from this 
+    https://github.com/markdowncss/retro 
+    https://github.com/goessner/markdown-it-texmath/blob/master/css/texmath.css
+  */
+
+  div :global(katex) {
+    color: whitesmoke !important;
+    font-size: 1.4em !important;
+  }
+
+  div :global(eq) {
+    display: inline-block;
+  }
+
+  div :global(eqn) {
+    display: block;
+  }
+
+  div :global(section.eqno) {
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+    align-items: center;
+  }
+  
+  div :global(section.eqno > eqn) {
+    width: 100%;
+    margin-left: 3em;
+  }
+
+  div :global(section.eqno > span) {
+    width: 3em;
+    text-align: right;
   }
 
   div :global(pre) {

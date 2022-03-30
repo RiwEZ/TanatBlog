@@ -7,6 +7,7 @@
     "package": "svelte-kit package",
     "preview": "svelte-kit preview",
     "prepare": "svelte-kit sync",
+    "test": "jest",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "eslint --ignore-path .gitignore ."
@@ -14,6 +15,11 @@
   "devDependencies": {
     "@sveltejs/adapter-auto": "next",
     "@sveltejs/kit": "next",
+    "@types/highlightjs": "^9.12.2",
+    "@types/jest": "^27.4.1",
+    "@types/katex": "^0.11.1",
+    "@types/markdown-it": "^12.2.3",
+    "@types/qs": "^6.9.7",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
     "autoprefixer": "^10.4.2",
@@ -30,10 +36,10 @@
   },
   "type": "module",
   "dependencies": {
-    "@types/qs": "^6.9.7",
     "highlight.js": "^11.5.0",
+    "katex": "^0.15.3",
     "markdown-it": "^12.3.2",
-    "markdown-it-prism": "^2.2.3",
+    "markdown-it-texmath": "^0.9.7",
     "qs": "^6.10.3"
   }
 }
