@@ -48,6 +48,22 @@
     margin-top: 0.6em;
   }
 
+  div :global(code:not(pre > code)) {
+    color: #d54e53;
+    background-color: #000;
+    padding-bottom: 0.25rem;
+    padding-top: 0.25rem;
+  }
+
+  div :global(blockquote) {
+    border-left: 3px solid #22c55e;
+    padding-bottom: 0.25rem;
+    padding-top: 0.25rem;
+    padding-left: 1rem;
+    page-break-inside: avoid;
+    background-color: #27272a;
+  }
+
   div :global(a),
   div :global(a:visited) {
     text-decoration: underline;
@@ -109,8 +125,8 @@
   div :global(img) {
     margin-left: auto;
     margin-right: auto;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
+    margin-top: 0.7rem;
+    margin-bottom: 0.7rem;
   }
 
 </style>

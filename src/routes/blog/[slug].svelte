@@ -6,10 +6,12 @@
   import type { Load } from "@sveltejs/kit";
   import type { Blog } from "$lib/type";
 
+
   export const load: Load = async ({ params, fetch }) => {
     const { slug } = params;
-    
-    const res = await fetch(`https://tanat-strapi.herokuapp.com/api/posts?filter[slug][$eq]=${slug}`);
+
+    const fetchURL = `https://tanat-strapi.herokuapp.com/api/posts?filter[slug][$eq]=${slug}`
+    const res = await fetch(fetchURL);
     
     if (res.status == 404) {
       const error = new Error(`The post with slug ${slug} was not found`);
@@ -37,7 +39,7 @@
         )
       }
       
-      return {props: {post: data }};
+      return {props: {post: data, fetchURL: fetchURL }};
     }
   }
 </script>
@@ -45,14 +47,23 @@
 <script lang="ts">
   import { md } from "$lib/markdown";
   import Content from "./content.svelte";
+  import Disqus from "$lib/disqus.svelte";
 
   export let post: Blog;
-  let content = md(post.content);
+  export let fetchURL: string;
 
+  let content = md(post.content);
+  let url = fetchURL;
+  let identifier: string = post.title;
+  
 </script>
 
 <div class="mt-10">
   <h1 class="text-5xl font-bold leading-tight">{post.title}</h1>
   <p class="text-zinc-400 mt-2">{post.updated_at}</p>
   <Content content={content} />
+  
+  <div class="mt-5">
+    <Disqus title={identifier} url={url} identifier={identifier} shortname="tanatblog" />
+  </div>
 </div>
