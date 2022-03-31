@@ -6,13 +6,11 @@
   import type { Load } from "@sveltejs/kit";
   import type { Blog } from "$lib/type";
 
-
   export const load: Load = async ({ params, fetch }) => {
     const { slug } = params;
+    const fetchURL = `https://tanat-strapi.herokuapp.com/api/posts?filters[slug][$eq]=${slug}`
 
-    const fetchURL = `https://tanat-strapi.herokuapp.com/api/posts?filter[slug][$eq]=${slug}`
     const res = await fetch(fetchURL);
-    
     if (res.status == 404) {
       const error = new Error(`The post with slug ${slug} was not found`);
       return { status: 404, error};
@@ -55,7 +53,6 @@
   let content = md(post.content);
   let url = fetchURL;
   let identifier: string = post.title;
-  
 </script>
 
 <div class="mt-10">

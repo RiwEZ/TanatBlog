@@ -7,9 +7,9 @@ export const insert_script = (src: string, id: string, parentElem: HTMLElement) 
   return script;
 }
 
-export const remove_script = (id: string, parentElem: HTMLElement) => {
+export const remove_script = (id: string) => {
   const script = window.document.getElementById(id);
-  if (script) parentElem.removeChild(script);
+  if (script) script.parentNode.removeChild(script);
 }
 
 export const remove_resources = () => {

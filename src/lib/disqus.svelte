@@ -9,8 +9,8 @@
   declare global {
     interface Window {
       DISQUS?: any;
+      disqus_shortname?: string;
       disqus_config?: any;
-      disqus_shortname?: any;
     }
   }
   
@@ -42,24 +42,21 @@
       clean_instance();
   })
 
-  const get_config = () => {
-    return () => {
-      this.page.url = url;
-      this.page.identifier = identifier;
-    }
+  const dq_config = (): Function => function () {
+    this.page.url = url;
+    this.page.identifier = identifier;
   }
 
   const load_instance = () => {
     const doc = window.document;
     if (window && window.DISQUS && doc.getElementById(SCRIPT_ID)) {
-      console.log(window.DISQUS)
       window.DISQUS.reset({
         reload: true,
-        config: get_config(),
+        config: dq_config(),
       })
     }
     else {
-      window.disqus_config = get_config();
+      window.disqus_config = dq_config();
       window.disqus_shortname = shortname;
       insert_script(`https://${shortname}.disqus.com/embed.js`, SCRIPT_ID, doc.body);      
     }
@@ -67,7 +64,7 @@
 
   const clean_instance = () => {
     const doc = window.document;
-    remove_script(SCRIPT_ID, doc.body);
+    remove_script(SCRIPT_ID);
 
     if (window && window.DISQUS)
       window.DISQUS.reset({});
@@ -84,7 +81,6 @@
         disqus_thread.removeChild(disqus_thread.firstChild);
       }
     }
-
     remove_resources();
   }
 </script>
