@@ -10,7 +10,7 @@
   export const load: Load = async ({ fetch }) => {
     const res = await fetch("/posts");
     const res_data = await res.json();
-
+    
     const data: BlogCard[] = res_data.map((item: any): BlogCard => {
       const time = new Date(item.attributes.updatedAt).toLocaleDateString(
         'en-gb',
@@ -19,13 +19,13 @@
           month: 'long',
           day: 'numeric'
         }
-      )
+      );
       return {
-        id: item.id,
         slug: item.attributes.slug,
         title: item.attributes.title,
         description: item.attributes.description,
-        updated_at: time
+        updated_at: time,
+        created_at: item.attributes.createdAt,
       }
     });
     
@@ -34,81 +34,42 @@
 </script>
 
 <script lang="ts">
-  import { paginate, PaginationNav } from 'svelte-paginate'
+  import YearPaginate from "$lib/pagination/year_paginate.svelte";
+  import { paginate } from "$lib/pagination/paginate";
+  
   export let posts: BlogCard[];
 
   let items = posts;
-  let currentPage = 1;
-  let pageSize = 10;
+  let max_year = new Date(posts[0].created_at).getFullYear();
+  let min_year = new Date(posts[posts.length - 1].created_at).getFullYear();
+  let curr_year = new Date(Date.now()).getFullYear();
 
-  $: paginatedItems = paginate({items, pageSize, currentPage});
+  let paginated_posts = paginate(items, curr_year);
+  $: paginated_posts = paginate(items, curr_year);
+  // change pagination to year
+  // min_year -> max_year
 </script>
 
 
 <div class="mt-5">
-    <div class="container">
-        {#each paginatedItems as post} 
-          <div 
-            class="py-4 border-b cursor-pointer border-gray-500"
-            on:click={() => goto("/blog/" + post.slug)}>
-            <h3 class="text-2xl font-bold">{post.title}</h3>
-            <p class="text-zinc-400">{post.description}</p>
-            <p class="text-zinc-400">{post.updated_at}</p>
-          </div>
-        {/each}
-    </div>
+  <div class="container">
+    {#each paginated_posts as post} 
+      <div 
+        class="py-4 border-b cursor-pointer border-gray-500"
+        on:click={() => goto("/blog/" + post.slug)}>
+        <h3 class="text-2xl font-bold">{post.title}</h3>
+        <p class="text-zinc-400">{post.description}</p>
+        <p class="text-zinc-400">{post.updated_at}</p>
+      </div>
+    {/each}
+  </div>
 
-    <div class="pagination mt-3">
-      <PaginationNav
-        totalItems="{posts.length}"
-        pageSize="{pageSize}"
-        currentPage="{currentPage}"
-        limit="{1}"
-        showStepOptions="{true}"
-        on:setPage="{(e) => currentPage = e.detail.page}"
-      />
-    </div>
+  <div class="mt-5 mr-2 flex justify-end">
+    <YearPaginate
+      min_year={min_year}
+      max_year={max_year}
+      curr_year={curr_year}
+      on:setPage={(e) => curr_year = e.detail.year}
+    />
+  </div>
 </div>
-
-
-<style>
-  .pagination :global(.pagination-nav) {
-    display: flex;
-    justify-content: center;
-    border-radius: 3px;
-    background-color: #27272a;
-    background-color: #18181b;
-  }
-  
-  .pagination :global(.option) {
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    user-select: none;
-    color: #a1a1aa;
-  }
-
-  .pagination :global(.option.number) {
-    transition: 0.2s all ease-out;
-  }
-  
-  .pagination :global(path) {
-    fill: #fafafa !important;
-  }
-
-  .pagination :global(.option.prev:hover),
-  .pagination :global(.option.next:hover) {
-    background-color: #3f3f46;
-    border-radius: 20%;
-  } 
-
-  .pagination :global(.option:hover) {
-    cursor: pointer;
-  }
-  
-  .pagination :global(.option.active) {
-    color: #fafafa;
-  }
-
-</style>

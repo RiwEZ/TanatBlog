@@ -21,7 +21,6 @@
 
       // convert data to type Post
       const data: Blog = {
-        id: d.id,
         slug: d.slug,
         title: d.attributes.title,
         description: d.attributes.description,
@@ -57,10 +56,18 @@
 
 <div class="mt-10">
   <h1 class="text-5xl font-bold leading-tight">{post.title}</h1>
-  <p class="text-zinc-400 mt-2">{post.updated_at}</p>
+  <p class="text-zinc-400 mt-2">{post.updated_at}</p> 
   <Content content={content} />
-  
-  <div class="mt-5">
+
+  <div class="mt-5 font-light text-sm pt-2 border-t border-gray-500"><em>If you can't login to disqus or can't comment 
+    please visit 
+    <a class="text-green-400" href="https://help.disqus.com/en/articles/1717155-use-of-cookies" target="_blank">
+      https://help.disqus.com/en/articles/1717155-use-of-cookies
+    </a> 
+    and enable cookies follow their guide.
+    </em>
+  </div>
+  <div class="mt-2">
     <Disqus title={identifier} url={url} identifier={identifier} shortname="tanatblog" />
   </div>
 </div>
