@@ -10,7 +10,7 @@
   export const load: Load = async ({ fetch }) => {
     const res = await fetch("/posts");
     const res_data = await res.json();
-    
+
     const data: BlogCard[] = res_data.map((item: any): BlogCard => {
       const time = new Date(item.attributes.updatedAt).toLocaleDateString(
         'en-gb',
@@ -24,8 +24,8 @@
         slug: item.attributes.slug,
         title: item.attributes.title,
         description: item.attributes.description,
-        updated_at: time,
         created_at: item.attributes.createdAt,
+        updated_at: time,
       }
     });
     

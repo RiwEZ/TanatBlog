@@ -3,10 +3,9 @@ interface Items extends Record<string, any> {
 }
 
 export const gen_options = (min_years: number, max_years: number) => {
-  const options = Array(max_years - min_years)
+  const options = Array(max_years - min_years == 0 ? 1 : max_years - min_years)
     .fill(null)
     .map((_, idx) => min_years + idx);
-
   return options.reverse();
 };
 

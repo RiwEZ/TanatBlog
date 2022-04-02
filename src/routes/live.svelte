@@ -7,7 +7,7 @@
 
 <div class="mt-5">
   <div class="w-full h-full">
-    <textarea class="textlive_contentw-full h-56 p-2" bind:value={$live_content}/>
+    <textarea class="text-black w-full h-56 p-2" bind:value={$live_content}/>
   </div>   
   <div class="w-full -mt-3 h-full">
     <Content content={md($live_content)}/>
