@@ -87,33 +87,33 @@
 
   article :global(h1) {
     margin-top: 0;
-    font-size: 3em;
+    font-size: 2.25rem;
   }
 
   article :global(h2) {
-    font-size: 2.5em;
+    font-size: 2rem;
   }
 
   article :global(h3) {
-    font-size: 2em;
+    font-size: 1.8em;
   }
 
   article :global(h4) {
-    font-size: 1.5em;
+    font-size: 1.5rem;
   }
   
   article :global(h5) {
-    font-size: 1.17em;
+    font-size: 1.17rem;
   }
 
   article :global(h6) {
-    font-size: .88em;
+    font-size: .88rem;
   }
 
   article :global(p),
   article :global(li) {
     color: #e4e4e7;
-    font-size: 1.1em;
+    font-size: 1rem;
   }
 
   article :global(ul) {
@@ -128,5 +128,4 @@
     margin-top: 0.7rem;
     margin-bottom: 0.7rem;
   }
-
 </style>

@@ -5,10 +5,18 @@
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
   import type { Blog } from "$lib/type";
+  import qs from "qs";
 
   export const load: Load = async ({ params, fetch }) => {
     const { slug } = params;
-    const fetchURL = `https://tanat-strapi.herokuapp.com/api/posts?filters[slug][$eq]=${slug}`
+    const query = qs.stringify({
+      filters: {
+        slug: {
+          $eq: slug,
+        },
+      },
+    }) 
+    const fetchURL = `https://tanat-strapi.herokuapp.com/api/posts?${query}`
 
     const res = await fetch(fetchURL);
     if (res.status == 404) {
@@ -43,6 +51,7 @@
 
 <script lang="ts">
   import { md } from "$lib/markdown";
+  import Toc from "svelte-toc";
   import Content from "./content.svelte";
   import Disqus from "$lib/disqus.svelte";
 
@@ -54,20 +63,66 @@
   let identifier: string = post.title;
 </script>
 
-<div class="mt-10">
-  <h1 class="text-5xl font-bold leading-tight">{post.title}</h1>
-  <p class="text-zinc-400 mt-2">{post.updated_at}</p> 
-  <Content content={content} />
+<div class="mt-10 flex">
+  <div>
+    <h1 class="text-4xl font-bold leading-tight">{post.title}</h1>
+    <p class="text-zinc-400 mt-2">{post.updated_at}</p> 
+    <Content content={content} />
 
-  <div class="mt-5 font-light text-sm pt-2 border-t border-gray-500"><em>If you can't login to disqus or can't comment 
-    please visit 
-    <a class="text-green-400" href="https://help.disqus.com/en/articles/1717155-use-of-cookies" target="_blank">
-      https://help.disqus.com/en/articles/1717155-use-of-cookies
-    </a> 
-    and enable cookies follow their guide.
-    </em>
+    <div class="mt-10 font-light text-sm pt-2 border-t border-gray-500"><em>If you can't login to disqus or can't comment 
+      please visit 
+      <a class="text-green-400" href="https://help.disqus.com/en/articles/1717155-use-of-cookies" target="_blank">
+        https://help.disqus.com/en/articles/1717155-use-of-cookies
+      </a> 
+      and enable cookies follow their guide.
+      </em>
+    </div>
+    <div class="mt-2">
+      <Disqus title={identifier} url={url} identifier={identifier} shortname="tanatblog" />
+    </div>
   </div>
-  <div class="mt-2">
-    <Disqus title={identifier} url={url} identifier={identifier} shortname="tanatblog" />
-  </div>
+  <Toc
+    headingSelector="article :where(h1, h2, h3, h4):not(.toc-exclude)"
+    breakpoint={1025}
+    --toc-active-bg="none"
+    --toc-active-color="#0ea5e9"
+    --toc-hover-color="#0ea5e9"
+    --toc-mobile-btn-color="#94a3b8"
+    --toc-mobile-btn-bg="#1e293b"
+    --toc-mobile-bg="#1e293b"
+  />
 </div>
+
+<style>
+
+  :global(aside.toc.desktop) {
+    position: fixed;
+    top: 4rem;
+    left: max(0px, calc(50% - 45rem));
+    padding: .7rem;
+    padding-top: 0;
+  }
+
+  :global(aside.toc h2) {
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+
+  :global(aside.toc nav) {
+    overflow: hidden;
+    width: 14rem;
+  }
+  
+  :global(aside.toc li) {
+    font-size: 1rem !important;
+    margin-top: 0.3em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+  }
+
+  :global(aside.toc.mobile > nav) {
+    padding: 1rem;
+    padding-bottom: 1.2rem;
+  }
+</style>
