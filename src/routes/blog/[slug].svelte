@@ -63,15 +63,15 @@
   let identifier: string = post.title;
 </script>
 
-<div class="mt-10 flex">
+<div class="mt-10 md:flex">
   <div>
     <h1 class="text-4xl font-bold leading-tight">{post.title}</h1>
-    <p class="text-zinc-400 mt-2">{post.updated_at}</p> 
+    <p class="text-zinc-400 mt-1">{post.updated_at}</p> 
     <Content content={content} />
 
     <div class="mt-10 font-light text-sm pt-2 border-t border-gray-500"><em>If you can't login to disqus or can't comment 
       please visit 
-      <a class="text-green-400" href="https://help.disqus.com/en/articles/1717155-use-of-cookies" target="_blank">
+      <a class="text-green-600" href="https://help.disqus.com/en/articles/1717155-use-of-cookies" target="_blank">
         https://help.disqus.com/en/articles/1717155-use-of-cookies
       </a> 
       and enable cookies follow their guide.
@@ -83,7 +83,7 @@
   </div>
   <Toc
     headingSelector="article :where(h1, h2, h3, h4):not(.toc-exclude)"
-    breakpoint={1025}
+    breakpoint={1100}
     --toc-active-bg="none"
     --toc-active-color="#0ea5e9"
     --toc-hover-color="#0ea5e9"
@@ -94,13 +94,20 @@
 </div>
 
 <style>
-
   :global(aside.toc.desktop) {
     position: fixed;
     top: 4rem;
     left: max(0px, calc(50% - 45rem));
     padding: .7rem;
-    padding-top: 0;
+  }
+
+  @media (min-width: 2000px) {
+    :global(aside.toc.desktop) {   
+      position: fixed;
+      top: 4rem;
+      left: 7.5%;
+      padding: .7rem;
+    }
   }
 
   :global(aside.toc h2) {
@@ -121,8 +128,7 @@
     white-space: nowrap; 
   }
 
-  :global(aside.toc.mobile > nav) {
-    padding: 1rem;
-    padding-bottom: 1.2rem;
+  :global(aside.toc.mobile) {
+    visibility: hidden;
   }
 </style>

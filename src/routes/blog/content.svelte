@@ -46,6 +46,13 @@
     padding: 1em;
     margin-bottom: 0.6em;
     margin-top: 0.6em;
+    overflow-x: scroll;
+  }
+
+  @media (min-width: 640px) {
+    article :global(pre) {
+      overflow-x: hidden;
+    }
   }
 
   article :global(code:not(pre > code)) {
@@ -67,6 +74,7 @@
   article :global(a),
   article :global(a:visited) {
     text-decoration: underline;
+    text-underline-offset: 1px;
     color: #60a5fa;
   }
 
@@ -104,6 +112,9 @@
   
   article :global(h5) {
     font-size: 1.17rem;
+    margin-top: .8rem;
+    margin-bottom: .3rem;
+    font-weight: bold;
   }
 
   article :global(h6) {
@@ -119,7 +130,18 @@
   article :global(ul) {
     list-style-type: disc;
     list-style-position: outside;
-    padding-left: 1rem;
+    margin-left: 1rem;
+  }
+
+  article :global(ol) {
+    margin-top: .3rem;
+    list-style-type: decimal;
+    list-style-position: outside;
+    margin-left: 1.1rem;
+  }
+
+  article :global(li) {
+    margin-top: .2rem;
   }
 
   article :global(img) {

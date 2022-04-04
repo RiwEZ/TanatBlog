@@ -4,7 +4,7 @@
   import Navbar from "$lib/navbar.svelte";
 </script>
 
-<div class="sm:max-w-3xl m-auto p-4 md:p-2 mt-6 text-zinc-50">
+<div class="sm:max-w-3xl 3xl:max-w-7xl mx-auto p-4 lg:p-2 mt-6 text-zinc-50">
   <Navbar />
   <slot />
 </div>
