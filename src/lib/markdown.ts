@@ -1,7 +1,16 @@
 import MarkdownIt from "markdown-it";
-import hljs from "highlight.js";
 import texmath from "markdown-it-texmath";
 import katex from "katex";
+import hljs from "highlight.js/lib/core";
+import javascript from "highlight.js/lib/languages/javascript";
+import json from "highlight.js/lib/languages/json";
+import python from "highlight.js/lib/languages/python";
+import powershell from "highlight.js/lib/languages/powershell";
+
+hljs.registerLanguage("javascript", javascript);
+hljs.registerLanguage("json", json);
+hljs.registerLanguage("python", python);
+hljs.registerLanguage("python", powershell);
 
 const markdown: MarkdownIt = MarkdownIt({
   html: true,
