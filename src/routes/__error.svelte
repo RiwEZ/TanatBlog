@@ -11,7 +11,7 @@
   
 <script lang="ts">
   import { page } from "$app/stores";
-  export let title;
+  export let title: string;
   const article_not_founded = title === "500: Cannot read property 'slug' of undefined";
 </script>
 

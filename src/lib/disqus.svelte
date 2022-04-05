@@ -42,7 +42,7 @@
       clean_instance();
   })
 
-  const dq_config = (): Function => function () {
+  const dq_config = () => function () {
     this.page.url = url;
     this.page.identifier = identifier;
   }

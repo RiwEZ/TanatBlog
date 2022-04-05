@@ -7,7 +7,7 @@
 </article>
 
 <style >
-  /* from this 
+    /* from this 
     https://github.com/markdowncss/retro 
     https://github.com/goessner/markdown-it-texmath/blob/master/css/texmath.css
   */
@@ -51,7 +51,7 @@
 
   @media (min-width: 640px) {
     article :global(pre) {
-      overflow-x: hidden;
+      overflow-x: auto;
     }
   }
 
@@ -131,13 +131,15 @@
     list-style-type: disc;
     list-style-position: outside;
     margin-left: 1rem;
+    margin-bottom: .3rem;
   }
 
   article :global(ol) {
-    margin-top: .3rem;
     list-style-type: decimal;
     list-style-position: outside;
+    margin-top: .3rem;
     margin-left: 1.1rem;
+    margin-bottom: .3rem;
   }
 
   article :global(li) {

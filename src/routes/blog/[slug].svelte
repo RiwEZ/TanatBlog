@@ -66,7 +66,7 @@
 </script>
 
 <div class="mt-10 md:flex">
-  <div>
+  <div class="sm:max-w-3xl 3xl:max-w-7xl">
     <h1 class="text-4xl font-bold leading-tight">{post.title}</h1>
     <p class="text-zinc-400 mt-1">{post.updated_at}</p> 
     <Content content={content} />
