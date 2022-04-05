@@ -1,10 +1,12 @@
 <svelte:head>
   <title>{post.title}</title>
+  <meta name="description" content="{post.description}">
 </svelte:head>
 
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
   import type { Blog } from "$lib/type";
+  import { STRAPI } from "../posts";
   import qs from "qs";
 
   export const load: Load = async ({ params, fetch }) => {
@@ -16,7 +18,7 @@
         },
       },
     }) 
-    const fetchURL = `https://tanat-strapi.herokuapp.com/api/posts?${query}`
+    const fetchURL = `${STRAPI}/posts?${query}`
 
     const res = await fetch(fetchURL);
     if (res.status == 404) {
@@ -83,7 +85,7 @@
   </div>
   <Toc
     headingSelector="article :where(h1, h2, h3, h4):not(.toc-exclude)"
-    breakpoint={1100}
+    breakpoint={1270}
     --toc-active-bg="none"
     --toc-active-color="#0ea5e9"
     --toc-hover-color="#0ea5e9"

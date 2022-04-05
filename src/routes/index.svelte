@@ -1,5 +1,6 @@
 <svelte:head>
   <title>Home</title>
+  <meta name="description" content="Developer Blog">
 </svelte:head>
 
 <script lang="ts" context="module">

@@ -33,6 +33,8 @@ for (let i = 0; i < 100; i++) {
 data.reverse();
 */
 
+export const STRAPI = "https://strapi-1w2i.onrender.com/api";
+
 export const get = async (): Promise<RequestHandlerOutput> => {
   const query = qs.stringify({
     fields: ["title", "description", "updatedAt", "slug", "createdAt"],
@@ -40,7 +42,7 @@ export const get = async (): Promise<RequestHandlerOutput> => {
   });
 
   const res = await fetch(
-    `https://tanat-strapi.herokuapp.com/api/posts?${query}`
+    `${STRAPI}/posts?${query}`
   );
   const jsonresp = await res.json();
   const data = jsonresp.data;

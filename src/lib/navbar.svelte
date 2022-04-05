@@ -6,8 +6,9 @@
   let show_mobile_menu = false;
   
   const nav_items = [
-    { name: "EDITOR", href: base+"/editor"},
-    { name: "ABOUT", href: base+"/about"},
+    { name: "Works", href: base+"/works"},
+    { name: "About", href: base+"/about"},
+    { name: "Contact", href: base+"/contact"},
   ]
 
   $: show_mobile_menu = $page.url.href && false;
