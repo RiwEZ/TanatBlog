@@ -52,7 +52,6 @@
 </script>
 
 <script lang="ts">
-  import { md } from "$lib/markdown";
   import Toc from "svelte-toc";
   import Content from "./content.svelte";
   import Disqus from "$lib/disqus.svelte";
@@ -60,7 +59,6 @@
   export let post: Blog;
   export let fetchURL: string;
 
-  let content = md(post.content);
   let url = fetchURL;
   let identifier: string = post.title;
 </script>
@@ -69,7 +67,7 @@
   <div class="sm:max-w-3xl 3xl:max-w-7xl">
     <h1 class="text-4xl font-bold leading-tight">{post.title}</h1>
     <p class="text-zinc-400 mt-1">{post.updated_at}</p> 
-    <Content content={content} />
+    <Content content={post.content} />
 
     <div class="mt-10 font-light text-sm pt-2 border-t border-gray-500"><em>If you can't login to disqus or can't comment 
       please visit 

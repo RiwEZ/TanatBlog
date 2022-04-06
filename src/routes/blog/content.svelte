@@ -138,7 +138,7 @@
     list-style-type: decimal;
     list-style-position: outside;
     margin-top: .3rem;
-    margin-left: 1.1rem;
+    margin-left: 1.2rem;
     margin-bottom: .3rem;
   }
 

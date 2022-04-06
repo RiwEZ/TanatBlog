@@ -24,7 +24,7 @@
 >
   <a href="{base}/" class="logo text-5xl text3d font-bold">TANAT</a>
 
-  <div class="dropdown-link-container flex md:space-x-4 md:mt-4 font-thin text-xl text-center">
+  <div class="dropdown-link-container flex md:space-x-4 md:mt-4 font-light text-xl text-center">
     {#each nav_items as item}
       <a href="{item.href}" 
         class:active="{$page.url.pathname === `/${item.name.toLowerCase()}`}">
@@ -94,6 +94,7 @@
 
     .dropdown-link-container > a.active {
       font-weight: bold;
+      text-decoration: underline;
     }
 
     .logo, .bars {
