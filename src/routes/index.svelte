@@ -1,8 +1,3 @@
-<svelte:head>
-  <title>Home</title>
-  <meta name="description" content="Developer Blog">
-</svelte:head>
-
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
   import type { BlogCard } from "$lib/type";
@@ -14,11 +9,11 @@
 
     const data: BlogCard[] = res_data.map((item: any): BlogCard => {
       const time = new Date(item.attributes.updatedAt).toLocaleDateString(
-        'en-gb',
+        "en-gb",
         {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
+          year: "numeric",
+          month: "long",
+          day: "numeric",
         }
       );
       return {
@@ -27,17 +22,17 @@
         description: item.attributes.description,
         created_at: item.attributes.createdAt,
         updated_at: time,
-      }
+      };
     });
-    
-    return {props: {posts: data }};
-  }
+
+    return { props: { posts: data } };
+  };
 </script>
 
 <script lang="ts">
   import YearPaginate from "$lib/pagination/year_paginate.svelte";
   import { paginate } from "$lib/pagination/paginate";
-  
+
   export let posts: BlogCard[];
 
   let items = posts;
@@ -51,13 +46,18 @@
   // min_year -> max_year
 </script>
 
+<svelte:head>
+  <title>Home | Tanat</title>
+  <meta name="description" content="Developer Blog" />
+</svelte:head>
 
 <div class="mt-5">
   <div class="container">
-    {#each paginated_posts as post} 
-      <div 
-        class="py-4 border-b cursor-pointer border-gray-500"
-        on:click={() => goto("/blog/" + post.slug)}>
+    {#each paginated_posts as post}
+      <div
+        class="cursor-pointer border-b border-gray-500 py-4"
+        on:click={() => goto("/blog/" + post.slug)}
+      >
         <h3 class="text-2xl font-bold">{post.title}</h3>
         <p class="text-zinc-400">{post.description}</p>
         <p class="text-zinc-400">{post.updated_at}</p>
@@ -67,10 +67,10 @@
 
   <div class="mt-5 mr-2 flex justify-end">
     <YearPaginate
-      min_year={min_year}
-      max_year={max_year}
-      curr_year={curr_year}
-      on:setPage={(e) => curr_year = e.detail.year}
+      {min_year}
+      {max_year}
+      {curr_year}
+      on:setPage={(e) => (curr_year = e.detail.year)}
     />
   </div>
 </div>

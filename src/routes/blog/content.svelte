@@ -6,8 +6,8 @@
   {@html content}
 </article>
 
-<style >
-    /* from this 
+<style>
+  /* from this 
     https://github.com/markdowncss/retro 
     https://github.com/goessner/markdown-it-texmath/blob/master/css/texmath.css
   */
@@ -31,7 +31,7 @@
     align-content: space-between;
     align-items: center;
   }
-  
+
   article :global(section.eqno > eqn) {
     width: 100%;
     margin-left: 3em;
@@ -88,7 +88,7 @@
   article :global(h2),
   article :global(h3),
   article :global(h4) {
-    margin: 1.414rem 0 .5rem;
+    margin: 1.414rem 0 0.5rem;
     font-weight: bold;
     line-height: 1.42;
   }
@@ -109,16 +109,16 @@
   article :global(h4) {
     font-size: 1.5rem;
   }
-  
+
   article :global(h5) {
     font-size: 1.17rem;
-    margin-top: .8rem;
-    margin-bottom: .3rem;
+    margin-top: 0.8rem;
+    margin-bottom: 0.3rem;
     font-weight: bold;
   }
 
   article :global(h6) {
-    font-size: .88rem;
+    font-size: 0.88rem;
   }
 
   article :global(p),
@@ -131,19 +131,19 @@
     list-style-type: disc;
     list-style-position: outside;
     margin-left: 1rem;
-    margin-bottom: .3rem;
+    margin-bottom: 0.3rem;
   }
 
   article :global(ol) {
     list-style-type: decimal;
     list-style-position: outside;
-    margin-top: .3rem;
+    margin-top: 0.3rem;
     margin-left: 1.2rem;
-    margin-bottom: .3rem;
+    margin-bottom: 0.3rem;
   }
 
   article :global(li) {
-    margin-top: .2rem;
+    margin-top: 0.2rem;
   }
 
   article :global(img) {

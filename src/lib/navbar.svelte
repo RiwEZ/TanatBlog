@@ -4,12 +4,12 @@
   import { page } from "$app/stores";
 
   let show_mobile_menu = false;
-  
+
   const nav_items = [
-    { name: "Works", href: base+"/works"},
-    { name: "About", href: base+"/about"},
-    { name: "Contact", href: base+"/contact"},
-  ]
+    { name: "Works", href: base + "/works" },
+    { name: "About", href: base + "/about" },
+    { name: "Contact", href: base + "/contact" },
+  ];
 
   $: show_mobile_menu = $page.url.href && false;
 
@@ -18,33 +18,68 @@
   };
 </script>
 
-<nav 
+<nav
   class="flex justify-between font-sans"
-  class:dropdown-opened="{show_mobile_menu}"
+  class:dropdown-opened={show_mobile_menu}
 >
-  <a href="{base}/" class="logo text-5xl text3d font-bold">TANAT</a>
+  <a href="{base}/" class="logo text3d text-5xl font-bold">TANAT</a>
 
-  <div class="dropdown-link-container flex md:space-x-4 md:mt-4 font-light text-xl text-center">
+  <div
+    class="dropdown-link-container flex text-center text-xl font-light md:mt-4 md:space-x-4"
+  >
     {#each nav_items as item}
-      <a href="{item.href}" 
-        class:active="{$page.url.pathname === `/${item.name.toLowerCase()}`}">
+      <a
+        href={item.href}
+        class:active={$page.url.pathname === `/${item.name.toLowerCase()}`}
+      >
         {item.name}
       </a>
     {/each}
   </div>
 
-  <div class="mt-5 bars" on:click="{nav_click}" aria-hidden="true">
-    <svg width="30" preserveAspectRatio="none" viewBox="0 0 80 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <line x1="1" y1="1" x2="79" y2="1" stroke="white" stroke-width="3" stroke-linecap="round"/>
-      <line x1="1" y1="41" x2="79" y2="41" stroke="white" stroke-width="3" stroke-linecap="round"/>
-      <line x1="1" y1="21" x2="79" y2="21" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  <div class="bars mt-5" on:click={nav_click} aria-hidden="true">
+    <svg
+      width="30"
+      preserveAspectRatio="none"
+      viewBox="0 0 80 42"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <line
+        x1="1"
+        y1="1"
+        x2="79"
+        y2="1"
+        stroke="white"
+        stroke-width="3"
+        stroke-linecap="round"
+      />
+      <line
+        x1="1"
+        y1="41"
+        x2="79"
+        y2="41"
+        stroke="white"
+        stroke-width="3"
+        stroke-linecap="round"
+      />
+      <line
+        x1="1"
+        y1="21"
+        x2="79"
+        y2="21"
+        stroke="white"
+        stroke-width="3"
+        stroke-linecap="round"
+      />
     </svg>
   </div>
 </nav>
 
 <style>
   .text3d {
-    text-shadow: 0.01em 0.03em #4ade80, 0.03em 0.05em #2dd4bf, 0.05em 0.07em #38bdf8;
+    text-shadow: 0.01em 0.03em #4ade80, 0.03em 0.05em #2dd4bf,
+      0.05em 0.07em #38bdf8;
   }
 
   .bars {
@@ -61,7 +96,7 @@
       height: 100vh;
       /* fix nav height on mobile safari, where 100vh is a little off */
       height: -webkit-fill-available;
-      
+
       /* then, arrange our links top to bottom */
       flex-direction: column;
       font-size: 1.7rem;
@@ -97,7 +132,8 @@
       text-decoration: underline;
     }
 
-    .logo, .bars {
+    .logo,
+    .bars {
       z-index: 1;
     }
 

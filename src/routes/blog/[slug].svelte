@@ -1,8 +1,3 @@
-<svelte:head>
-  <title>{post.title}</title>
-  <meta name="description" content="{post.description}">
-</svelte:head>
-
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
   import type { Blog } from "$lib/type";
@@ -17,15 +12,14 @@
           $eq: slug,
         },
       },
-    }) 
-    const fetchURL = `${STRAPI}/posts?${query}`
+    });
+    const fetchURL = `${STRAPI}/posts?${query}`;
 
     const res = await fetch(fetchURL);
     if (res.status == 404) {
       const error = new Error(`The post with slug ${slug} was not found`);
-      return { status: 404, error};
-    }
-    else {
+      return { status: 404, error };
+    } else {
       const res_data = await res.json();
       const d = res_data.data[0];
 
@@ -37,18 +31,18 @@
         content: d.attributes.content,
         created_at: d.attributes.createdAt,
         updated_at: new Date(d.attributes.updatedAt).toLocaleDateString(
-          'en-gb',
+          "en-gb",
           {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           }
-        )
-      }
-      
-      return {props: {post: data, fetchURL: fetchURL }};
+        ),
+      };
+
+      return { props: { post: data, fetchURL: fetchURL } };
     }
-  }
+  };
 </script>
 
 <script lang="ts">
@@ -63,22 +57,32 @@
   let identifier: string = post.title;
 </script>
 
+<svelte:head>
+  <title>{post.title}</title>
+  <meta name="description" content={post.description} />
+</svelte:head>
+
 <div class="mt-10 md:flex">
   <div class="sm:max-w-3xl 3xl:max-w-7xl">
     <h1 class="text-4xl font-bold leading-tight">{post.title}</h1>
-    <p class="text-zinc-400 mt-1">{post.updated_at}</p> 
+    <p class="mt-1 text-zinc-400">{post.updated_at}</p>
     <Content content={post.content} />
 
-    <div class="mt-10 font-light text-sm pt-2 border-t border-gray-500"><em>If you can't login to disqus or can't comment 
-      please visit 
-      <a class="text-green-600" href="https://help.disqus.com/en/articles/1717155-use-of-cookies" target="_blank">
-        https://help.disqus.com/en/articles/1717155-use-of-cookies
-      </a> 
-      and enable cookies follow their guide.
+    <div class="mt-10 border-t border-gray-500 pt-2 text-sm font-light">
+      <em
+        >If you can't login to disqus or can't comment please visit
+        <a
+          class="text-green-600"
+          href="https://help.disqus.com/en/articles/1717155-use-of-cookies"
+          target="_blank"
+        >
+          https://help.disqus.com/en/articles/1717155-use-of-cookies
+        </a>
+        and enable cookies follow their guide.
       </em>
     </div>
     <div class="mt-2">
-      <Disqus title={identifier} url={url} identifier={identifier} shortname="tanatblog" />
+      <Disqus title={identifier} {url} {identifier} shortname="tanatblog" />
     </div>
   </div>
   <Toc
@@ -98,15 +102,15 @@
     position: fixed;
     top: 4rem;
     left: max(0px, calc(50% - 45rem));
-    padding: .7rem;
+    padding: 0.7rem;
   }
 
   @media (min-width: 2000px) {
-    :global(aside.toc.desktop) {   
+    :global(aside.toc.desktop) {
       position: fixed;
       top: 4rem;
       left: 7.5%;
-      padding: .7rem;
+      padding: 0.7rem;
     }
   }
 
@@ -119,13 +123,13 @@
     overflow: hidden;
     width: 14rem;
   }
-  
+
   :global(aside.toc li) {
     font-size: 1rem !important;
     margin-top: 0.3em;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap; 
+    white-space: nowrap;
   }
 
   :global(aside.toc.mobile) {

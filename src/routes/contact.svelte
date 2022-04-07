@@ -21,7 +21,7 @@
 </script>
 
 <svelte:head>
-  <title>Contact</title>
+  <title>Contact | Tanat</title>
 </svelte:head>
 
 <div class="mt-10 grid">
@@ -35,7 +35,7 @@
     method="post"
     class="mt-3"
   >
-    <input type="hidden" name="_subject" value="Blog Email">
+    <input type="hidden" name="_subject" value="Blog Email" />
     <label for="name">Name</label><br />
     <input
       bind:value={name}
