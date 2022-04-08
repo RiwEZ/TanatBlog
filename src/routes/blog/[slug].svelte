@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
   import type { Blog } from "$lib/type";
-  import { STRAPI } from "../posts";
+  import { STRAPI } from "../api/posts";
   import qs from "qs";
 
   export const load: Load = async ({ params, fetch }) => {
@@ -49,9 +49,12 @@
   import Toc from "svelte-toc";
   import Content from "./content.svelte";
   import Disqus from "$lib/disqus.svelte";
+  import rt from "reading-time";
 
   export let post: Blog;
   export let fetchURL: string;
+
+  let reading_time = rt(post.content);
 
   let url = fetchURL;
   let identifier: string = post.title;
@@ -65,7 +68,10 @@
 <div class="mt-10 md:flex">
   <div class="sm:max-w-3xl 3xl:max-w-7xl">
     <h1 class="text-4xl font-bold leading-tight">{post.title}</h1>
-    <p class="mt-1 text-zinc-400">{post.updated_at}</p>
+    <p class="mt-1 text-zinc-400">
+      {reading_time.minutes} minutes read • Last updated
+      <b>{post.updated_at}</b>
+    </p>
     <Content content={post.content} />
 
     <div class="mt-10 border-t border-gray-500 pt-2 text-sm font-light">

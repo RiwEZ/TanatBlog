@@ -4,7 +4,7 @@
   import { goto } from "$app/navigation";
 
   export const load: Load = async ({ fetch }) => {
-    const res = await fetch("/posts");
+    const res = await fetch("/api/posts");
     const res_data = await res.json();
 
     const data: BlogCard[] = res_data.map((item: any): BlogCard => {
