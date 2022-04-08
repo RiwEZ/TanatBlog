@@ -59,8 +59,7 @@
         on:click={() => goto("/blog/" + post.slug)}
       >
         <h3 class="text-2xl font-bold">{post.title}</h3>
-        <p class="text-zinc-400">{post.description}</p>
-        <p class="text-zinc-400">{post.updated_at}</p>
+        <p class="text-zinc-400 mt-2"><strong>{post.updated_at}</strong> • {post.description}</p>
       </div>
     {/each}
   </div>
