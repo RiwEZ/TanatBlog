@@ -26,10 +26,10 @@
     max-height: 0;
     transition: max-height 0.2s ease-out;
   }
-  
+
   .shown {
-    max-height: 20vh;
-    transition: max-height 0.1s ease-in;
+    max-height: min(200px, 100vh); /* need to set this responsively */
+    transition: max-height 0.2s ease-in;
   }
   
 </style>
