@@ -2,6 +2,19 @@
   import type { Load } from "@sveltejs/kit";
   import type { Blog } from "$lib/type";
   import qs from "qs";
+
+  export const load: Load = async ({ params, fetch }) => {
+    const { slug } = params;
+    const query = qs.stringify({
+      slug,
+    });
+
+    const fetchURL = `/api/posts?${query}`;
+    const res = await fetch(fetchURL);
+    const res_data = (await res.json()) as Blog;
+
+    return { props: { post: res_data } };
+  };
 </script>
 
 <script lang="ts">
@@ -11,11 +24,10 @@
   import rt from "reading-time";
 
   export let post: Blog;
-  export let fetchURL: string;
 
   let reading_time = rt(post.content);
 
-  let url = fetchURL;
+  let url = window.location.href;
   let identifier: string = post.title;
 </script>
 
@@ -29,7 +41,13 @@
     <h1 class="text-4xl font-bold leading-tight">{post.title}</h1>
     <p class="mt-1 text-zinc-400">
       {reading_time.minutes} minutes read • Last updated
-      <b>{post.updated_at}</b>
+      <b
+        >{new Date(post.updated_at).toLocaleDateString("en-gb", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}</b
+      >
     </p>
     <Content content={post.content} />
 

@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { Blog } from "./type";
-  import { base } from "$app/paths";
   import { onMount } from "svelte";
   import qs from "qs";
   import Content from "../routes/blog/content.svelte";
@@ -46,7 +45,7 @@
     const data = posts[i];
     data.updated_at = new Date(Date.now()).toISOString();
 
-    const res = await fetch(`${base}/api/post-manager?${query}`, {
+    const res = await fetch(`/api/post-manager?${query}`, {
       method: "POST",
       body: JSON.stringify(posts[i]),
     });
@@ -64,7 +63,7 @@
       slug,
     });
 
-    const res = await fetch(`${base}/api/post-manager?${query}`, {
+    const res = await fetch(`/api/post-manager?${query}`, {
       method: "DELETE",
     });
 
@@ -73,7 +72,7 @@
 
   let c = 0;
   const fetch_posts = async () => {
-    const res = await fetch(`${base}/api/posts`);
+    const res = await fetch(`/api/posts`);
     const res_data = await res.json();
     posts = res_data;
     backup_posts = JSON.parse(JSON.stringify(posts)); // deep copy

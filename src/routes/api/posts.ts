@@ -1,4 +1,4 @@
-import type { RequestHandlerOutput } from "@sveltejs/kit";
+import type { RequestHandler } from "@sveltejs/kit";
 import type { Blog } from "$lib/type";
 import { readdirSync, readFileSync } from "fs";
 import yaml from "js-yaml";
@@ -37,9 +37,17 @@ data.reverse();
 
 export const PATH = "./src/_data/blogs";
 
-export const get = async (): Promise<RequestHandlerOutput> => {
-  const data: Blog[] = [];
+export const get: RequestHandler = async ({ url }) => {
+  // with query
+  if (url.searchParams.get("slug")) {
+    const slug = url.searchParams.get("slug");
+    const data = yaml.load(
+      readFileSync(`${PATH}/${slug}.yaml`, "utf-8")
+    ) as Blog;
+    return { body: data };
+  }
 
+  const data: Blog[] = [];
   const blogs = readdirSync(PATH);
 
   for (const blog of blogs) {
