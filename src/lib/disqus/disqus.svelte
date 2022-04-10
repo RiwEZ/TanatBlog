@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
   // https://github.com/disqus/disqus-react
   import { onDestroy, onMount } from "svelte/internal";
-  import { insert_script, remove_resources, remove_script } from "$lib/disqus";
+  import { insert_script, remove_resources, remove_script } from "$lib/disqus/disqus";
 
   const SCRIPT_ID = "dsq-embeded-src";
   const THREAD_ID = "disqus_thread";

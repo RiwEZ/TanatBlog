@@ -1,11 +1,10 @@
-export interface BlogCard {
-  slug: string;
+import type { JSONObject } from "@sveltejs/kit/types/private";
+
+export interface Blog extends JSONObject {
   title: string;
   description: string;
   created_at: string;
   updated_at: string;
-}
-
-export interface Blog extends BlogCard {
-  content: string;
+  content: string
+  slug: string;
 }

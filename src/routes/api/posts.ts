@@ -1,5 +1,7 @@
-import type { RequestHandlerOutput } from "@sveltejs/kit";
-import qs from "qs";
+import type { RequestHandler } from "@sveltejs/kit";
+import type { Blog } from "$lib/type";
+import { readdirSync, readFileSync } from "fs";
+import yaml from "js-yaml";
 
 /*
 import type { JSONObject } from "@sveltejs/kit/types/internal";
@@ -33,19 +35,30 @@ for (let i = 0; i < 100; i++) {
 data.reverse();
 */
 
-export const STRAPI = "https://strapi-1w2i.onrender.com/api";
+export const PATH = "./src/_data/blogs";
 
-export const get = async (): Promise<RequestHandlerOutput> => {
-  const query = qs.stringify({
-    fields: ["title", "description", "updatedAt", "slug", "createdAt"],
-    sort: ["createdAt:desc"],
-  });
+export const get: RequestHandler = async ({ url }) => {
+  // with query
+  if (url.searchParams.get("slug")) {
+    const slug = url.searchParams.get("slug");
+    const data = yaml.load(
+      readFileSync(`${PATH}/${slug}.yaml`, "utf-8")
+    ) as Blog;
+    return { body: data };
+  }
 
-  const res = await fetch(
-    `${STRAPI}/posts?${query}`
+  const data: Blog[] = [];
+  const blogs = readdirSync(PATH);
+
+  for (const blog of blogs) {
+    const doc = yaml.load(readFileSync(`${PATH}/${blog}`, "utf-8")) as Blog;
+    data.push(doc);
+  }
+
+  // sort by created_date from recent to old
+  data.sort((a, b) =>
+    a.created_at > b.created_at ? -1 : a.created_at < b.date ? 1 : 0
   );
-  const jsonresp = await res.json();
-  const data = jsonresp.data;
 
   return { body: data };
 };

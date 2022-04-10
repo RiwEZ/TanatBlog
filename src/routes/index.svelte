@@ -1,39 +1,20 @@
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
-  import type { BlogCard } from "$lib/type";
-  import { goto } from "$app/navigation";
+  import type { Blog } from "$lib/type";
 
   export const load: Load = async ({ fetch }) => {
     const res = await fetch("/api/posts");
-    const res_data = await res.json();
-
-    const data: BlogCard[] = res_data.map((item: any): BlogCard => {
-      const time = new Date(item.attributes.updatedAt).toLocaleDateString(
-        "en-gb",
-        {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }
-      );
-      return {
-        slug: item.attributes.slug,
-        title: item.attributes.title,
-        description: item.attributes.description,
-        created_at: item.attributes.createdAt,
-        updated_at: time,
-      };
-    });
-
-    return { props: { posts: data } };
+    const res_data = (await res.json()) as Blog[];
+    return { props: { posts: res_data } };
   };
 </script>
 
 <script lang="ts">
   import YearPaginate from "$lib/pagination/year_paginate.svelte";
   import { paginate } from "$lib/pagination/paginate";
+  import { goto } from "$app/navigation";
 
-  export let posts: BlogCard[];
+  export let posts: Blog[];
 
   let items = posts;
   let max_year = new Date(posts[0].created_at).getFullYear();
@@ -42,8 +23,6 @@
 
   let paginated_posts = paginate(items, curr_year);
   $: paginated_posts = paginate(items, curr_year);
-  // change pagination to year
-  // min_year -> max_year
 </script>
 
 <svelte:head>
@@ -59,7 +38,16 @@
         on:click={() => goto("/blog/" + post.slug)}
       >
         <h3 class="text-2xl font-bold">{post.title}</h3>
-        <p class="text-zinc-400 mt-2"><strong>{post.updated_at}</strong> • {post.description}</p>
+        <p class="mt-2 text-zinc-400">
+          <strong
+            >{new Date(post.updated_at).toLocaleDateString("en-gb", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}</strong
+          >
+          • {post.description}
+        </p>
       </div>
     {/each}
   </div>

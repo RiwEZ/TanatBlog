@@ -1,62 +1,33 @@
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
   import type { Blog } from "$lib/type";
-  import { STRAPI } from "../api/posts";
   import qs from "qs";
 
   export const load: Load = async ({ params, fetch }) => {
     const { slug } = params;
     const query = qs.stringify({
-      filters: {
-        slug: {
-          $eq: slug,
-        },
-      },
+      slug,
     });
-    const fetchURL = `${STRAPI}/posts?${query}`;
 
+    const fetchURL = `/api/posts?${query}`;
     const res = await fetch(fetchURL);
-    if (res.status == 404) {
-      const error = new Error(`The post with slug ${slug} was not found`);
-      return { status: 404, error };
-    } else {
-      const res_data = await res.json();
-      const d = res_data.data[0];
+    const res_data = (await res.json()) as Blog;
 
-      // convert data to type Post
-      const data: Blog = {
-        slug: d.slug,
-        title: d.attributes.title,
-        description: d.attributes.description,
-        content: d.attributes.content,
-        created_at: d.attributes.createdAt,
-        updated_at: new Date(d.attributes.updatedAt).toLocaleDateString(
-          "en-gb",
-          {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          }
-        ),
-      };
-
-      return { props: { post: data, fetchURL: fetchURL } };
-    }
+    return { props: { post: res_data } };
   };
 </script>
 
 <script lang="ts">
   import Toc from "svelte-toc";
   import Content from "./content.svelte";
-  import Disqus from "$lib/disqus.svelte";
+  import Disqus from "$lib/disqus/disqus.svelte";
   import rt from "reading-time";
 
   export let post: Blog;
-  export let fetchURL: string;
 
   let reading_time = rt(post.content);
 
-  let url = fetchURL;
+  let url = window.location.href;
   let identifier: string = post.title;
 </script>
 
@@ -70,7 +41,13 @@
     <h1 class="text-4xl font-bold leading-tight">{post.title}</h1>
     <p class="mt-1 text-zinc-400">
       {reading_time.minutes} minutes read • Last updated
-      <b>{post.updated_at}</b>
+      <b
+        >{new Date(post.updated_at).toLocaleDateString("en-gb", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}</b
+      >
     </p>
     <Content content={post.content} />
 
