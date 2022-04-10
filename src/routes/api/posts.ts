@@ -1,4 +1,5 @@
 import type { RequestHandlerOutput } from "@sveltejs/kit";
+import type { Blog } from "$lib/type";
 import { readdirSync, readFileSync } from "fs";
 import yaml from "js-yaml";
 
@@ -37,21 +38,19 @@ data.reverse();
 export const PATH = "./src/_data/blogs";
 
 export const get = async (): Promise<RequestHandlerOutput> => {
-  let data = [];
+  const data: Blog[] = [];
 
   const blogs = readdirSync(PATH);
 
   for (const blog of blogs) {
-    const doc = yaml.load(readFileSync(`${PATH}/${blog}`, "utf-8"));
+    const doc = yaml.load(readFileSync(`${PATH}/${blog}`, "utf-8")) as Blog;
     data.push(doc);
   }
 
-  // sort by create date from recent to old
+  // sort by created_date from recent to old
   data.sort((a, b) =>
     a.created_at > b.created_at ? -1 : a.created_at < b.date ? 1 : 0
   );
-
-  console.log(data);
 
   return { body: data };
 };

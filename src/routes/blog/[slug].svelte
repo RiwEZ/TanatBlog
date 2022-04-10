@@ -1,54 +1,13 @@
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
   import type { Blog } from "$lib/type";
-  import { STRAPI } from "../api/posts";
   import qs from "qs";
-
-  export const load: Load = async ({ params, fetch }) => {
-    const { slug } = params;
-    const query = qs.stringify({
-      filters: {
-        slug: {
-          $eq: slug,
-        },
-      },
-    });
-    const fetchURL = `${STRAPI}/posts?${query}`;
-
-    const res = await fetch(fetchURL);
-    if (res.status == 404) {
-      const error = new Error(`The post with slug ${slug} was not found`);
-      return { status: 404, error };
-    } else {
-      const res_data = await res.json();
-      const d = res_data.data[0];
-
-      // convert data to type Post
-      const data: Blog = {
-        slug: d.slug,
-        title: d.attributes.title,
-        description: d.attributes.description,
-        content: d.attributes.content,
-        created_at: d.attributes.createdAt,
-        updated_at: new Date(d.attributes.updatedAt).toLocaleDateString(
-          "en-gb",
-          {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          }
-        ),
-      };
-
-      return { props: { post: data, fetchURL: fetchURL } };
-    }
-  };
 </script>
 
 <script lang="ts">
   import Toc from "svelte-toc";
   import Content from "./content.svelte";
-  import Disqus from "$lib/disqus.svelte";
+  import Disqus from "$lib/disqus/disqus.svelte";
   import rt from "reading-time";
 
   export let post: Blog;

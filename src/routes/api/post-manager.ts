@@ -1,27 +1,35 @@
 import type { RequestHandler } from "@sveltejs/kit";
+import type { Blog } from "$lib/type";
 import { PATH } from "./posts";
-import { writeFileSync, existsSync } from "fs";
+import { writeFileSync, existsSync, unlinkSync } from "fs";
 import yaml from "js-yaml";
 
-interface Blog {
-  title: string;
-  description: string;
-  created_at: string;
-  updated_at: string;
-  content: string
-  slug: string;
-}
-
-export const post: RequestHandler = async ({ request }) => {
+export const post: RequestHandler = async ({ request, url }) => {
   const body = await request.json();
   const data = body as Blog;
   const blog_path = `${PATH}/${data.slug}.yaml`;
-  let success = false;
 
+  // with query
+  if (url.searchParams.get("slug")) {
+    writeFileSync(blog_path, yaml.dump(data));
+    return {};
+  }
+
+  // with out query
+  let success = false;
   if (!existsSync(blog_path)) {
-    writeFileSync(blog_path, yaml.dump(data))
+    writeFileSync(blog_path, yaml.dump(data));
     success = true;
   }
 
-  return {body: success};
+  return { body: success };
+};
+
+export const del: RequestHandler = async ({ url }) => {
+  const slug = url.searchParams.get("slug");
+  const blog_path = `${PATH}/${slug}.yaml`;
+
+  if (existsSync(blog_path)) unlinkSync(blog_path);
+
+  return {};
 };
