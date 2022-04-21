@@ -1,6 +1,7 @@
 import type { JSONObject } from '@sveltejs/kit/types/private';
 import yaml from 'js-yaml';
 import { readdirSync, readFileSync, existsSync, writeFileSync, unlinkSync, renameSync } from 'fs';
+import md from './markdown';
 
 export interface BlogContent extends JSONObject {
 	title: string;
@@ -48,7 +49,7 @@ export default class BlogManager {
 			const date = new Date().toISOString();
 			const data = blog as Blog;
 
-			data.htmlContent = blog.content; // TODO
+			data.htmlContent = md(blog.content);
 			data.slug = slug;
 			data.createdAt = date;
 			data.updatedAt = date;
@@ -91,7 +92,7 @@ export default class BlogManager {
 		blog.title = newContent.title;
 		blog.description = newContent.description;
 		blog.content = newContent.content;
-		blog.htmlContent = newContent.content; // TODO
+		blog.htmlContent = md(newContent.content); 
 
 		if (blog.slug != this.slug(newContent.title)) {
 			// rename file
