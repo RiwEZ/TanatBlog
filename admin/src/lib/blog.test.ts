@@ -1,6 +1,6 @@
 import type { Blog, BlogContent } from './blog';
 import BlogManager from './blog';
-import { readFileSync, existsSync, unlinkSync, writeFileSync, stat } from 'fs';
+import { readFileSync, existsSync, unlinkSync, writeFileSync } from 'fs';
 import yaml from 'js-yaml';
 
 const path = './tests/_data/blogs';
@@ -73,7 +73,7 @@ test('Can edit blog?', () => {
 
 	expect(editedBlog.title).toEqual(blog.title);
 	expect(editedBlog.description).toEqual(blog.description);
-	expect(editedBlog.content).toEqual(blog.content)
+	expect(editedBlog.content).toEqual(blog.content);
 
 	expect(editedBlog.updatedAt > oldUpdate).toEqual(true);
 
@@ -86,7 +86,25 @@ test('Can edit blog?', () => {
 		slug: 'test-edit',
 		createdAt: oldUpdate,
 		updatedAt: oldUpdate
-	}
+	};
 	unlinkSync(`${path}/${slug}.yaml`);
 	writeFileSync(`${path}/test-edit.yaml`, yaml.dump(backup));
+});
+
+test('Can get specific blog?', () => {
+	const backup: Blog = {
+		title: 'Test edit',
+		description: 'YAAA',
+		content: '..',
+		htmlContent: '..',
+		slug: 'test-edit',
+		createdAt: '2022-04-10T11:45:46.229Z',
+		updatedAt: '2022-04-10T11:45:46.229Z'
+	};
+
+	expect(bm.get('test-edit')).toEqual(backup);
+});
+
+test('Can not get undefined blog.', () => {
+	expect(() => bm.get('asdasdsadadad')).toThrow(`Can't find blog with this slug asdasdsadadad`);
 });

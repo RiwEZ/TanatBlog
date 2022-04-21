@@ -26,6 +26,11 @@ export default class BlogManager {
 		this.path = path;
 	}
 
+	/**
+	 *
+	 * @param title title to convert to slug
+	 * @returns slug of title by removing any trailing spaces and change space within to '-'
+	 */
 	slug(title: string): string {
 		return title.toLowerCase().trim().replace(/ /g, '-').replace(/[.]/g, '');
 	}
@@ -55,6 +60,11 @@ export default class BlogManager {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param slug slug of blog to delete
+	 * @returns return fasle if slug not founded else true
+	 */
 	delete(slug: string): boolean {
 		const path = `${this.path}/${slug}.yaml`;
 
@@ -65,6 +75,12 @@ export default class BlogManager {
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param slug slug of blog to edit
+	 * @param newContent new information to overwrite
+	 * @returns return false if slug not found else true
+	 */
 	edit(slug: string, newContent: BlogContent): boolean {
 		const path = `${this.path}/${slug}.yaml`;
 		if (!existsSync(path)) return false;
@@ -86,6 +102,17 @@ export default class BlogManager {
 		} else writeFileSync(path, yaml.dump(blog));
 
 		return true;
+	}
+
+	/**
+	 * Get specific blog
+	 * @param slug slug of needed blog
+	 * @returns information of that blog
+	 */
+	get(slug: string): Blog {
+		const path = `${this.path}/${slug}.yaml`
+		if (!existsSync(path)) throw `Can't find blog with this slug ${slug}`;
+		return yaml.load(readFileSync(path, 'utf-8')) as Blog;
 	}
 
 	/**
