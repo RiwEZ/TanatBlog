@@ -62,7 +62,7 @@ export default class BlogManager {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param slug slug of blog to delete
 	 * @returns return fasle if slug not founded else true
 	 */
@@ -77,7 +77,7 @@ export default class BlogManager {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param slug slug of blog to edit
 	 * @param newContent new information to overwrite
 	 * @returns return false if slug not found else true
@@ -92,7 +92,7 @@ export default class BlogManager {
 		blog.title = newContent.title;
 		blog.description = newContent.description;
 		blog.content = newContent.content;
-		blog.htmlContent = md(newContent.content); 
+		blog.htmlContent = md(newContent.content);
 
 		if (blog.slug != this.slug(newContent.title)) {
 			// rename file
@@ -111,7 +111,7 @@ export default class BlogManager {
 	 * @returns information of that blog
 	 */
 	get(slug: string): Blog {
-		const path = `${this.path}/${slug}.yaml`
+		const path = `${this.path}/${slug}.yaml`;
 		if (!existsSync(path)) throw `Can't find blog with this slug ${slug}`;
 		return yaml.load(readFileSync(path, 'utf-8')) as Blog;
 	}

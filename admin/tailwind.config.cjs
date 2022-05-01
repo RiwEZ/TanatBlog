@@ -1,1 +1,7 @@
-// need this files for svelte to not complain
+module.exports = {
+	content: ['./src/**/*.{html,js,svelte,ts}'],
+	theme: {
+		extend: {}
+	},
+	plugins: []
+};
