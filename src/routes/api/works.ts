@@ -15,12 +15,11 @@ export const get: RequestHandler = async () => {
   let resp: WorkCard[] = [];
 
   try {
-    const doc = yaml.load(readFileSync(path + "/works.yaml", "utf-8"))
+    const doc = yaml.load(readFileSync(path + "/works.yaml", "utf-8"));
     resp = doc as WorkCard[];
-  }
-  catch (e) {
+  } catch (e) {
     resp = [];
   }
 
-  return {body: resp};
-}
+  return { body: resp };
+};

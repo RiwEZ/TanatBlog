@@ -31,5 +31,4 @@
     max-height: min(200px, 100vh); /* need to set this responsively */
     transition: max-height 0.2s ease-in;
   }
-  
 </style>
