@@ -1,4 +1,6 @@
 <script lang="ts">
+  import "highlight.js/styles/tomorrow-night-bright.css";
+  import "katex/dist/katex.min.css";
   export let content: string;
 </script>
 
@@ -131,15 +133,16 @@
     list-style-type: disc;
     list-style-position: outside;
     margin-left: 1rem;
-    margin-bottom: 0.3rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
 
   article :global(ol) {
     list-style-type: decimal;
     list-style-position: outside;
-    margin-top: 0.3rem;
     margin-left: 1.2rem;
-    margin-bottom: 0.3rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
 
   article :global(li) {

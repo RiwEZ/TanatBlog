@@ -1,11 +1,9 @@
 <script lang="ts">
   import "../app.css";
-  import 'highlight.js/styles/tomorrow-night-bright.css';
-  import "katex/dist/katex.min.css";
   import Navbar from "$lib/navbar.svelte";
 </script>
 
-<div class="sm:max-w-3xl 3xl:max-w-7xl mx-auto p-4 lg:p-2 mt-6 text-zinc-50">
+<div class="mx-auto mt-6 p-4 text-zinc-50 sm:max-w-3xl lg:p-2 3xl:max-w-7xl">
   <Navbar />
   <slot />
 </div>

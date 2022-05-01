@@ -49,14 +49,12 @@
         slug,
       }),
     });
-    
+
     if (res.status === 200) {
       clean();
-      dispatch("reload", {reload: true});
+      dispatch("reload", { reload: true });
     }
   };
-
-
 </script>
 
 <button
@@ -79,11 +77,7 @@
         on:click={() => (preview = !preview)}>Preview</button
       >
     </div>
-    <textarea
-      bind:value={content}
-      class="bg-zinc-900"
-      required
-    />
+    <textarea bind:value={content} class="bg-zinc-900" required />
     <button
       on:click|preventDefault={add_blog}
       class:close={!filled}

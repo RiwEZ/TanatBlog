@@ -10,5 +10,5 @@ export const gen_options = (min_years: number, max_years: number) => {
 };
 
 export const paginate = (items: Items[], curr_year: number) => {
-  return items.filter(i => new Date(i.created_at).getFullYear() == curr_year);
-}
+  return items.filter((i) => new Date(i.created_at).getFullYear() == curr_year);
+};

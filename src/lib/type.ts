@@ -5,6 +5,6 @@ export interface Blog extends JSONObject {
   description: string;
   created_at: string;
   updated_at: string;
-  content: string
+  content: string;
   slug: string;
 }

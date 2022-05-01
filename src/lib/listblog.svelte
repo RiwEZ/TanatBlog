@@ -20,7 +20,7 @@
       if (preview[i] === undefined) preview[i] = false;
     }
     fetch_posts();
-  }
+  };
 
   $: {
     if (dirty) {
