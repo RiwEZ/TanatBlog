@@ -37,16 +37,7 @@ data.reverse();
 
 export const PATH = "./src/_data/blogs";
 
-export const get: RequestHandler = async ({ url }) => {
-  // with query
-  if (url.searchParams.get("slug")) {
-    const slug = url.searchParams.get("slug");
-    const data = yaml.load(
-      readFileSync(`${PATH}/${slug}.yaml`, "utf-8")
-    ) as Blog;
-    return { body: data };
-  }
-
+export const get: RequestHandler = async () => {
   const data: Blog[] = [];
   const blogs = readdirSync(PATH);
 
