@@ -1,7 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import type { Blog } from "$lib/type";
 import { readdirSync, readFileSync } from "fs";
-import yaml from "js-yaml";
+import { load } from "js-yaml";
 
 /*
 import type { JSONObject } from "@sveltejs/kit/types/internal";
@@ -35,14 +35,14 @@ for (let i = 0; i < 100; i++) {
 data.reverse();
 */
 
-export const PATH = "./src/_data/blogs";
+export const PATH = "./src/data/blogs";
 
 export const get: RequestHandler = async () => {
   const data: Blog[] = [];
   const blogs = readdirSync(PATH);
 
   for (const blog of blogs) {
-    const doc = yaml.load(readFileSync(`${PATH}/${blog}`, "utf-8")) as Blog;
+    const doc = load(readFileSync(`${PATH}/${blog}`, "utf-8")) as Blog;
     data.push(doc);
   }
 

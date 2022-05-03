@@ -6,7 +6,7 @@
   export const load: Load = async ({ params, fetch }) => {
     const { slug } = params;
 
-    const fetchURL = `${base}/api/posts/${slug}`;
+    const fetchURL = `${base}/api/posts/${slug}.json`;
     const res = await fetch(fetchURL);
     const res_data = (await res.json()) as Blog;
 

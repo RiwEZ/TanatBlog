@@ -4,7 +4,7 @@
   import { base } from "$app/paths";
 
   export const load: Load = async ({ fetch }) => {
-    const res = await fetch(`${base}/api/posts`);
+    const res = await fetch(`${base}/api/posts.json`);
     const res_data = (await res.json()) as Blog[];
     return { props: { posts: res_data } };
   };
@@ -13,7 +13,6 @@
 <script lang="ts">
   import YearPaginate from "$lib/pagination/year_paginate.svelte";
   import { paginate } from "$lib/pagination/paginate";
-  import { goto } from "$app/navigation";
 
   export let posts: Blog[];
 

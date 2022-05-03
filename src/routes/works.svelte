@@ -1,10 +1,10 @@
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
-  import type { WorkCard } from "./api/works";
+  import type { WorkCard } from "./api/works.json";
   import { base } from "$app/paths";
 
   export const load: Load = async ({ fetch }) => {
-    const res = await fetch(`${base}/api/works`);
+    const res = await fetch(`${base}/api/works.json`);
     const res_data = await res.json();
     const data = res_data as WorkCard[];
 

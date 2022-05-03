@@ -21,4 +21,4 @@ jobs:
         node-version: 16
         cache: 'npm'
     - run: npm ci
-    - run: npm deploy
+    - run: npm run deploy
