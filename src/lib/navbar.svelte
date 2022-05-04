@@ -2,6 +2,7 @@
   // https://bholmes.dev/blog/building-a-sexy-mobile-ready-navbar-in-any-web-framework/
   import { base } from "$app/paths";
   import { page } from "$app/stores";
+  import { dev } from "$app/env";
 
   let show_mobile_menu = false;
 
@@ -16,6 +17,11 @@
   const nav_click = () => {
     show_mobile_menu = !show_mobile_menu;
   };
+
+  const checkPath = (href: string) => {
+    const path = dev ? `${href}` : `/TanatBlog${href}`;
+    return path === $page.url.pathname ? true : false;
+  };
 </script>
 
 <nav
@@ -28,10 +34,7 @@
     class="dropdown-link-container flex text-center text-xl font-light md:mt-4 md:space-x-4"
   >
     {#each nav_items as item}
-      <a
-        href={item.href}
-        class:active={$page.url.pathname === `/${item.name.toLowerCase()}`}
-      >
+      <a href={item.href} class:active={checkPath(item.href)}>
         {item.name}
       </a>
     {/each}
