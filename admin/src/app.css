@@ -1,9 +1,7 @@
+@import url("https://rsms.me/inter/inter.css");
 @tailwind components;
 @tailwind utilities;
 
-* {
-	font-family: var(
-		--mdc-typography-headline6-font-family,
-		var(--mdc-typography-font-family, Roboto, sans-serif)
-	);
+body {
+	font-family: "Inter", sans-serif;
 }
