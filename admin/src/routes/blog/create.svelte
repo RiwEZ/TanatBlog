@@ -1,32 +1,52 @@
 <script lang="ts">
 	import Card, { Actions, ActionButtons } from '@smui/card';
 	import Textfield from '@smui/textfield';
-	import IconButton from '@smui/icon-button';
 	import Button, { Label, Icon } from '@smui/button';
 	import Content from '$lib/components/content.svelte';
 	import md from '$lib/markdown';
+	import type { Blog } from '$lib/blog';
 
 	let title = '';
 	let description = '';
 	let content = '';
 	let slug = '';
-	$: slug = title.toLowerCase().replace(/ /g, "-").replace(/[.]/g, "");
+	$: slug = title.toLowerCase().replace(/ /g, '-').replace(/[.]/g, '');
 
 	let createdAt: string = 'now';
 	let updatedAt: string = 'now';
 
 	let preview = false;
 
-	//const bm = new BlogManager('./tests/blogs')
-	const onSave = () => {
-		/*
-		const blog: BlogContent = {
-			title,
-			description,
-			content
+	const is_empty = (str: string[]) => {
+		let result = false;
+		for (const s of str) {
+			if (s === undefined || s === '') {
+				result = true;
+				break;
+			}
 		}
-		bm.add(blog);
-		*/
+		return result;
+	};
+	$: filled = !is_empty([title, description, content]);
+
+	const onSave = async () => {
+		if (filled) {
+			const date = new Date().toISOString();
+			const blogpost: Blog = {
+				title,
+				description,
+				content,
+				htmlContent: md(content),
+				createdAt: date,
+				updatedAt: date,
+				slug
+			};
+
+			const res = await fetch('/api/post', {
+				method: 'POST',
+				body: JSON.stringify(blogpost)
+			});
+		}
 	};
 </script>
 
@@ -58,21 +78,25 @@
 		>
 		<Textfield class="mt-5 w-full" bind:value={content} label="content" textarea required />
 
-		<div class="flex">
-			<Textfield class="mt-5 w-1/2" bind:value={slug} label="slug" variant="outlined" required />
-			<IconButton class="material-icons ml-3 mb-1 self-end">replay</IconButton>
-		</div>
+		<Textfield
+			class="mt-5 w-1/2"
+			bind:value={slug}
+			label="slug"
+			variant="outlined"
+			disabled
+			required
+		/>
 
 		<Actions class="mt-5">
 			<ActionButtons>
-				<Button variant="raised">
+				<Button variant="raised" on:click={() => onSave()}>
 					<Label>Save</Label>
 				</Button>
 			</ActionButtons>
 		</Actions>
 	</Card>
 	{#if preview}
-		<div id="content" class="mt-5 max-w-4xl rounded-md bg-zinc-900 p-5">
+		<div id="content" class="mt-5 mb-5 max-w-4xl rounded-md bg-zinc-900 p-5">
 			<Content content={md(content)} />
 		</div>
 	{/if}
@@ -86,9 +110,10 @@
 	#content :global(img) {
 		max-width: 100%;
 		max-height: 100%;
+		display: block;
 	}
 
-	#content :global(img) {
-		display: block;
+	#content :global(p) {
+		margin: 0;
 	}
 </style>
