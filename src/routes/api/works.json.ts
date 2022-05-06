@@ -1,7 +1,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import type { JSONObject } from "@sveltejs/kit/types/private";
 import { readFileSync } from "fs";
-import yaml from "js-yaml";
+import { load } from "js-yaml";
 
 export interface WorkCard extends JSONObject {
   title: string;
@@ -10,12 +10,12 @@ export interface WorkCard extends JSONObject {
   body: string;
 }
 
-const path = "./src/_data";
+const path = "./src/data";
 export const get: RequestHandler = async () => {
   let resp: WorkCard[] = [];
 
   try {
-    const doc = yaml.load(readFileSync(path + "/works.yaml", "utf-8"));
+    const doc = load(readFileSync(path + "/works.yaml", "utf-8"));
     resp = doc as WorkCard[];
   } catch (e) {
     resp = [];

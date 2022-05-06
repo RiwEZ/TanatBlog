@@ -1,15 +1,12 @@
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
   import type { Blog } from "$lib/type";
-  import qs from "qs";
+  import { base } from "$app/paths";
 
   export const load: Load = async ({ params, fetch }) => {
     const { slug } = params;
-    const query = qs.stringify({
-      slug,
-    });
 
-    const fetchURL = `/api/posts?${query}`;
+    const fetchURL = `${base}/api/posts/${slug}.json`;
     const res = await fetch(fetchURL);
     const res_data = (await res.json()) as Blog;
 
@@ -18,7 +15,7 @@
 </script>
 
 <script lang="ts">
-  import Content from "./content.svelte";
+  import Content from "$lib/content.svelte";
   import rt from "reading-time";
 
   export let post: Blog;

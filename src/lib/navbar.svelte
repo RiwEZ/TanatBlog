@@ -28,10 +28,7 @@
     class="dropdown-link-container flex text-center text-xl font-light md:mt-4 md:space-x-4"
   >
     {#each nav_items as item}
-      <a
-        href={item.href}
-        class:active={$page.url.pathname === `/${item.name.toLowerCase()}`}
-      >
+      <a href={item.href} class:active={item.href === $page.url.pathname}>
         {item.name}
       </a>
     {/each}
