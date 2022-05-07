@@ -32,8 +32,8 @@ export default class BlogManager {
 	 * @param title title to convert to slug
 	 * @returns slug of title by removing any trailing spaces and change space within to '-'
 	 */
-	slug(title: string): string {
-		return title.toLowerCase().trim().replace(/ /g, '-').replace(/[.]/g, '');
+	static slug(title: string): string {
+		return title.toLowerCase().trim().replace(/ /g, '-').replace(/[.\\/:*?"<>|]/g, '');
 	}
 
 	/**
@@ -42,7 +42,7 @@ export default class BlogManager {
 	 * @returns true if sucess else false
 	 */
 	add(blog: BlogContent): boolean {
-		const slug = this.slug(blog.title);
+		const slug = BlogManager.slug(blog.title);
 		const path = `${this.path}/${slug}.yaml`;
 
 		if (!existsSync(path)) {
@@ -94,9 +94,9 @@ export default class BlogManager {
 		blog.content = newContent.content;
 		blog.htmlContent = md(newContent.content);
 
-		if (blog.slug != this.slug(newContent.title)) {
+		if (blog.slug != BlogManager.slug(newContent.title)) {
 			// rename file
-			blog.slug = this.slug(newContent.title);
+			blog.slug = BlogManager.slug(newContent.title);
 			const newPath = `${this.path}/${blog.slug}.yaml`;
 			renameSync(path, newPath);
 			writeFileSync(newPath, yaml.dump(blog));

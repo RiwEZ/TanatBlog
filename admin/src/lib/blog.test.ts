@@ -13,10 +13,9 @@ test('Can access upper folder?', () => {
 });
 
 test('BlockManager slug behaviour', () => {
-	const bm = new BlogManager('');
-	expect(bm.slug('test add')).toEqual('test-add');
-	expect(bm.slug('Testadd ')).toEqual('testadd');
-	expect(bm.slug(' Test add ')).toEqual('test-add');
+	expect(BlogManager.slug('test add')).toEqual('test-add');
+	expect(BlogManager.slug('Testadd ')).toEqual('testadd');
+	expect(BlogManager.slug(' Test add ')).toEqual('test-add');
 });
 
 test('Can add new blog?', () => {

@@ -11,7 +11,8 @@
 	export let description = '';
 	export let content = '';
 	export let slug = '';
-	$: slug = title.toLowerCase().replace(/ /g, '-').replace(/[.]/g, '');
+	// from blog.ts static slug function
+	$: slug = title.toLowerCase().trim().replace(/ /g, '-').replace(/[.\\/:*?"<>|]/g, '');
 
 	export let createdAt: string = 'now';
 	export let updatedAt: string = 'now';

@@ -25,10 +25,8 @@
 			body: JSON.stringify({ slug: slug, newContent: blogpost })
 		});
 
-		console.log(res.status);
-
 		if (res.status === 200) {
-			goto(`/blog/edit/${event.detail.slug}`);
+			if (slug !== event.detail.slug) goto(`/blog/edit/${event.detail.slug}`);
 		}
 	};
 </script>
