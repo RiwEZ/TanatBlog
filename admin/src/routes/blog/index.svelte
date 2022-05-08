@@ -10,7 +10,7 @@
 </script>
 
 <script lang="ts">
-	import Button, { Label, Icon } from '@smui/button';
+	import Button, { Label, Group, Icon } from '@smui/button';
 	import DataTable, { Head, Body, Row, Cell, SortValue } from '@smui/data-table';
 	import Dialog, { Title, Content, Actions } from '@smui/dialog';
 	import IconButton from '@smui/icon-button';
@@ -82,19 +82,21 @@
 					<Cell>{post.description}</Cell>
 					<Cell>{post.slug}</Cell>
 					<Cell>
-						<IconButton
-							class="material-icons"
-							size="button"
-							on:click={() => goto(`/blog/edit/${post.slug}`)}>edit</IconButton
-						>
-						<IconButton
-							class="material-icons"
-							size="button"
-							on:click={() => {
-								open = !open;
-								selectedSlug = post.slug;
-							}}>delete</IconButton
-						>
+						<Group>
+							<Button
+								variant="outlined"
+								class="material-icons"
+								on:click={() => goto(`/blog/edit/${post.slug}`)}>edit</Button
+							>
+							<Button
+								variant="outlined"
+								class="material-icons"
+								on:click={() => {
+									open = !open;
+									selectedSlug = post.slug;
+								}}>delete</Button
+							>
+						</Group>
 					</Cell>
 				</Row>
 			{/each}
