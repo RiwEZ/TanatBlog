@@ -12,7 +12,11 @@
 	export let content = '';
 	export let slug = '';
 	// from blog.ts static slug function
-	$: slug = title.toLowerCase().trim().replace(/ /g, '-').replace(/[.\\/:*?"<>|]/g, '');
+	$: slug = title
+		.toLowerCase()
+		.trim()
+		.replace(/ /g, '-')
+		.replace(/[.\\/:*?"<>|]/g, '');
 
 	export let createdAt: string = 'now';
 	export let updatedAt: string = 'now';
@@ -53,8 +57,12 @@
 
 	<Card padded variant="outlined">
 		<div class="flex space-x-4">
-			<h3>created: {createdAt !== 'now' ? new Date(createdAt).toLocaleDateString() : 'now'}</h3>
-			<h3>updated: {updatedAt !== 'now' ? new Date(updatedAt).toLocaleDateString() : 'now'}</h3>
+			<h3>
+				created: {createdAt !== 'now' ? new Date(createdAt).toLocaleDateString('en-gb') : 'now'}
+			</h3>
+			<h3>
+				updated: {updatedAt !== 'now' ? new Date(updatedAt).toLocaleDateString('en-gb') : 'now'}
+			</h3>
 		</div>
 
 		<div class="flex space-x-4">
