@@ -82,14 +82,12 @@
 					<Cell>{post.description}</Cell>
 					<Cell>{post.slug}</Cell>
 					<Cell>
-						<Group>
+						<Group variant='outlined'>
 							<Button
-								variant="outlined"
 								class="material-icons"
 								on:click={() => goto(`/blog/edit/${post.slug}`)}>edit</Button
 							>
 							<Button
-								variant="outlined"
 								class="material-icons"
 								on:click={() => {
 									open = !open;

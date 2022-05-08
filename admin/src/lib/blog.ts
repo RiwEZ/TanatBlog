@@ -20,7 +20,7 @@ export default class BlogManager {
 	path: string;
 
 	/**
-	 * Construct an BlogManger object with a path to directory to store all blogs.
+	 * Construct an BlogManager object with a path to directory to store all blogs.
 	 * @param path directory location
 	 */
 	constructor(path: string) {

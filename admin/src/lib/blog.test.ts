@@ -3,11 +3,11 @@ import BlogManager from './blog';
 import { readFileSync, existsSync, unlinkSync, writeFileSync } from 'fs';
 import yaml from 'js-yaml';
 
-const path = './tests/_data/blogs';
+const path = './tests/data/blogs';
 const bm = new BlogManager(path);
 
 test('Can access upper folder?', () => {
-	const bm = new BlogManager('../src/_data/blogs');
+	const bm = new BlogManager('../src/data/blogs');
 	const blogs = bm.getAll();
 	expect(blogs).toBeDefined();
 });
