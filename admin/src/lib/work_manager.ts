@@ -1,20 +1,22 @@
 import { load, dump } from 'js-yaml';
 import { readFileSync, writeFileSync } from 'fs';
+import type { JSONObject } from '@sveltejs/kit/types/private';
 
-export interface Links {
+export interface Links extends JSONObject {
 	href: string;
 	text: string;
 }
 
-export interface Work {
-	id: number;
+export interface WorkContent extends JSONObject {
 	title: string;
 	tags: string[];
 	links: Links[];
 	body: string;
-}
+};
 
-export type WorkContent = Omit<Work, 'id'>;
+export interface Work extends WorkContent {
+	id: number;
+}
 
 export default class WorkManager {
 	path: string;
@@ -73,7 +75,7 @@ export default class WorkManager {
 	add(work: WorkContent): void {
 		const newWork: Work = {
 			id: this.id,
-			...work
+			...work,
 		};
 		this.id++;
 		this.works.push(newWork);

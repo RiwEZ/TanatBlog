@@ -72,6 +72,7 @@
 				<Cell sortable={false}>TITLE</Cell>
 				<Cell sortable={false}>DESCRIPTION</Cell>
 				<Cell sortable={false}>SLUG</Cell>
+				<Cell sortable={false}></Cell>
 			</Row>
 		</Head>
 		<Body>
