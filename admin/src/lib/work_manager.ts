@@ -7,14 +7,19 @@ export interface Links {
 }
 
 export interface Work {
+	id: number;
 	title: string;
 	tags: string[];
 	links: Links[];
 	body: string;
 }
 
+export type WorkContent = Omit<Work, 'id'>;
+
 export default class WorkManager {
 	path: string;
+	works: Work[];
+	id: number;
 
 	/**
 	 * Construct an WorkManager object with a path to works.yaml to store all works.
@@ -22,13 +27,15 @@ export default class WorkManager {
 	 */
 	constructor(path: string) {
 		this.path = path;
+		this.works = [];
+		this.updateWorks();
+		this.id = this.works.length !== 0 ? this.works[this.works.length - 1].id + 1 : 0;
 	}
 
 	/**
-	 * Getting list of works from works.yaml path.
-	 * @returns list of works
+	 * Update this.works with works.yaml path content.
 	 */
-	getAll(): Work[] {
+	updateWorks(): void {
 		let works: Work[] = [];
 		works = load(readFileSync(this.path, 'utf-8')) as Work[];
 
@@ -40,16 +47,63 @@ export default class WorkManager {
 				item.body = item.body === null ? '' : item.body;
 			});
 		}
-		return works;
+		this.works = works;
 	}
+
+	/**
+	 * Write this.works to path.
+	 */
+	writeFile(): void {
+		writeFileSync(this.path, dump(this.works));
+	}
+
+	/**
+	 * Getting list of works from works.yaml path.
+	 * @returns list of works
+	 */
+	getAll(): Work[] {
+		return this.works;
+	}
+
 	/**
 	 * Add work to works list.
 	 * If work with the same data is already existed, just push the copy of it.
 	 * @param work data to add
 	 */
-	add(work: Work): void {
-		const works = this.getAll();
-		works.push(work);
-		writeFileSync(this.path, dump(works));
+	add(work: WorkContent): void {
+		const newWork: Work = {
+			id: this.id,
+			...work
+		};
+		this.id++;
+		this.works.push(newWork);
+		this.writeFile();
+	}
+
+	/**
+	 * Delete work with given id from works.yaml path.
+	 * @param id id of work that need to be delete.
+	 */
+	delete(id: number): void {
+		this.works = this.works.filter((val) => val.id !== id);
+		this.writeFile();
+	}
+
+	/**
+	 * Edit work with given id using newContent.
+	 * @param id id of work that need to be edit.
+	 * @param newContent new content to replace old content.
+	 * @returns false if work not found else true
+	 */
+	edit(id: number, newContent: WorkContent): boolean {
+		const idx = this.works.findIndex((val) => val.id === id);
+		if (idx === -1) return false;
+
+		this.works[idx] = {
+			id: this.works[idx].id,
+			...newContent
+		};
+		this.writeFile();
+		return true;
 	}
 }

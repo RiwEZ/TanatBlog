@@ -1,7 +1,7 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import BlogManager, { type BlogContent } from '$lib/blog';
 
-const bm = new BlogManager('../src/_data/blogs');
+const bm = new BlogManager('../src/data/blogs');
 
 export const post: RequestHandler = async ({ request }) => {
 	const data = (await request.json()) as BlogContent;
