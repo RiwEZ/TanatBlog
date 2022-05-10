@@ -2,7 +2,7 @@ import { load, dump } from 'js-yaml';
 import { readFileSync, writeFileSync } from 'fs';
 import type { JSONObject } from '@sveltejs/kit/types/private';
 
-export interface Links extends JSONObject {
+export interface Link extends JSONObject {
 	href: string;
 	text: string;
 }
@@ -10,7 +10,7 @@ export interface Links extends JSONObject {
 export interface WorkContent extends JSONObject {
 	title: string;
 	tags: string[];
-	links: Links[];
+	links: Link[];
 	body: string;
 };
 
