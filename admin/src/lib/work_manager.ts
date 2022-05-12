@@ -71,8 +71,9 @@ export default class WorkManager {
 	 * Add work to works list.
 	 * If work with the same data is already existed, just push the copy of it.
 	 * @param work data to add
+	 * @returns id of added work
 	 */
-	add(work: WorkContent): void {
+	add(work: WorkContent): number {
 		const newWork: Work = {
 			id: this.id,
 			...work,
@@ -80,6 +81,8 @@ export default class WorkManager {
 		this.id++;
 		this.works.push(newWork);
 		this.writeFile();
+
+		return this.id - 1;
 	}
 
 	/**

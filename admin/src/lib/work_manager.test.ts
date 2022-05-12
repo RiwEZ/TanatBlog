@@ -49,7 +49,7 @@ it('Can add new work?', () => {
 		body: 'ahhhhh'
 	};
 
-	wm.add(work);
+	expect(wm.add(work)).toBe(3);
 	const works = load(readFileSync(path, 'utf-8')) as Work[];
 	expect(works).toContainEqual({ id: 3, ...work });
 });
