@@ -19,6 +19,16 @@
 
 	let open = false;
 	let selectedId = -1;
+
+	const refetch = async () => {
+		const resp = await fetch('/api/works');
+		works = (await resp.json()) as Work[];
+	};
+
+	const delWork = async (id: number) => {
+		const resp = await fetch('/api/works', { method: 'DELETE', body: JSON.stringify(id) });
+		if (resp.status === 200) refetch();
+	};
 </script>
 
 <Dialog bind:open aria-labelledby="title" aria-describedby="content">
@@ -26,7 +36,7 @@
 	<Content>Are you sure you want to delete this work?</Content>
 	<Actions>
 		<Button>No</Button>
-		<Button>Yes</Button>
+		<Button on:click={() => delWork(selectedId)}>Yes</Button>
 	</Actions>
 </Dialog>
 

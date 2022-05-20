@@ -23,23 +23,22 @@
 	};
 
 	const removeTag = (tag: any) => {
-		tags.filter(val => val !== tag);
+		tags.filter((val) => val !== tag);
 		tags = tags;
-	}
+	};
 
 	const onKeyPress = (e: any) => {
 		if (e.charCode === 13) addTag();
 	};
 
-
 	const onAddLink = () => {
 		if (href === '' || text === '') return;
 
-		links.push({href, text});
+		links.push({ href, text });
 		links = links;
 		href = '';
 		text = '';
-	}
+	};
 
 	const is_empty = (list: (string | Array<any>)[]) => {
 		let result = false;
@@ -55,10 +54,10 @@
 	const dispatch = createEventDispatcher();
 	const onSave = async () => {
 		if (is_empty([title, tags, body])) {
-			alert('title, tags and body required!')
+			alert('title, tags and body required!');
 			return;
 		}
-		dispatch('save', {title, tags, links, body} as WorkContent);
+		dispatch('save', { title, tags, links, body } as WorkContent);
 	};
 </script>
 
@@ -81,7 +80,9 @@
 			<Set chips={tags} let:chip input>
 				<Chip class="h-10 self-center" {chip}>
 					<Text>{chip}</Text>
-					<TrailingAction icon$class="material-icons" on:click={() => removeTag(chip)}>cancel</TrailingAction>
+					<TrailingAction icon$class="material-icons" on:click={() => removeTag(chip)}
+						>cancel</TrailingAction
+					>
 				</Chip>
 			</Set>
 		</div>
@@ -89,7 +90,7 @@
 		<div class="mt-5 flex space-x-4">
 			<Textfield bind:value={href} label="href" variant="outlined" required />
 			<Textfield bind:value={text} label="text" variant="outlined" required />
-			<Button class="h-10 my-auto" on:click={onAddLink}>
+			<Button class="my-auto h-10" on:click={onAddLink}>
 				<Icon class="material-icons">add</Icon>
 				<Label>ADD</Label>
 			</Button>
@@ -98,7 +99,7 @@
 		<DataTable class="mt-5">
 			<Head>
 				<Row>
-					<Cell class='w-2/3'>href</Cell>
+					<Cell class="w-2/3">href</Cell>
 					<Cell>text</Cell>
 				</Row>
 			</Head>

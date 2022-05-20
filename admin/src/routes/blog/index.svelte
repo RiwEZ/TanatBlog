@@ -72,7 +72,7 @@
 				<Cell sortable={false}>TITLE</Cell>
 				<Cell sortable={false}>DESCRIPTION</Cell>
 				<Cell sortable={false}>SLUG</Cell>
-				<Cell sortable={false}></Cell>
+				<Cell sortable={false} />
 			</Row>
 		</Head>
 		<Body>
@@ -83,10 +83,9 @@
 					<Cell>{post.description}</Cell>
 					<Cell>{post.slug}</Cell>
 					<Cell>
-						<Group variant='outlined'>
-							<Button
-								class="material-icons"
-								on:click={() => goto(`/blog/edit/${post.slug}`)}>edit</Button
+						<Group variant="outlined">
+							<Button class="material-icons" on:click={() => goto(`/blog/edit/${post.slug}`)}
+								>edit</Button
 							>
 							<Button
 								class="material-icons"

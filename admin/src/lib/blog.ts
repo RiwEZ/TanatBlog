@@ -33,7 +33,11 @@ export default class BlogManager {
 	 * @returns slug of title by removing any trailing spaces and change space within to '-'
 	 */
 	static slug(title: string): string {
-		return title.toLowerCase().trim().replace(/ /g, '-').replace(/[.\\/:*?"<>|]/g, '');
+		return title
+			.toLowerCase()
+			.trim()
+			.replace(/ /g, '-')
+			.replace(/[.\\/:*?"<>|]/g, '');
 	}
 
 	/**

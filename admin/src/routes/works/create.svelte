@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 
 	import Workcard from '$lib/components/workcard.svelte';
-  import type { WorkContent } from '$lib/work_manager';
+	import type { WorkContent } from '$lib/work_manager';
 
 	const handleSave = async (event: any) => {
 		const work = event.detail as WorkContent;

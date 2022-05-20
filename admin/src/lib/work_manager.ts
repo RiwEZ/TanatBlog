@@ -12,7 +12,7 @@ export interface WorkContent extends JSONObject {
 	tags: string[];
 	links: Link[];
 	body: string;
-};
+}
 
 export interface Work extends WorkContent {
 	id: number;
@@ -76,7 +76,7 @@ export default class WorkManager {
 	add(work: WorkContent): number {
 		const newWork: Work = {
 			id: this.id,
-			...work,
+			...work
 		};
 		this.id++;
 		this.works.push(newWork);
