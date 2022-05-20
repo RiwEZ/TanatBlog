@@ -20,6 +20,8 @@
 
 	export let createdAt: string = 'now';
 	export let updatedAt: string = 'now';
+	$: createdAt = createdAt !== 'now' ? new Date(createdAt).toLocaleDateString('en-gb') : 'now';
+	$: updatedAt = updatedAt !== 'now' ? new Date(updatedAt).toLocaleDateString('en-gb') : 'now';
 
 	let preview = false;
 
@@ -56,16 +58,12 @@
 	</Button>
 
 	<Card padded variant="outlined">
-		<div class="flex space-x-4">
-			<h3>
-				created: {createdAt !== 'now' ? new Date(createdAt).toLocaleDateString('en-gb') : 'now'}
-			</h3>
-			<h3>
-				updated: {updatedAt !== 'now' ? new Date(updatedAt).toLocaleDateString('en-gb') : 'now'}
-			</h3>
+		<div class="mt-5 flex space-x-4">
+			<Textfield bind:value={createdAt} label="created" variant="outlined" disabled />
+			<Textfield bind:value={updatedAt} label="updated" variant="outlined" disabled />
 		</div>
 
-		<div class="flex space-x-4">
+		<div class="mt-5 flex space-x-4">
 			<Textfield class="w-1/2" bind:value={title} label="title" variant="outlined" required />
 			<Textfield
 				class="w-1/2"
@@ -106,10 +104,6 @@
 </div>
 
 <style lang="postcss">
-	h3 {
-		@apply m-0 mb-5 font-normal text-zinc-400;
-	}
-
 	#content :global(img) {
 		max-width: 100%;
 		max-height: 100%;

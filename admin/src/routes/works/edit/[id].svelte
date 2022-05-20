@@ -13,7 +13,7 @@
 <script lang="ts">
 	import Workcard from '$lib/components/workcard.svelte';
 	import Button from '@smui/button';
-	import Dialog, { Title, Content, Actions } from '@smui/dialog';
+	import Dialog, { Content, Actions } from '@smui/dialog';
 
 	export let work: Work;
 	export let id: number;

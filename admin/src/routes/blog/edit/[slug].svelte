@@ -13,10 +13,13 @@
 <script lang="ts">
 	import Blogcard from '$lib/components/blogcard.svelte';
 	import { goto } from '$app/navigation';
+	import Button from '@smui/button';
+	import Dialog, { Content, Actions } from '@smui/dialog';
 
 	export let post: Blog;
 
 	const slug = post.slug;
+	let open = false;
 
 	const handleSave = async (event: any) => {
 		const blogpost = event.detail.blogpost as BlogContent;
@@ -26,9 +29,17 @@
 		});
 
 		if (res.status === 200) {
+			open = true;
 			if (slug !== event.detail.slug) goto(`/blog/edit/${event.detail.slug}`);
 		}
 	};
 </script>
+
+<Dialog bind:open aria-labelledby="title" aria-describedby="content">
+	<Content>Saving success!!</Content>
+	<Actions>
+		<Button>Okay</Button>
+	</Actions>
+</Dialog>
 
 <Blogcard {...post} on:save={handleSave} />
