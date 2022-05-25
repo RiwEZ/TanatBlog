@@ -1,12 +1,12 @@
-<script context="module">
-  /** @type {import('@sveltejs/kit').ErrorLoad} */
-  export function load({ error, status }) {
+<script lang="ts" context="module">
+  import type { Load } from "@sveltejs/kit";
+  export const load: Load = ({ error, status }) => {
     return {
       props: {
-        title: `${status}: ${error.message}`,
+        title: `${status}: ${error !== null ? error.message : "unknown"}`,
       },
     };
-  }
+  };
 </script>
 
 <script lang="ts">

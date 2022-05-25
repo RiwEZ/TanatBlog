@@ -11,7 +11,7 @@
     { name: "Contact", href: base + "/contact" },
   ];
 
-  $: show_mobile_menu = $page.url.href && false;
+  $: if ($page.url.href) show_mobile_menu = false;
 
   const nav_click = () => {
     show_mobile_menu = !show_mobile_menu;

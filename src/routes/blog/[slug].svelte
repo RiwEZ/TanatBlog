@@ -41,7 +41,7 @@
         })}</b
       >
     </p>
-    <Content content={post.content} />
+    <Content content={post.htmlContent} />
   </div>
 
   <script

@@ -4,6 +4,7 @@ import { readFileSync } from "fs";
 import { load } from "js-yaml";
 
 export interface WorkCard extends JSONObject {
+  id: number;
   title: string;
   tags: string[];
   links: Record<string, string>[];

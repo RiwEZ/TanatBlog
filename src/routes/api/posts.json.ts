@@ -41,6 +41,7 @@ export interface Blog extends JSONObject {
   createdAt: string;
   updatedAt: string;
   content: string;
+  htmlContent: string;
   slug: string;
 }
 
