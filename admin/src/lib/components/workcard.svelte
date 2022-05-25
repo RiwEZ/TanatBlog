@@ -22,7 +22,7 @@
 		tags = tags; // update tags
 	};
 
-	const removeTag = (tag: any) => {
+	const removeTag = (tag: string) => {
 		tags.filter((val) => val !== tag);
 		tags = tags;
 	};

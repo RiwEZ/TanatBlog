@@ -18,8 +18,8 @@
 		.replace(/ /g, '-')
 		.replace(/[.\\/:*?"<>|]/g, '');
 
-	export let createdAt: string = 'now';
-	export let updatedAt: string = 'now';
+	export let createdAt = 'now';
+	export let updatedAt = 'now';
 	$: createdAt = createdAt !== 'now' ? new Date(createdAt).toLocaleDateString('en-gb') : 'now';
 	$: updatedAt = updatedAt !== 'now' ? new Date(updatedAt).toLocaleDateString('en-gb') : 'now';
 
