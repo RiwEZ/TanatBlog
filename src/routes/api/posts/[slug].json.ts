@@ -1,5 +1,5 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import type { Blog } from "$lib/type";
+import type { Blog } from "../posts.json";
 import { readFileSync } from "fs";
 import { load } from "js-yaml";
 

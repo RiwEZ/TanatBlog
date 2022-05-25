@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
-  import type { Blog } from "$lib/type";
+  import type { Blog } from "../api/posts.json";
   import { base } from "$app/paths";
 
   export const load: Load = async ({ params, fetch }) => {
@@ -34,7 +34,7 @@
     <p class="mt-1 text-zinc-400">
       {reading_time.minutes} minutes read • Last updated
       <b
-        >{new Date(post.updated_at).toLocaleDateString("en-gb", {
+        >{new Date(post.updatedAt).toLocaleDateString("en-gb", {
           year: "numeric",
           month: "long",
           day: "numeric",
