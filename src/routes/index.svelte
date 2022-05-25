@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
   import type { Load } from "@sveltejs/kit";
-  import type { Blog } from "$lib/type";
+  import type { Blog } from "./api/posts.json";
   import { base } from "$app/paths";
 
   export const load: Load = async ({ fetch }) => {
@@ -19,11 +19,11 @@
   let items = posts;
   let max_year =
     posts !== undefined && posts.length > 0
-      ? new Date(posts[0].created_at).getFullYear()
+      ? new Date(posts[0].createdAt).getFullYear()
       : 2100;
   let min_year =
     posts !== undefined && posts.length > 0
-      ? new Date(posts[posts.length - 1].created_at).getFullYear()
+      ? new Date(posts[posts.length - 1].createdAt).getFullYear()
       : 2000;
   let curr_year = new Date(Date.now()).getFullYear();
 
@@ -44,7 +44,7 @@
           <h3 class="text-2xl font-bold">{post.title}</h3>
           <p class="mt-2 text-zinc-400">
             <strong
-              >{new Date(post.updated_at).toLocaleDateString("en-gb", {
+              >{new Date(post.updatedAt).toLocaleDateString("en-gb", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
