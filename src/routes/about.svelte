@@ -7,7 +7,7 @@
   <p class="mt-6 text-xl font-light leading-relaxed text-gray-200">
     I'm currently a Computer Engineering undergraduate at Chiang Mai University. <br
     />
-    I'm interested in machine learning, quantum computer, biomedical computing. and
+    I'm interested in machine learning, quantum computer, biomedical computing, and
     some web develeopment.
   </p>
   <div class="mt-3 flex space-x-4 text-lg font-bold text-blue-400 underline">
