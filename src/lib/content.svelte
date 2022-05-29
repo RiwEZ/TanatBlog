@@ -125,6 +125,7 @@
   article :global(li) {
     color: #e2e8f0;
     font-size: 1rem;
+    line-height: 1.5rem;
   }
 
   article :global(strong) {

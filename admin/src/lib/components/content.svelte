@@ -60,8 +60,6 @@
 	article :global(code:not(pre > code)) {
 		color: #d54e53;
 		background-color: #000;
-		padding-bottom: 0.25rem;
-		padding-top: 0.25rem;
 	}
 
 	article :global(blockquote) {
@@ -125,8 +123,13 @@
 
 	article :global(p),
 	article :global(li) {
-		color: #e4e4e7;
+		color: #e2e8f0;
 		font-size: 1rem;
+		line-height: 1.5rem;
+	}
+
+	article :global(strong) {
+		color: white;
 	}
 
 	article :global(ul) {
