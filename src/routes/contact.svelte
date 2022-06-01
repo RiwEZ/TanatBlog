@@ -5,19 +5,15 @@
   let email_isright = true;
 
   const is_empty = (str: string) => {
-    return str === undefined || str === "";
+    return str === undefined || str === '';
   };
 
   $: {
     if (is_empty(email)) email_isright = true;
-    else
-      email_isright = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
-        email
-      );
+    else email_isright = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
   }
 
-  $: validation =
-    email_isright && !is_empty(email) && !is_empty(name) && !is_empty(msg);
+  $: validation = email_isright && !is_empty(email) && !is_empty(name) && !is_empty(msg);
 </script>
 
 <svelte:head>
@@ -27,23 +23,12 @@
 <div class="mt-10 grid">
   <h1>Contact Me</h1>
   <p class="mt-6 text-xl font-light text-gray-200">
-    Feel free to contact me, if you have any questions or just want to talk with
-    me.
+    Feel free to contact me, if you have any questions or just want to talk with me.
   </p>
-  <form
-    action="https://formsubmit.co/2510e354dc310f83e4e350b8cd6f8b89"
-    method="post"
-    class="mt-3"
-  >
+  <form action="https://formsubmit.co/2510e354dc310f83e4e350b8cd6f8b89" method="post" class="mt-3">
     <input type="hidden" name="_subject" value="Blog Email" />
     <label for="name">Name</label><br />
-    <input
-      bind:value={name}
-      name="name"
-      type="text"
-      placeholder="Monkey D. Luffy"
-      required
-    /><br />
+    <input bind:value={name} name="name" type="text" placeholder="Monkey D. Luffy" required /><br />
     <label for="email">Email</label><br />
     <input
       bind:value={email}

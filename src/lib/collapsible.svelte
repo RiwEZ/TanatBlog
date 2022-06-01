@@ -3,11 +3,7 @@
 </script>
 
 <div class="card">
-  <div
-    class="card-header"
-    aria-expanded={expand}
-    on:click={() => (expand = !expand)}
-  >
+  <div class="card-header" aria-expanded={expand} on:click={() => (expand = !expand)}>
     <slot name="header" />
   </div>
   <div class="card-body" class:shown={expand}>

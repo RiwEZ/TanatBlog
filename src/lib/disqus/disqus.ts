@@ -1,9 +1,5 @@
-export const insert_script = (
-  src: string,
-  id: string,
-  parentElem: HTMLElement
-) => {
-  const script = window.document.createElement("script");
+export const insert_script = (src: string, id: string, parentElem: HTMLElement) => {
+  const script = window.document.createElement('script');
   script.async = true;
   script.src = src;
   script.id = id;

@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
-  import type { Load } from "@sveltejs/kit";
-  import type { Blog } from "../api/posts.json";
-  import { base } from "$app/paths";
+  import type { Load } from '@sveltejs/kit';
+  import type { Blog } from '../api/posts.json';
+  import { base } from '$app/paths';
 
   export const load: Load = async ({ params, fetch }) => {
     const { slug } = params;
@@ -15,8 +15,8 @@
 </script>
 
 <script lang="ts">
-  import Content from "$lib/content.svelte";
-  import rt from "reading-time";
+  import Content from '$lib/content.svelte';
+  import rt from 'reading-time';
 
   export let post: Blog;
 
@@ -34,10 +34,10 @@
     <p class="mt-1 text-zinc-400">
       {reading_time.minutes} minutes read • Last updated
       <b
-        >{new Date(post.updatedAt).toLocaleDateString("en-gb", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
+        >{new Date(post.updatedAt).toLocaleDateString('en-gb', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
         })}</b
       >
     </p>

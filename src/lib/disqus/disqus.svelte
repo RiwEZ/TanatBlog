@@ -1,14 +1,10 @@
 <script lang="ts" context="module">
   // https://github.com/disqus/disqus-react
-  import { onDestroy, onMount } from "svelte/internal";
-  import {
-    insert_script,
-    remove_resources,
-    remove_script,
-  } from "$lib/disqus/disqus";
+  import { onDestroy, onMount } from 'svelte/internal';
+  import { insert_script, remove_resources, remove_script } from '$lib/disqus/disqus';
 
-  const SCRIPT_ID = "dsq-embeded-src";
-  const THREAD_ID = "disqus_thread";
+  const SCRIPT_ID = 'dsq-embeded-src';
+  const THREAD_ID = 'disqus_thread';
 
   declare global {
     interface Window {
@@ -27,7 +23,7 @@
 
   onMount(() => {
     if (
-      typeof window !== "undefined" &&
+      typeof window !== 'undefined' &&
       window.disqus_shortname &&
       window.disqus_shortname !== shortname
     )
@@ -45,7 +41,7 @@
   */
 
   onDestroy(() => {
-    if (typeof window !== "undefined") clean_instance();
+    if (typeof window !== 'undefined') clean_instance();
   });
 
   const dq_config = () =>
@@ -59,16 +55,12 @@
     if (window && window.DISQUS && doc.getElementById(SCRIPT_ID)) {
       window.DISQUS.reset({
         reload: true,
-        config: dq_config(),
+        config: dq_config()
       });
     } else {
       window.disqus_config = dq_config();
       window.disqus_shortname = shortname;
-      insert_script(
-        `https://${shortname}.disqus.com/embed.js`,
-        SCRIPT_ID,
-        doc.body
-      );
+      insert_script(`https://${shortname}.disqus.com/embed.js`, SCRIPT_ID, doc.body);
     }
   };
 

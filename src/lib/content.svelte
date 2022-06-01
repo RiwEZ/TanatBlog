@@ -1,6 +1,6 @@
 <script lang="ts">
-  import "highlight.js/styles/tomorrow-night-bright.css";
-  import "katex/dist/katex.min.css";
+  import 'highlight.js/styles/tomorrow-night-bright.css';
+  import 'katex/dist/katex.min.css';
   export let content: string;
 </script>
 

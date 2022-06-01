@@ -1,7 +1,7 @@
 <script lang="ts">
   // https://github.com/TahaSh/svelte-paginate
-  import { createEventDispatcher } from "svelte/internal";
-  import { gen_options } from "./paginate";
+  import { createEventDispatcher } from 'svelte/internal';
+  import { gen_options } from './paginate';
 
   export let min_year: number;
   export let max_year: number;
@@ -13,7 +13,7 @@
 
   const dispatch = createEventDispatcher();
   const option_clicked = () => {
-    dispatch("setPage", { year: curr_year });
+    dispatch('setPage', { year: curr_year });
   };
 </script>
 

@@ -1,7 +1,7 @@
-import type { RequestHandler } from "@sveltejs/kit";
-import { readdirSync, readFileSync } from "fs";
-import { load } from "js-yaml";
-import type { JSONObject } from "@sveltejs/kit/types/private";
+import type { RequestHandler } from '@sveltejs/kit';
+import { readdirSync, readFileSync } from 'fs';
+import { load } from 'js-yaml';
+import type { JSONObject } from '@sveltejs/kit/types/private';
 
 /*
 import type { JSONObject } from "@sveltejs/kit/types/internal";
@@ -45,21 +45,19 @@ export interface Blog extends JSONObject {
   slug: string;
 }
 
-export const PATH = "./src/data/blogs";
+export const PATH = './src/data/blogs';
 
 export const get: RequestHandler = async () => {
   const data: Blog[] = [];
   const blogs = readdirSync(PATH);
 
   for (const blog of blogs) {
-    const doc = load(readFileSync(`${PATH}/${blog}`, "utf-8")) as Blog;
+    const doc = load(readFileSync(`${PATH}/${blog}`, 'utf-8')) as Blog;
     data.push(doc);
   }
 
   // sort by created_date from recent to old
-  data.sort((a, b) =>
-    a.createdAt > b.createdAt ? -1 : a.createdAt < b.createdAt ? 1 : 0
-  );
+  data.sort((a, b) => (a.createdAt > b.createdAt ? -1 : a.createdAt < b.createdAt ? 1 : 0));
 
   return { body: data };
 };

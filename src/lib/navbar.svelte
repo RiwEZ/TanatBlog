@@ -1,14 +1,14 @@
 <script lang="ts">
   // https://bholmes.dev/blog/building-a-sexy-mobile-ready-navbar-in-any-web-framework/
-  import { base } from "$app/paths";
-  import { page } from "$app/stores";
+  import { base } from '$app/paths';
+  import { page } from '$app/stores';
 
   let show_mobile_menu = false;
 
   const nav_items = [
-    { name: "Works", href: base + "/works" },
-    { name: "About", href: base + "/about" },
-    { name: "Contact", href: base + "/contact" },
+    { name: 'Works', href: base + '/works' },
+    { name: 'About', href: base + '/about' },
+    { name: 'Contact', href: base + '/contact' }
   ];
 
   $: if ($page.url.href) show_mobile_menu = false;
@@ -18,15 +18,10 @@
   };
 </script>
 
-<nav
-  class="flex justify-between font-sans"
-  class:dropdown-opened={show_mobile_menu}
->
+<nav class="flex justify-between font-sans" class:dropdown-opened={show_mobile_menu}>
   <a href="{base}/" class="logo text3d text-5xl font-bold">TANAT</a>
 
-  <div
-    class="dropdown-link-container flex text-center text-xl font-light md:mt-4 md:space-x-4"
-  >
+  <div class="dropdown-link-container flex text-center text-xl font-light md:mt-4 md:space-x-4">
     {#each nav_items as item}
       <a href={item.href} class:active={item.href === $page.url.pathname}>
         {item.name}
@@ -42,41 +37,16 @@
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <line
-        x1="1"
-        y1="1"
-        x2="79"
-        y2="1"
-        stroke="white"
-        stroke-width="3"
-        stroke-linecap="round"
-      />
-      <line
-        x1="1"
-        y1="41"
-        x2="79"
-        y2="41"
-        stroke="white"
-        stroke-width="3"
-        stroke-linecap="round"
-      />
-      <line
-        x1="1"
-        y1="21"
-        x2="79"
-        y2="21"
-        stroke="white"
-        stroke-width="3"
-        stroke-linecap="round"
-      />
+      <line x1="1" y1="1" x2="79" y2="1" stroke="white" stroke-width="3" stroke-linecap="round" />
+      <line x1="1" y1="41" x2="79" y2="41" stroke="white" stroke-width="3" stroke-linecap="round" />
+      <line x1="1" y1="21" x2="79" y2="21" stroke="white" stroke-width="3" stroke-linecap="round" />
     </svg>
   </div>
 </nav>
 
 <style>
   .text3d {
-    text-shadow: 0.01em 0.03em #4ade80, 0.03em 0.05em #2dd4bf,
-      0.05em 0.07em #38bdf8;
+    text-shadow: 0.01em 0.03em #4ade80, 0.03em 0.05em #2dd4bf, 0.05em 0.07em #38bdf8;
   }
 
   .bars {

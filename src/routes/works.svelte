@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
-  import type { Load } from "@sveltejs/kit";
-  import type { WorkCard } from "./api/works.json";
-  import { base } from "$app/paths";
+  import type { Load } from '@sveltejs/kit';
+  import type { WorkCard } from './api/works.json';
+  import { base } from '$app/paths';
 
   export const load: Load = async ({ fetch }) => {
     const res = await fetch(`${base}/api/works.json`);
@@ -13,7 +13,7 @@
 </script>
 
 <script lang="ts">
-  import Collapsible from "$lib/collapsible.svelte";
+  import Collapsible from '$lib/collapsible.svelte';
 
   export let works: WorkCard[];
 </script>
@@ -27,10 +27,7 @@
   <div class="mt-6 flex flex-col space-y-4">
     {#each works as work}
       <Collapsible>
-        <div
-          slot="header"
-          class="flex justify-between rounded-md bg-black p-4 active:rounded-t-md"
-        >
+        <div slot="header" class="flex justify-between rounded-md bg-black p-4 active:rounded-t-md">
           <div>
             <h1 class="text-xl">
               {work.title}
@@ -74,11 +71,8 @@
             />
           </svg>
         </div>
-        <div
-          slot="body"
-          class="rounded-b-md bg-black p-4 pt-0 text-lg font-light"
-        >
-          {#if typeof work.links !== "undefined"}
+        <div slot="body" class="rounded-b-md bg-black p-4 pt-0 text-lg font-light">
+          {#if typeof work.links !== 'undefined'}
             <div class="mb-2 flex space-x-2">
               {#each work.links as link}
                 <a
