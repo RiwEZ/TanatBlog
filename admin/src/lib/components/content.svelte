@@ -49,9 +49,6 @@
     margin-bottom: 0.6em;
     margin-top: 0.6em;
     overflow-x: scroll;
-    font-size: 1rem;
-    tab-size: 4;
-    -moz-tab-size: 4;
   }
 
   @media (min-width: 640px) {
@@ -70,8 +67,13 @@
     padding-bottom: 0.25rem;
     padding-top: 0.25rem;
     padding-left: 1rem;
+    padding-right: 1em;
     page-break-inside: avoid;
     background-color: #27272a;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 1em;
+    margin-right: 1.5em;
   }
 
   article :global(a),
