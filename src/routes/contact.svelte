@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
+  import { base } from '$app/paths';
+
   let email: string;
   let name: string;
   let msg: string;
@@ -14,6 +17,25 @@
   }
 
   $: validation = email_isright && !is_empty(email) && !is_empty(name) && !is_empty(msg);
+
+  const sendMsg = async () => {
+    const resp = await fetch('https://formsubmit.co/ajax/tanat1b@gmail.com', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify({
+        name,
+        message: msg
+      })
+    });
+
+    const data = await resp.json();
+    if (data.success) {
+      goto(`${base}/thanks`);
+    }
+  };
 </script>
 
 <svelte:head>
@@ -25,7 +47,7 @@
   <p class="mt-6 text-xl font-light text-gray-200">
     Feel free to contact me, if you have any questions or just want to talk with me.
   </p>
-  <form action="https://formsubmit.co/2510e354dc310f83e4e350b8cd6f8b89" method="post" class="mt-3">
+  <div class="mt-3">
     <input type="hidden" name="_subject" value="Blog Email" />
     <label for="name">Name</label><br />
     <input bind:value={name} name="name" type="text" placeholder="Monkey D. Luffy" required /><br />
@@ -49,13 +71,13 @@
       required
     /><br />
     <button
-      type="submit"
       disabled={!validation}
       class="mt-4 w-full rounded-md p-2 outline outline-gray-500 hover:bg-black sm:w-1/6"
+      on:click={sendMsg}
     >
       Send
     </button>
-  </form>
+  </div>
 </div>
 
 <style lang="postcss">
