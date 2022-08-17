@@ -93,7 +93,7 @@
   article :global(h2),
   article :global(h3),
   article :global(h4) {
-    margin: 1.414rem 0 0.5rem;
+    margin: 1.2em 0 0.5rem;
     font-weight: bold;
     line-height: 1.42;
   }
