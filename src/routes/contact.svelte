@@ -111,7 +111,8 @@
 
   input,
   textarea {
-    @apply w-full border-t-0 border-r-0 border-l-0 border-gray-500 bg-zinc-900;
+    @apply w-full border-t-0 border-r-0 border-l-0 border-gray-500;
+    background-color: #151719;
     border-bottom-width: 1.5px;
     resize: none;
     color-scheme: dark;
