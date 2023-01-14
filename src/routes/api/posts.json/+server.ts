@@ -1,7 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { readdirSync, readFileSync } from 'fs';
 import { load } from 'js-yaml';
-import type { JSONObject } from '@sveltejs/kit/types/private';
 
 /*
 import type { JSONObject } from "@sveltejs/kit/types/internal";
@@ -35,7 +34,7 @@ for (let i = 0; i < 100; i++) {
 data.reverse();
 */
 
-export interface Blog extends JSONObject {
+export interface Blog {
   title: string;
   description: string;
   createdAt: string;
@@ -45,9 +44,9 @@ export interface Blog extends JSONObject {
   slug: string;
 }
 
-export const PATH = './src/data/blogs';
+const PATH = './src/data/blogs';
 
-export const get: RequestHandler = async () => {
+export const GET: RequestHandler = async () => {
   const data: Blog[] = [];
   const blogs = readdirSync(PATH);
 
@@ -59,5 +58,5 @@ export const get: RequestHandler = async () => {
   // sort by created_date from recent to old
   data.sort((a, b) => (a.createdAt > b.createdAt ? -1 : a.createdAt < b.createdAt ? 1 : 0));
 
-  return { body: data };
+  return new Response(JSON.stringify(data));
 };

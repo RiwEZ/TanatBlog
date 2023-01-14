@@ -1,32 +1,22 @@
-<script lang="ts" context="module">
-  import type { Load } from '@sveltejs/kit';
-  import type { Blog } from './api/posts.json';
-  import { base } from '$app/paths';
-
-  export const load: Load = async ({ fetch }) => {
-    const res = await fetch(`${base}/api/posts.json`);
-    const res_data = (await res.json()) as Blog[];
-    return { props: { posts: res_data } };
-  };
-</script>
-
 <script lang="ts">
   import YearPaginate from '$lib/pagination/year_paginate.svelte';
   import { paginate } from '$lib/pagination/paginate';
+  import { base } from '$app/paths';
+  import type { PageData } from './$types';
 
-  export let posts: Blog[];
+  export let data: PageData;
+  let { posts } = data;
 
-  let items = posts;
   let max_year =
     posts !== undefined && posts.length > 0 ? new Date(posts[0].createdAt).getFullYear() : 2100;
   let min_year =
     posts !== undefined && posts.length > 0
       ? new Date(posts[posts.length - 1].createdAt).getFullYear()
       : 2000;
-  let curr_year = new Date(Date.now()).getFullYear();
+  let curr_year = max_year;
 
-  let paginated_posts = paginate(items, curr_year);
-  $: paginated_posts = paginate(items, curr_year);
+  let paginated_posts = paginate(posts, curr_year);
+  $: paginated_posts = paginate(posts, curr_year);
 </script>
 
 <svelte:head>

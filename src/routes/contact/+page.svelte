@@ -64,7 +64,6 @@
     <textarea
       bind:value={msg}
       name="message"
-      type="text"
       class="h-32"
       placeholder="What do you want to tell me?"
       autocomplete="off"
