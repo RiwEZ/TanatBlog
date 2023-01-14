@@ -23,7 +23,7 @@
     posts !== undefined && posts.length > 0
       ? new Date(posts[posts.length - 1].createdAt).getFullYear()
       : 2000;
-  let curr_year = new Date(Date.now()).getFullYear();
+  let curr_year = max_year;
 
   let paginated_posts = paginate(items, curr_year);
   $: paginated_posts = paginate(items, curr_year);
