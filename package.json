@@ -2,10 +2,10 @@
   "name": "client",
   "version": "0.0.1",
   "scripts": {
-    "dev": "svelte-kit dev",
-    "build": "svelte-kit build --verbose",
+    "dev": "vite dev",
+    "build": "vite build",
     "package": "svelte-kit package",
-    "preview": "svelte-kit preview",
+    "preview": "vite preview",
     "prepare": "svelte-kit sync",
     "deploy": "npm run build && gh-pages -d build -t true",
     "check": "svelte-check --tsconfig ./tsconfig.json",
@@ -14,7 +14,7 @@
     "format": "prettier --write --plugin-search-dir=. ."
   },
   "devDependencies": {
-    "@sveltejs/adapter-static": "^1.0.0-next.29",
+    "@sveltejs/adapter-static": "next",
     "@sveltejs/kit": "next",
     "@tailwindcss/forms": "^0.5.0",
     "@types/highlightjs": "^9.12.2",
