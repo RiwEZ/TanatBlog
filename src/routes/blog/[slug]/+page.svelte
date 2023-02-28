@@ -18,7 +18,7 @@
   <div class="mb-10 sm:max-w-3xl 3xl:max-w-7xl">
     <h1 class="text-4xl font-bold leading-tight">{post.title}</h1>
     <p class="mt-1 text-zinc-400">
-      <!-- {reading_time.minutes} minutes read • Last updated -->
+      {reading_time.minutes} minutes read • Last updated
       <b
         >{new Date(post.updatedAt).toLocaleDateString('en-gb', {
           year: 'numeric',

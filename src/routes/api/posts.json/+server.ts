@@ -34,6 +34,8 @@ for (let i = 0; i < 100; i++) {
 data.reverse();
 */
 
+export const prerender = true
+
 export interface Blog {
   title: string;
   description: string;
