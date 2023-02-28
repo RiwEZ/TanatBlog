@@ -2,6 +2,8 @@ import type { RequestHandler } from '@sveltejs/kit';
 import { readFileSync } from 'fs';
 import { load } from 'js-yaml';
 
+export const prerender = true;
+
 export interface WorkCard {
   id: number;
   title: string;
