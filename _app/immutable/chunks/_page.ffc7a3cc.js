@@ -1,0 +1,1 @@
+import{b as e}from"./paths.2bb310c9.js";const r=async({params:t,fetch:s})=>{const{slug:a}=t,o=`${e}/api/posts/${a}.json`;return{post:(await(await s(o)).json()).data}},p=Object.freeze(Object.defineProperty({__proto__:null,load:r},Symbol.toStringTag,{value:"Module"}));export{p as _,r as l};
