@@ -30,3 +30,33 @@
     simulation which there's a need to do 
 
     image processing, robot movement error handling, and robot route planning.
+- id: 3
+  title: Backend Intern @ Amity
+  tags:
+    - Backend
+    - Database
+    - JS/TS
+  links:
+    - href: >-
+        https://riwez.github.io/TanatBlog/blog/my-experiences-as-an-backend-intern-@-amity/
+      text: Blog
+  body: >-
+    My role involves maintaining the current system and developing a new feature
+    using MoleculerJS, AWS Lambda, MongoDB, and other relevant technologies.
+- id: 4
+  title: Basic Machine Learning On Rust
+  tags:
+    - Rust
+    - AI
+  links:
+    - href: https://github.com/RiwEZ/MLPOnRust
+      text: MLP Repo
+    - href: https://github.com/RiwEZ/FuzzyLogicOnRust
+      text: Fuzzy Set Repo
+  body: >-
+    Created a basic MLP to use with basic classification and regression problems
+    and trained it using backpropagation, genetic algorithm, and swarm
+    optimization. And did a basic 
+
+    implementation of fuzzy logic to experiment with using fuzzy logic for
+    trading securities.
