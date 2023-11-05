@@ -199,7 +199,8 @@ content: >-
   of solutions.
 
   - Design a system that will work with the smallest cost (both money and time)
-  as possible.
+  as possible. Also, try to measure the load that the system is expected to take
+  what could went wrong when designing a system for an unknown load 🤷‍♂️.
 
   - Surprising thing: you don't need to have a computer science/engineer
   background to work as a QA or Engineer.
@@ -426,7 +427,9 @@ htmlContent: >
   variety of solutions.</li>
 
   <li>Design a system that will work with the smallest cost (both money and
-  time) as possible.</li>
+  time) as possible. Also, try to measure the load that the system is expected
+  to take what could went wrong when designing a system for an unknown load
+  🤷‍♂️.</li>
 
   <li>Surprising thing: you don't need to have a computer science/engineer
   background to work as a QA or Engineer.</li>
@@ -438,4 +441,4 @@ htmlContent: >
   </ul>
 slug: my-experiences-as-an-backend-intern-@-amity
 createdAt: '2023-11-04T15:18:07.118Z'
-updatedAt: '2023-11-04T15:24:37.716Z'
+updatedAt: '2023-11-05T18:02:13.301Z'
