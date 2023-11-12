@@ -16,7 +16,7 @@ const config = {
         '/blog/[slug]', 
         '/api/posts/changing-from-strapi-to-my-owm-cms.json', 
         '/api/posts/how-i-use-strapi-as-cms-for-this-blog.json',
-        '/api/posts/my-experiences-as-an-backend-intern-@-amity.json']
+        '/api/posts/my-experiences-as-an-backend-intern-at-amity.json']
     },
     paths: {
       base: process.env.NODE_ENV === 'development' ? '' : '/TanatBlog'
