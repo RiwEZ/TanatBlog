@@ -1,1 +1,0 @@
-import{b as t}from"./paths.b82e3ada.js";const o=async({fetch:a})=>({works:await(await a(`${t}/api/works.json`)).json()}),c=Object.freeze(Object.defineProperty({__proto__:null,load:o},Symbol.toStringTag,{value:"Module"}));export{c as _,o as l};
