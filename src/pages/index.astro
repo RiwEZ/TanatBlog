@@ -1,17 +1,17 @@
 ---
-import { getCollection } from "astro:content"
+import { getCollection } from "astro:content";
 
-const posts = (await getCollection('blog'))
+const posts = await getCollection("blog");
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Tanat Blog</title>
-	</head>
-	<body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Tanat Blog</title>
+  </head>
+  <body>
     <div>
       Hello World
       <ul>
@@ -23,8 +23,8 @@ const posts = (await getCollection('blog'))
               </a>
             </li>
           ))
-				}
+        }
       </ul>
     </div>
-	</body>
+  </body>
 </html>

@@ -1,7 +1,7 @@
 ---
-import { type CollectionEntry } from 'astro:content'
+import { type CollectionEntry } from "astro:content";
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<"blog">["data"];
 
 const { title, description } = Astro.props;
 ---
@@ -14,19 +14,23 @@ const { title, description } = Astro.props;
     <meta charset="utf-8" />
 
     <style>
+      @import url("https://rsms.me/inter/inter.css");
       html,
       body {
         background-color: #151719;
         min-height: 100%;
       }
       body {
+        font-family: "Inter", sans-serif;
         overflow-y: scroll;
       }
     </style>
   </head>
   <body>
-    <div class="mx-auto mt-6 p-4 text-zinc-50 sm:max-w-3xl lg:p-2 3xl:max-w-7xl">
-      <slot/>
+    <div
+      class="mx-auto mt-6 p-4 text-zinc-50 sm:max-w-3xl lg:p-2 3xl:max-w-7xl"
+    >
+      <slot />
     </div>
   </body>
 </html>

@@ -98,7 +98,7 @@ In our backend, we should be able to add, edit, delete and get from our database
 <br>
 
 An example of my test cases.
-``` ts
+```ts
 // admin/src/lib/blog.test.ts
 const path = './tests/data/blogs';
 const bm = new BlogManager(path);
@@ -221,7 +221,7 @@ First, `__layout.svelte` is a simple svelte component with a few SMUI components
 <br>
 
 Next, `index.svelte` will contain [SMUI Data Table](https://sveltematerialui.com/demo/data-table/) with data from our API by using [SvelteKit Loading](https://kit.svelte.dev/docs/loading) by below code (blog route example).
-```ts
+```svelte
 <script lang="ts" context="module">
 	import type { Load } from '@sveltejs/kit';
 	import type { Blog } from '$lib/blog';
@@ -237,7 +237,7 @@ Last, let's look at how I implement `create.svelte` and `edit/[slug].svelte` of 
 <br>
 
 So in `create.svelte`, we will have an empty `Blogcard` that we need to fill the forms and we can save those data by fetching our API (below code).
-``` ts
+```svelte
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import type { BlogContent } from '$lib/blog';
@@ -281,7 +281,7 @@ Now we can use dynamic parameters to fetch our blog content that we want to edit
 <br>
 
 _Above paragraph in code._
-```ts
+```svelte
 <script lang="ts" context="module">
 	import type { Load } from '@sveltejs/kit';
 	import type { Blog, BlogContent } from '$lib/blog';
@@ -293,7 +293,7 @@ _Above paragraph in code._
 	};
 </script>
 
-<script lang=\"ts\">
+<script lang="ts">
 	export let post: Blog;
 </script>
 
