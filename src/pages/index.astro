@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content";
+import MainLayout from "../layouts/MainLayout.astro";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.updatedAt.valueOf() - a.data.updatedAt.valueOf(),
+);
+---
+
+<MainLayout title="Home | Tanat" description="The main page">
+  <div class="mt-5 container">
+    {
+      posts.map((post) => (
+        <a href={`/blog/${post.slug}/`}>
+          <div class="cursor-pointer border-b border-gray-500 py-4">
+            <h3 class="text-2xl font-bold">{post.data.title}</h3>
+            <p class="mt-2 text-zinc-400">
+              <strong>
+                {post.data.updatedAt.toLocaleDateString("en-gb", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </strong>
+              • {post.data.description}
+            </p>
+          </div>
+        </a>
+      ))
+    }
+  </div>
+</MainLayout>

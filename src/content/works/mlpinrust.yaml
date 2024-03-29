@@ -1,0 +1,17 @@
+year: 2022
+title: Basic Machine Learning On Rust
+tags:
+  - Rust
+  - AI
+links:
+  - href: https://github.com/RiwEZ/MLPOnRust
+    text: MLP Repo
+  - href: https://github.com/RiwEZ/FuzzyLogicOnRust
+    text: Fuzzy Set Repo
+body: >-
+  Created a basic MLP to use with basic classification and regression problems
+  and trained it using backpropagation, genetic algorithm, and swarm
+  optimization. And did a basic 
+
+  implementation of fuzzy logic to experiment with using fuzzy logic for
+  trading securities.

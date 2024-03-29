@@ -1,0 +1,42 @@
+<script>
+  const cardHeaders = document.querySelectorAll("div.card-header");
+
+  cardHeaders.forEach((cardHeader) => {
+    const cardBody = cardHeader.nextElementSibling;
+    cardHeader.addEventListener("click", () => {
+      if (cardHeader.getAttribute("aria-expanded") !== "") {
+        cardHeader.setAttribute("aria-expanded", "");
+        cardBody?.classList.add("shown");
+      } else {
+        cardHeader.removeAttribute("aria-expanded");
+        cardBody?.classList.remove("shown");
+      }
+    });
+  });
+</script>
+
+<div class="card">
+  <div class="card-header">
+    <slot name="header" />
+  </div>
+  <div class="card-body notshown">
+    <slot name="body" />
+  </div>
+</div>
+
+<style>
+  .card-header {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .card-body {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.2s ease-out;
+  }
+
+  .shown {
+    max-height: min(200px, 100vh); /* need to set this responsively */
+  }
+</style>
