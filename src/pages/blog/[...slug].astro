@@ -1,6 +1,6 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
-import BlogPost from "../../layouts/BlogPost.astro";
+import MainLayout from "../../layouts/MainLayout.astro";
 import BlogContent from "../../components/BlogContent.astro";
 import readingTime from "reading-time";
 
@@ -16,12 +16,12 @@ type Props = CollectionEntry<"blog">;
 const post = Astro.props;
 ---
 
-<BlogPost {...post.data}>
+<MainLayout title={post.data.title} description={post.data.description}>
   <div class="mt-10">
     <div class="mb-10 sm:max-w-3xl 3xl:max-w-7xl">
       <h1 class="text-4xl font-bold leading-tight">{post.data.title}</h1>
       <p class="mt-1 text-zinc-400">
-        {readingTime(post.body).minutes} miutes read • Last updated
+        {Math.ceil(readingTime(post.body).minutes)} miutes read • Last updated
         <b
           >{
             post.data.updatedAt.toLocaleDateString("en-gb", {
@@ -34,5 +34,15 @@ const post = Astro.props;
       </p>
       <BlogContent body={post.body} />
     </div>
+
+    <script
+      src="https://utteranc.es/client.js"
+      repo="RiwEZ/TanatBlog"
+      issue-term="title"
+      label="Comment"
+      theme="icy-dark"
+      crossorigin="anonymous"
+      async
+    ></script>
   </div>
-</BlogPost>
+</MainLayout>

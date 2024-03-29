@@ -1,0 +1,16 @@
+year: 2022
+title: 3rd place team on Kibo RPC 2022 (Lynx)
+tags:
+  - Space
+  - Java
+  - Robot
+links:
+  - href: https://www.nstda.or.th/spaceeducation/3rd-kibo-rpc-score/
+    text: Score Result
+  - href: https://github.com/PutawanDE/3rd_kibo_lynx
+    text: Code
+body: >-
+  Write a java program to make Astrobee robot do designated tasks on ISS
+  simulation which there's a need to do 
+
+  image processing, robot movement error handling, and robot route planning.
