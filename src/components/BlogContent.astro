@@ -1,8 +1,12 @@
 ---
+// @ts-expect-error no types for this dependencies
 import MarkdownIt from "markdown-it";
+// @ts-expect-error no types for this dependencies
 import texmath from "markdown-it-texmath";
+// @ts-expect-error no types for this dependencies
 import katex from "katex";
 import hljs from "highlight.js";
+// @ts-expect-error no types for this dependencies
 import hljs_svelte from "highlightjs-svelte";
 import "highlight.js/styles/tomorrow-night-bright.css";
 import "katex/dist/katex.min.css";
@@ -15,7 +19,7 @@ hljs_svelte(hljs);
 const markdown: MarkdownIt = MarkdownIt({
   html: true,
   breaks: false,
-  highlight: (str, lang) => {
+  highlight: (str: string, lang: string) => {
     if (lang && hljs.getLanguage(lang)) {
       try {
         return (
