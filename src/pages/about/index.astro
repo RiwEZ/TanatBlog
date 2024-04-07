@@ -6,8 +6,6 @@ import markdown from "../../components/markdown";
 
 const works = (await getCollection("works"))
   .sort((a, b) => b.data.end.valueOf() - a.data.end.valueOf());
-
-const formatOptions = { year: 'numeric', month: 'short' };
 ---
 
 <MainLayout title="About | Tanat" description="About page">
@@ -47,8 +45,8 @@ const formatOptions = { year: 'numeric', month: 'short' };
                 <h1 class="text-xl">{work.data.title}</h1>
                 <h2 class="text-white/[.8]">
                   {work.data.start 
-                  && work.data.start.toLocaleDateString('en-US', formatOptions) + ' - '}
-                  {work.data.end.toLocaleDateString('en-US', formatOptions)}
+                  && work.data.start.toLocaleDateString('en-US', { year: 'numeric', month: 'short' }) + ' - '}
+                  {work.data.end.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
                 </h2>
                 <div class="mt-2 flex flex-shrink space-x-2">
                   {work.data.tags.map((tag) => (
