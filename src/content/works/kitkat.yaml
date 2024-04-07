@@ -3,6 +3,9 @@ title: KitKatCarin (LITIENGINE based Java game)
 tags:
   - Game
   - Java
+links:
+  - href: https://github.com/RiwEZ/KitKatCARIN    
+    text: Code
 body: >-
     - A simulation game where the player has to bring antibodies to battle viruses. 
     Both of them act according to a specific genetic code. Genetic code can be determined using 

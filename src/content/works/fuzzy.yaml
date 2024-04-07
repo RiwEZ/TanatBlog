@@ -5,6 +5,11 @@ tags:
   - Backend
   - Fuzzy Logic
   - Rust
+links:
+  - href: https://github.com/Fuzzy-Technical-Indicator/backend
+    text: Backend Code
+  - href: https://github.com/Fuzzy-Technical-Indicator/frontend
+    text: Frontend Code
 body: >-
   My bachelor's thesis about how we can improve the effectiveness of various technical indicators 
   in trading by using fuzzy logic, particle swarm optimization and other statistical methods. 
