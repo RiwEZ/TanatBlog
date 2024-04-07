@@ -1,8 +1,8 @@
-year: 2022
+end: November 2022
 title: Basic Machine Learning On Rust
 tags:
-  - Rust
   - AI
+  - Rust
 links:
   - href: https://github.com/RiwEZ/MLPOnRust
     text: MLP Repo

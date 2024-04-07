@@ -19,7 +19,7 @@
   <div class="card-header">
     <slot name="header" />
   </div>
-  <div class="card-body notshown">
+  <div class="card-body">
     <slot name="body" />
   </div>
 </div>
@@ -33,10 +33,10 @@
   .card-body {
     overflow: hidden;
     max-height: 0;
-    transition: max-height 0.2s ease-out;
+    transition: max-height 0.4s ease-out;
   }
 
   .shown {
-    max-height: min(200px, 100vh); /* need to set this responsively */
+    max-height: 500px;
   }
 </style>

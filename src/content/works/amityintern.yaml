@@ -1,4 +1,5 @@
-year: 2023
+start: May 2023
+end: October 2023
 title: Backend Intern @ Amity
 tags:
   - Backend
@@ -9,5 +10,9 @@ links:
       https://riwez.github.io/TanatBlog/blog/my-experiences-as-an-backend-intern-@-amity/
     text: Blog
 body: >-
-  My role involves maintaining the current system and developing a new feature
-  using MoleculerJS, AWS Lambda, MongoDB, and other relevant technologies.
+  As a backend intern at Amity, my role involves <br>
+    - Developing a new feature using MoleculerJS (JavaScript microservice framework), AWS Lambda, 
+    MongoDB and other relevant technologies. <br>
+    - Fixing any bugs that customers raised or we've found <br>
+    - Technical debts work such as dependencies update, improving unit test <br>
+    - Any other miscellaneous tasks e.g. prepare for knowledge sharing session <br>

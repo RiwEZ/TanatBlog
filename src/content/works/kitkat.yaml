@@ -1,0 +1,12 @@
+end: March 2022
+title: KitKatCarin (LITIENGINE based Java game)
+tags:
+  - Game
+  - Java
+body: >-
+    - A simulation game where the player has to bring antibodies to battle viruses. 
+    Both of them act according to a specific genetic code. Genetic code can be determined using 
+    a specific grammar.
+
+    - Use Java to create a game based on LITIENGINE, by writing game state management logic, 
+    a parser for antibodies and viruses genetic code, and more game related things.

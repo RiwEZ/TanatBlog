@@ -14,7 +14,8 @@ const blog = defineCollection({
 const works = defineCollection({
   type: 'data',
   schema: z.object({
-    year: z.number(),
+    start: z.optional(z.coerce.date()),
+    end: z.coerce.date(),
     title: z.string(),
     tags: z.array(z.string()),
     body: z.string(),

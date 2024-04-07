@@ -1,0 +1,13 @@
+start: December 2022
+end: March 2024
+title: Fuzzy Logic in Market Trading Decision Support System
+tags:
+  - Backend
+  - Fuzzy Logic
+  - Rust
+body: >-
+  My bachelor's thesis about how we can improve the effectiveness of various technical indicators 
+  in trading by using fuzzy logic, particle swarm optimization and other statistical methods. 
+  I'm involves in developing
+    - Backend using Actix on Rust.
+    - Frontend using SvelteKit.

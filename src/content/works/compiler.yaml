@@ -1,0 +1,7 @@
+end: Febuary 2024
+title: Compiler for Basic Functional Language
+tags:
+  - Compiler
+  - OCaml
+body: >-
+  Write a compiler using menhir and OCaml to compile a basic functional language from compiler class.

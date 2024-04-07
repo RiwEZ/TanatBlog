@@ -1,0 +1,11 @@
+end: March 2023
+title: A(ir)Wareness Application
+tags:
+  - Mobile
+  - Flutter
+links:
+  - href: https://github.com/AreYouWorking/Air-pollution-awareness
+    text: Code
+body: >-
+  Write a Flutter application for taking picture to add 
+  and air quality information overlay similar to how Instagram work.

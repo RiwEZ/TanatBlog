@@ -2,8 +2,12 @@
 import { getCollection } from "astro:content";
 import MainLayout from "../../layouts/MainLayout.astro";
 import Collapsible from "../../components/Collapsible.astro";
+import markdown from "../../components/markdown";
 
-const works = (await getCollection("works")).sort((a, b) => b.data.year - a.data.year);
+const works = (await getCollection("works"))
+  .sort((a, b) => b.data.end.valueOf() - a.data.end.valueOf());
+
+const formatOptions = { year: 'numeric', month: 'short' };
 ---
 
 <MainLayout title="About | Tanat" description="About page">
@@ -25,12 +29,12 @@ const works = (await getCollection("works")).sort((a, b) => b.data.year - a.data
       <a
         target="_blank"
         href="https://www.linkedin.com/in/tanat-tangun-46b38a201/"
-        class="hover:text-blue-600">Linkedin</a
+        class="hover:text-blue-600">LinkedIn</a
       >
       <a href="mailto:ttangun1@gmail.com">ttangun1@gmail.com</a>
     </div>
 
-    <h1 class="mt-10 text-2xl font-semibold">Some of my works</h1>
+    <h1 class="mt-10 text-2xl font-semibold">Some of my works/experiences</h1>
     <div class="mt-6 flex flex-col space-y-4">
       {
         works.map((work) => (
@@ -41,6 +45,11 @@ const works = (await getCollection("works")).sort((a, b) => b.data.year - a.data
             >
               <div>
                 <h1 class="text-xl">{work.data.title}</h1>
+                <h2 class="text-white/[.8]">
+                  {work.data.start 
+                  && work.data.start.toLocaleDateString('en-US', formatOptions) + ' - '}
+                  {work.data.end.toLocaleDateString('en-US', formatOptions)}
+                </h2>
                 <div class="mt-2 flex flex-shrink space-x-2">
                   {work.data.tags.map((tag) => (
                     <div
@@ -93,7 +102,9 @@ const works = (await getCollection("works")).sort((a, b) => b.data.year - a.data
                   ))}
                 </div>
               }
-              <p>{work.data.body}</p>
+              <div class="prose prose-zinc dark:prose-invert pt-1">
+                <Fragment set:html={markdown.render(work.data.body)}/>
+              </div>
             </div>
           </Collapsible>
         ))
