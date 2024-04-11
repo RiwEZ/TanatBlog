@@ -86,7 +86,27 @@ Architecture Overview
 </figcaption>
 </figure>
 
-Next, I'll explain why did I not host it.
+Next, I'll explain why I am not hosting it. So as we can see from above *Architecture Overview* figure, 
+we see the image of old laptop on the bottom left side. That's my own server that I used to deploy 
+the website to provide the demo for others. 
+
+<br>
+
+By port-forwarding a specific port for ISP DDNS, we can 
+access my service through a link like this [http://tanat.3bbddns.com:50711/](http://tanat.3bbddns.com:50711/).
+And then when I wanna deploy newer version I need to 
+1. Build the docker image for both backend and frontend.
+2. `scp` (Secure Copy Command) the docker image to the server like this `scp *.tar public@192.168.1.8:`
+3. Load the docker image on the server and run it.
+
+I think these steps can be automated through something like self-hosted gitlab but I don't have the time 
+to try it :C.
+
+### Backend
+
+
+### Frontend
+
 
 ## Some more interesting shits
 Good story -> Price go up, for crypto currency. What if we can scrape some social media posts to 
