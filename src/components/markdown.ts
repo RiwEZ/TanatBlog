@@ -17,7 +17,7 @@ const markdown: MarkdownIt = MarkdownIt({
     if (lang && hljs.getLanguage(lang)) {
       try {
         return (
-          `<pre class="hljs relative"><u class="absolute top-1 right-2 rounded-md">${lang}</u><code>` +
+          `<pre class="hljs relative"><u class="absolute top-1 right-2">${lang}</u><code>` +
           hljs.highlight(str, {
             language: lang,
             ignoreIllegals: true,

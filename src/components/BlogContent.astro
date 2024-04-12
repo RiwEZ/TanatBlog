@@ -42,18 +42,21 @@ const content = markdown.render(body);
 
   article :global(section.eqno > eqn) {
     width: 100%;
-    margin-left: 3em;
+    margin-left: 3rem;
   }
 
   article :global(section.eqno > span) {
-    width: 3em;
+    width: 3rem;
     text-align: right;
   }
 
   article :global(pre) {
-    padding: 1em;
-    margin-bottom: 0.6em;
-    margin-top: 0.6em;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 0.6rem;
+    margin-top: 0.6rem;
     overflow-x: scroll;
   }
 
@@ -99,7 +102,7 @@ const content = markdown.render(body);
   article :global(h2),
   article :global(h3),
   article :global(h4) {
-    margin: 1.2em 0 0.5rem;
+    margin: 1.2rem 0 0.5rem;
     font-weight: bold;
     line-height: 1.42;
   }
@@ -114,7 +117,7 @@ const content = markdown.render(body);
   }
 
   article :global(h3) {
-    font-size: 1.8em;
+    font-size: 1.8rem;
   }
 
   article :global(h4) {

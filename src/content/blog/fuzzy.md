@@ -3,7 +3,7 @@ title: Fuzzy Technical Indicator
 description: My bachelor's final project at Chiang Mai Univerisity.
 slug: fuzzy
 createdAt: '2024-03-30'
-updatedAt: '2024-04-10'
+updatedAt: '2024-04-12'
 ---
 
 So this blog will be about my graduation project for my Bachelor of Engineering, Computer Engineering
@@ -100,9 +100,109 @@ And then when I wanna deploy newer version I need to
 3. Load the docker image on the server and run it.
 
 I think these steps can be automated through something like self-hosted gitlab but I don't have the time 
-to try it :C.
+to try it when I was doing this project :C.
 
 ### Backend
+Our backend code can be splited into these 3 components
+- **lambda**: for updating the data on the MongoDB
+- **lib**: fuzzy logic, technical indicator
+- **web-server**: using actix to handle all requests
+
+#### AWS Lambda 
+How did we get the all the market data? Basically, we have a program to seed the initial data to MongoDB.
+And then we use AWS Lambda with AWS EventBridge Scheduler as we can on the *Architecture Overview* figure 
+to update the data every 30 minutes. The APIs that we use are 
+- Binance API (free-tier)
+- AlphaVantage API (free-tier) 
+
+Below is a part of the code for our lambda using [cargo-lambda](https://github.com/cargo-lambda/cargo-lambda) 
+library to help in building for AWS.
+```rust
+async fn func(_event: LambdaEvent<Value>) -> Result<Value, lambda_runtime::Error> {
+    // ... db config code 
+    let db = client.database("...");
+
+    // update stock data
+    let symbol_list = vec!["AAPL", "IBM", "JPM", "MSFT", "NKE", "TSLA"];
+    for symbol in symbol_list {
+        update_stock(&format!("{symbol}/USD"), &db).await?;
+        thread::sleep(Duration::from_secs(15));
+    }
+
+    // update crypto currency data
+    let market: Market = Binance::new(None, None);
+    let coins = vec!["BTC/USDT", "ETH/USDT", "BNB/USDT"];
+    for c in coins {
+        update_crypto(&db, &market, &c).await?;
+    }
+
+    Ok(json!( { "message": "Okay"}))
+}
+```
+
+#### Library Code
+We have 2 library that we need write and one is fuzzy logic. First, I'll explain what **fuzzy logic** is.
+Imagine that you are in a room with 25 celsius temperature, is it cold for you? what about others?
+We can see that there are some vague concepts when we think about room temperature, instead of saying it's
+cold we often say "it's a little bit cold" or "yes, it's cold but not that cold". Fuzzy Logic is just
+a mathemetical concepts to represent feelings like that instead of using crisp set (cold or hot) we 
+use fuzzy set (a little hot, a little cold, very cold). 
+
+<br>
+
+So how does fuzzy set looks like? From the *Linguisctic Variable Example* figure below, we can see 
+the graph of each temperature label, that graph is the fuzzy set 
+which is a membership function with ...  ah shit
+
+<figure>
+<img src="https://imgur.com/XgIAwAN.png" />
+<figcaption>
+<center>
+Linguistic Variable Example
+</center>
+</figcaption>
+</figure>
+
+
+```rust
+// example of how my fuzzy logic lib looks like
+let f_engine = FuzzyEngine::new()
+    .add_cond(LinguisticVar::new(
+        vec![
+            ("cold", triangle(15f64, 1.0, 10f64)),
+            ("little cold", triangle(28f64, 1.0, 10f64)),
+            ("hot", triangle(40f64, 1.0, 20f64)),
+        ],
+        (0f64, 50f64),
+    ))
+    .add_cond(LinguisticVar::new(
+        vec![
+            ("low", triangle(25f64, 1.0, 25f64)),
+            ("normal", triangle(45f64, 1.0, 30f64)),
+            ("high", triangle(85f64, 1.0, 25f64)),
+        ],
+        (0f64, 100f64),
+    ))
+    .add_output(LinguisticVar::new(
+        vec![
+            ("weak", triangle(0f64, 1.0, 15f64)),
+            ("strong", triangle(30f64, 1.0, 30f64)),
+        ],
+        (0f64, 50f64),
+    ))
+    .add_rule(vec![Some("cold"), Some("low")], vec![Some("weak")])
+    .add_rule(vec![Some("little cold"), Some("low")], vec![Some("weak")])
+    .add_rule(vec![Some("hot"), Some("low")], vec![Some("strong")]);
+
+let result = f_engine.inference(vec![Some(19f64), Some(10f64)]).unwrap();
+```
+- exlpain what fuzzy logic is in simplest form
+- rayon 
+- functional style api 
+
+
+#### Web Server
+
 
 
 ### Frontend
