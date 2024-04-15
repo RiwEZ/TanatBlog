@@ -142,6 +142,8 @@ async fn func(_event: LambdaEvent<Value>) -> Result<Value, lambda_runtime::Error
 
 #### Library Code
 We have 2 library that we need write and one is fuzzy logic. First, I'll explain what **fuzzy logic** is.
+
+##### Fuzzy Logic
 Imagine that you are in a room with 25 celsius temperature, is it cold for you? what about others?
 We can see that there are some vague concepts when we think about room temperature, instead of saying it's
 cold we often say "it's a little bit cold" or "yes, it's cold but not that cold". Fuzzy Logic is just
@@ -151,11 +153,26 @@ use fuzzy set (a little hot, a little cold, very cold).
 <br>
 
 So how does fuzzy set looks like? From the *Linguisctic Variable Example* figure below, we can see 
-the graph of each temperature label, that graph is the fuzzy set 
-which is a membership function with ...  ah shit
+the graph of each temperature label, that graph is the fuzzy set.
+> Definition: A fuzzy set is a pair of $(U, m)$ where $U$ is a set called *universe of discourse*, and
+> $m : U \rightarrow [0, 1]$ is a *membership function*. For each $x \in U$, the value $m(x)$ is called
+> *grade of membership* of $x$ in $U$
+
+And we need to implement these fuzzy operations too
+- standard union, standard intersect
+- degree of arbitrary $x$
+- defuzzification method (centroid defuzzification)
+
+> Definition: A linguistic variable is a tuple $(X, T(X), U, \vec{m})$ where
+> - $X$ is the name of variable e.g. temperature
+> - $T(X)$ is the set of terms of X e.g. cold, little cold, hot
+> - $U$ is a universe of discourse of all terms
+> - $\vec{m}$ is a list of membership function $m$ associate with each term in $T(X)$
+
+We can think of linguistic variable as a collection of fuzzy sets, ...TODO
 
 <figure>
-<img src="https://imgur.com/XgIAwAN.png" />
+<img src="https://imgur.com/XgIAwAN.png" loading="lazy" />
 <figcaption>
 <center>
 Linguistic Variable Example
@@ -211,4 +228,8 @@ let result = f_engine.inference(vec![Some(19f64), Some(10f64)]).unwrap();
 ## Some more interesting shits
 Good story -> Price go up, for crypto currency. What if we can scrape some social media posts to 
 check the current story sentimental.
+
+
+## References
+- [https://en.wikipedia.org/wiki/Fuzzy_set](https://en.wikipedia.org/wiki/Fuzzy_set)
 
