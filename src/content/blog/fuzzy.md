@@ -3,11 +3,11 @@ title: Fuzzy Technical Indicator
 description: My bachelor's final project at Chiang Mai Univerisity.
 slug: fuzzy
 createdAt: '2024-03-30'
-updatedAt: '2024-04-12'
+updatedAt: '2024-04-16'
 ---
 
-So this blog will be about my graduation project for my Bachelor of Engineering, Computer Engineering
-at Chiang Mai University. What is it? and how did me and my friend make it?
+This blog will be about my graduation project for my Bachelor of Engineering, Computer Engineering
+at Chiang Mai University. So, what is it? and how did me and my friend make it?
 
 ## What are we trying to do?
 
@@ -165,11 +165,12 @@ And we need to implement these fuzzy operations too
 
 > Definition: A linguistic variable is a tuple $(X, T(X), U, \vec{m})$ where
 > - $X$ is the name of variable e.g. temperature
-> - $T(X)$ is the set of terms of X e.g. cold, little cold, hot
+> - $T(X)$ is the set of terms of X e.g. little cold, cold, hot
 > - $U$ is a universe of discourse of all terms
 > - $\vec{m}$ is a list of membership function $m$ associate with each term in $T(X)$
 
-We can think of linguistic variable as a collection of fuzzy sets, ...TODO
+We can think of linguistic variable as a collection of fuzzy sets with the same $U$. It will be used
+to describe fuzzy system inputs and outputs.
 
 <figure>
 <img src="https://imgur.com/XgIAwAN.png" loading="lazy" />
@@ -180,7 +181,17 @@ Linguistic Variable Example
 </figcaption>
 </figure>
 
+Then, how do we use these concepts to do a reasoning? First, we need to have *fuzzy rules* e.g.
+if TEMP is HOT then FANSPEED is HIGH. From the example, TEMP and FANSPEED are linguistic variables 
+and HOT and HIGH are terms. Then we can used this rule on a fuzzy inference system (FIS) to get the 
+output we needed. These 2 articles from MathWorks explains how all of this work in more details 
+if you want to check it out, [Fuzzy vs Nonfuzzy Logic](https://www.mathworks.com/help/fuzzy/an-introductory-example-fuzzy-versus-nonfuzzy-logic.html) 
+and [Fuzzy Inference Process](https://www.mathworks.com/help/fuzzy/fuzzy-inference-process.html)
 
+<br>
+
+In our project we implemented *Mamdani FIS* which you can also read more on how does it work on 
+[Mamdani and Sugeno Fuzzy Inference Systems](https://www.mathworks.com/help/fuzzy/types-of-fuzzy-inference-systems.html).
 ```rust
 // example of how my fuzzy logic lib looks like
 let f_engine = FuzzyEngine::new()
@@ -213,9 +224,77 @@ let f_engine = FuzzyEngine::new()
 
 let result = f_engine.inference(vec![Some(19f64), Some(10f64)]).unwrap();
 ```
-- exlpain what fuzzy logic is in simplest form
-- rayon 
-- functional style api 
+As you can see from the above code, I implemented fuzzy logic code in functional style which is close 
+to the definition of all concepts listed above. This makes the code more readable and easier to debug 
+(no side effects). Functional programming concep like higher-order function make fuzzy operations from
+the code example below very similar to the math (excluding rust things).
+
+```rust
+// composing functions make it easier to implement 
+type F = Arc<dyn Fn(f64) -> f64 + Send + Sync>;
+
+fn minf(mf: &F, input: f64) -> Shape {
+    let f = Arc::clone(mf);
+
+    Shape::default_with(Arc::new(move |x: f64| -> f64 { input.min((f)(x)) }))
+}
+
+fn std_unionf(mf1: &F, mf2: &F) -> Shape {
+    let f1 = Arc::clone(mf1);
+    let f2 = Arc::clone(mf2);
+
+    Shape::default_with(Arc::new(move |x: f64| -> f64 { (f1)(x).max((f2)(x)) }))
+}
+
+fn std_intersectf(mf1: &F, mf2: &F) -> Shape {
+    let f1 = Arc::clone(mf1);
+    let f2 = Arc::clone(mf2);
+
+    Shape::default_with(Arc::new(move |x: f64| -> f64 { (f1)(x).min((f2)(x)) }))
+}
+
+// ...
+// using map and fold make it more readable
+impl FuzzyEngine {
+    // ...
+
+    pub fn inference(&self, inputs: Vec<Option<f64>>) -> Option<Vec<FuzzySet>> {
+        self.rules
+            .iter()
+            .map(|(cond, res)| {
+                let aj = compute_aj(&self.inputs_var, cond, &inputs).unwrap();
+                min_sets(&self.outputs_var, res, aj)
+            })
+            .fold(None::<Vec<FuzzySet>>, |acc, x| match acc {
+                None => Some(x),
+                Some(a) => Some(
+                    a.iter()
+                        .zip(x.iter())
+                        .map(|(a, b)| a.std_union(b).unwrap())
+                        .collect(),
+                ),
+            })
+    }
+}
+```
+
+##### Technical Indicators
+This part is heavily inspired by [TradingView PineScript v5](https://www.tradingview.com/pine-script-reference/v5/).
+The idea is TradingView already has a good API interface for creating varios technical indicators in 
+PineScript, we can actually just copy the API interface and implemented its logic ourself.
+
+<figure>
+<img src="https://imgur.com/c253FWe.png" loading="lazy" />
+<figcaption>
+<center>
+Technical Indicator Example (RSI)
+</center>
+</figcaption>
+</figure>
+
+
+- basic concepts
+- rayon
 
 
 #### Web Server
@@ -232,4 +311,5 @@ check the current story sentimental.
 
 ## References
 - [https://en.wikipedia.org/wiki/Fuzzy_set](https://en.wikipedia.org/wiki/Fuzzy_set)
+- [https://www.sciencedirect.com/topics/engineering/linguistic-variable](https://www.sciencedirect.com/topics/engineering/linguistic-variable)
 
