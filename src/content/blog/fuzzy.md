@@ -3,7 +3,7 @@ title: Fuzzy Technical Indicator
 description: My bachelor's final project at Chiang Mai Univerisity.
 slug: fuzzy
 createdAt: '2024-03-30'
-updatedAt: '2024-04-16'
+updatedAt: '2024-04-17'
 ---
 
 This blog will be about my graduation project for my Bachelor of Engineering, Computer Engineering
@@ -292,22 +292,219 @@ Technical Indicator Example (RSI)
 </figcaption>
 </figure>
 
+From an example of RSI on above figure, how did we implement it?. As you can see on the code below,
+our implementation is similar to PineScript implementation. We just wrap some of the calculations together
+and then do some more operations to make the data suit our needs e.g. transform some values to NAN
+for frontend, add datetime to each data point.
 
-- basic concepts
-- rayon
 
+```rust
+/* TradingView PineScript
+pine_rsi(x, y) => 
+    u = math.max(x - x[1], 0) // upward ta.change
+    d = math.max(x[1] - x, 0) // downward ta.change
+    rs = ta.rma(u, y) / ta.rma(d, y)
+    res = 100 - 100 / (1 + rs)
+    res
+*/
+
+// our implementation
+pub fn rsi(data: &[Ohlc], n: usize) -> Vec<DTValue<f64>> {
+    let (gain, loss) = utils::compute_gainloss(data); // both u and d
+    let rs_vec = utils::rma_rs(&gain, &loss, n); // rs
+    let rsi = rs_vec // res
+        .par_iter()
+        .map(|rs_o| {
+            if let Some(rs) = rs_o {
+                100.0 - 100.0 / (1.0 + rs)
+            } else {
+                100.0 - 100.0 / (1.0 + f64::NAN)
+            }
+        })
+        .collect::<Vec<f64>>();
+
+    embed_datetime(&rsi, data)
+}
+```
+And one more thing you can see from the code `par_iter`, this is from [rayon](https://docs.rs/rayon/latest/rayon/) 
+crate.
+
+> **Rayon** is a data-parallelism library that makes it easy to convert sequential computations into parallel.
+>
+> -- Rayon README --
+
+Basically, when we use `map` on `par_iter` we can split the works to each threads (this is often equal
+to number of cpu cores, and you can set how many you want to use) by a technique called **work stealing**
+which you can read more on how it work on [rayon FAQ](https://github.com/rayon-rs/rayon/blob/main/FAQ.md).
+
+<br>
+
+This simple changes from `iter` (sequential) to `par_iter` (parallel) improved calculation time for like 
+2x if I remember correctly. From using 1 CPUs to 8 CPUs (on my old laptop), we can see why and this will
+happen in so many more places in our code.
 
 #### Web Server
+<figure>
+<img src="https://imgur.com/WNpAb5R.png" loading="lazy" />
+<figcaption>
+<center>
+Overview of how each thread work together.
+</center>
+</figcaption>
+</figure>
+
+Our web server has 3 main threads which are
+- main web server with actix (task producer)
+- backtest runner (task consumer)
+- pso runner (task consumer)
+
+I used rust `std::thread` to create each thread.
+And we also have a simple task queue using `mpsc` (multi-producer, single-consumer FIFO queue communication primitives)
+on tho
 
 
+we don't have graceful shutdown, so some time proces is dangling
+
+TODO
+what to write wa
+
+
+```rust
+#[tokio::main]
+pub async fn backtest_consumer(
+    mongo_uri: String,
+    receiver: Receiver<BacktestJob>,
+    counter: Data<Mutex<u32>>,
+) {
+    let client = ...;
+    let db = web::Data::new(client);
+
+    while let Ok(job) = receiver.recv() {
+        // do the job
+        {
+            let mut c = counter.lock().unwrap();
+            *c = c.saturating_sub(1);
+        }
+    }
+}
+
+fn main() {
+    let (pso_sender, pso_receiver) = mpsc::channel();
+    let (backtest_sender, backtest_receiver) = mpsc::channel();
+    let pso_counter = web::Data::new(Mutex::new(0u32));
+    let backtest_counter = web::Data::new(Mutex::new(0u32));
+
+    let t0 = thread::spawn(...);
+    let t1 = thread::spawn(...);
+    let t2 = thread::spawn(...);
+
+    t0.join().expect("Main Service has panicked");
+    t1.join().expect("PSO Consumer has panicked");
+    t2.join().expect("Backtest Consumer has panicked");
+}
+```
+
+
+##### Actix
+We use [actix](https://actix.rs/) to write our web server. Initially, I used [rocket](https://rocket.rs/)
+and I think I saw some posts about how actix is better than rocket then I just changed it on a whim 
+(now, I don't know if it's actually true or not). 
+
+<br>
+
+Below, is an example of a route in actix and how actix is set up on our project. You can see the `#[get("rsi")]` 
+, this is rust [proc macro](https://doc.rust-lang.org/reference/procedural-macros.html) which 
+on actix tell what is the HTTP request type for each function. And you can see the arguments 
+of `indicator_rsi` has 
+- `web:Data<...>` this is the type for shared value e.g. database client, counter, etc.
+- `web::Query<...>` this is for query parameters on the URL, which actix also check on runtime if the
+type is matched or not.
+- `HttpRequest` this is the whole request that we get.
+
+```rust
+// caching example
+#[cached(
+    time = 120,
+    key = "String",
+    convert = r#"{ format!("{}{}{:?}", length, data.1, cachable_dt()) }"#
+)]
+pub fn rsi_cached(data: (Vec<Ohlc>, String), length: usize) -> Vec<DTValue<f64>> {
+    rsi(&data.0, length)
+}
+
+
+#[derive(Deserialize)]
+struct QueryParams {
+    symbol: String,
+    interval: Option<Interval>,
+}
+
+// rsi route example
+#[get("/rsi")]
+async fn indicator_rsi(
+    db: web::Data<Client>,
+    params: web::Query<QueryParams>, 
+    req: HttpRequest,
+) -> ActixResult<HttpResponse> {
+    let user = is_user_exist(req)?; // check if user in Bearer exist
+
+    let symbol = &params.symbol;
+    let interval = &params.interval;
+
+    let data = fetch_symbol(&db, symbol, interval).await;
+    Ok(HttpResponse::Ok().json(rsi_cached(data, user.rsi.length)))
+}
+
+#[actix_web::main]
+async fn main_server(
+    mongodb_uri: String,
+    pso_sender: Sender<optimization::PSOTrainJob>,
+    pso_counter: web::Data<Mutex<u32>>,
+    backtest_sender: Sender<backtest::BacktestJob>,
+    backtest_counter: web::Data<Mutex<u32>>,
+) -> std::io::Result<()> {
+    // ...
+
+    let client = Client::with_uri_str(mongodb_uri)
+        .await
+        .expect("Failed to connect to Mongodb");
+
+    HttpServer::new(move || {
+        let cors = Cors::permissive();
+
+        App::new()
+            .wrap(Logger::new("%r %s %bbytes %Dms"))
+            .wrap(cors)
+            .app_data(web::Data::new(client.clone()))
+            .app_data(web::Data::new(pso_sender.clone()))
+            .app_data(web::Data::new(backtest_sender.clone()))
+            .service(
+                web::scope("/api/indicators")
+                    .wrap(HttpAuthentication::bearer(auth_validator))
+                    .service(indicator_rsi)
+                    // ...
+            )
+    })
+    .keep_alive(KeepAlive::Os)
+    .bind((ip, port))?
+    .run()
+    .await
+}
+```
+- 3 main threads
+- rayon & PSO
+- error handling
+- caching
 
 ### Frontend
 
+- api call, ddns trip, server shits
+
+## Experiments & Results
 
 ## Some more interesting shits
 Good story -> Price go up, for crypto currency. What if we can scrape some social media posts to 
 check the current story sentimental.
-
 
 ## References
 - [https://en.wikipedia.org/wiki/Fuzzy_set](https://en.wikipedia.org/wiki/Fuzzy_set)
