@@ -16,7 +16,7 @@ deicision making in the market. A **technical indicator** is a mathematical calc
 on historical prices or volume. The purpose of it is to forecast financial market direction.
 
 <figure>
-<img src="https://www.investopedia.com/thmb/eOSRgZbllIESMSBnKSk7fA3jptQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/dotdash_Final_Technical_Analysis_Strategies_for_Beginners_Sep_2020-01-412a1ba6af834a74a852cbc32e5d6f7c.jpg" />
+<img src="https://www.investopedia.com/thmb/eOSRgZbllIESMSBnKSk7fA3jptQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/dotdash_Final_Technical_Analysis_Strategies_for_Beginners_Sep_2020-01-412a1ba6af834a74a852cbc32e5d6f7c.jpg" loading="lazy" />
 <figcaption>
 <center>
 Examples of technical analyis from <a href="https://www.investopedia.com/articles/active-trading/102914/technical-analysis-strategies-beginners.asp">Investopedia</a>
@@ -40,7 +40,7 @@ are vauge and lack certainty.
 
 We think that Fuzzy Logic can help improving technical indicator usage.
 <figure>
-<img src="https://imgur.com/XeQJjYB.png" />
+<img src="https://imgur.com/XeQJjYB.png" loading="lazy" />
 <figcaption>
 <center>
 Simple example of Fuzzy Logic used with RSI
@@ -78,7 +78,7 @@ from my friend (yes, it's in Thai). Right now, I'm currently not hosting the web
 not visit it. 
 
 <figure>
-<img src="https://imgur.com/puSZftM.png" />
+<img src="https://imgur.com/puSZftM.png" loading="lazy" />
 <figcaption>
 <center>
 Architecture Overview
@@ -358,18 +358,12 @@ Our web server has 3 main threads which are
 - backtest runner (task consumer)
 - pso runner (task consumer)
 
-I used rust `std::thread` to create each thread.
-And we also have a simple task queue using `mpsc` (multi-producer, single-consumer FIFO queue communication primitives)
-on tho
-
-
-we don't have graceful shutdown, so some time proces is dangling
-
-TODO
-what to write wa
-
+I used rust `std::thread` to create each thread and used `mpsc` (multi-producer, single-consumer FIFO queue communication primitives)
+as a simple tasks queue. We also have a number of tasks in queue by using `web::Data<Mutex>` 
+(yes, it's actix `Arc<Mutex>`) to enable us to share variable across threads. 
 
 ```rust
+// consumer example
 #[tokio::main]
 pub async fn backtest_consumer(
     mongo_uri: String,
@@ -387,26 +381,14 @@ pub async fn backtest_consumer(
         }
     }
 }
-
-fn main() {
-    let (pso_sender, pso_receiver) = mpsc::channel();
-    let (backtest_sender, backtest_receiver) = mpsc::channel();
-    let pso_counter = web::Data::new(Mutex::new(0u32));
-    let backtest_counter = web::Data::new(Mutex::new(0u32));
-
-    let t0 = thread::spawn(...);
-    let t1 = thread::spawn(...);
-    let t2 = thread::spawn(...);
-
-    t0.join().expect("Main Service has panicked");
-    t1.join().expect("PSO Consumer has panicked");
-    t2.join().expect("Backtest Consumer has panicked");
-}
 ```
-
+Unfortunately, we don't have graceful shutdown. So when consumer panicked because of unknown reasons 
+(we didn't handle it) the process can be dangling, and we need to kill it using `kill -9 {pid}`. 
+This can be fixed by implementing graceful shutdown, maybe similar to this [article](https://tokio.rs/tokio/topics/shutdown)
+from tokio but we don't have time :C.
 
 ##### Actix
-We use [actix](https://actix.rs/) to write our web server. Initially, I used [rocket](https://rocket.rs/)
+As we have stated, we use [actix](https://actix.rs/) to write our web server. Initially, I used [rocket](https://rocket.rs/)
 and I think I saw some posts about how actix is better than rocket then I just changed it on a whim 
 (now, I don't know if it's actually true or not). 
 
@@ -422,17 +404,6 @@ type is matched or not.
 - `HttpRequest` this is the whole request that we get.
 
 ```rust
-// caching example
-#[cached(
-    time = 120,
-    key = "String",
-    convert = r#"{ format!("{}{}{:?}", length, data.1, cachable_dt()) }"#
-)]
-pub fn rsi_cached(data: (Vec<Ohlc>, String), length: usize) -> Vec<DTValue<f64>> {
-    rsi(&data.0, length)
-}
-
-
 #[derive(Deserialize)]
 struct QueryParams {
     symbol: String,
@@ -491,10 +462,130 @@ async fn main_server(
     .await
 }
 ```
-- 3 main threads
-- rayon & PSO
-- error handling
-- caching
+Also, you can see the `rsi_cached` on above code in `indicator_rsi` function. It's a function which 
+use [cached](https://docs.rs/cached/latest/cached/) crate proc macro to cache the calculation of `rsi`
+which can take time to finished in memory. The cache key from example below are composed from
+- `length`, `data.1` which are arguments of the function, this is use to distiguish different RSI.
+- `cachable_dt()` which is a string value that will be the same on 30 mins period because our lambda
+update the market data every 30 mins and RSI depends on market data.
+
+I think we have cached almost all routes that need to be cached. This make the whole server much faster 
+when receiving request that can be retrived from the cache. Using in-memory caching also simplified 
+deploying process because we don't to deploy other services like [Redis](https://redis.io/) or 
+[Memcached](https://memcached.org/).
+
+```rust
+// caching example
+#[cached(
+    time = 120,
+    key = "String",
+    convert = r#"{ format!("{}{}{:?}", length, data.1, cachable_dt()) }"#
+)]
+pub fn rsi_cached(data: (Vec<Ohlc>, String), length: usize) -> Vec<DTValue<f64>> {
+    rsi(&data.0, length)
+}
+```
+Error handling in rust is also a great experience. We can use `Result<T, E>` (haskell `Either`) type to 
+propagate error up (through `?`) to where we want to handle them. And, you can see that actix 
+has its own `ActixResult<T>` too which is just short hand for `Result<T, E = actix_web::error::Error>`. 
+You can see from the code below that we can define our custom error with the help of [thiserror](https://docs.rs/thiserror/latest/thiserror/)
+crate to make implementing `Display` trait for each error much easier and then map that to `actix_web::Error`
+which help in create an error response properly.
+
+```rust
+#[derive(thiserror::Error, Debug)]
+pub enum CustomError {
+    #[error("Settings not found")]
+    SettingsNotFound,
+    // ...
+}
+
+pub fn map_custom_err(e: CustomError) -> actix_web::Error {
+    use CustomError::*;
+
+    match e {
+        SettingsNotFound
+        | ... => ErrorNotFound(e.to_string()),
+        // ...
+    }
+}
+
+// settings.rs 
+async fn get_linguistic_variables(
+    db: &web::Data<Client>,
+    preset: &String,
+    username: &String,
+) -> Result<BTreeMap<String, LinguisticVarDTO>, CustomError> {
+    // ...
+    if let Some(doc) = doc_opt {
+        return Ok(...);
+    }
+    Err(CustomError::SettingsNotFound)
+}
+
+pub async fn get_setting(
+    db: web::Data<Client>,
+    preset: &String,
+    username: &String,
+) -> Result<SettingsDTO, CustomError> {
+    Ok(SettingsDTO {
+        linguisticVariables: get_linguistic_variables(&db, preset, username).await?,
+        fuzzyRules: get_fuzzy_rules(&db, preset, username).await?,
+    })
+}
+
+// main.rs
+#[get("")]
+async fn get_settings(
+    db: web::Data<Client>,
+    query: web::Query<PresetQueryParam>,
+    req: HttpRequest,
+) -> ActixResult<HttpResponse> {
+    let username = is_user_exist(req)?.username;
+    let result = settings::get_setting(db, &query.preset, &username)
+        .await
+        .map_err(map_custom_err)?;
+    Ok(HttpResponse::Ok().json(result))
+}
+```
+##### Particle Swarm Optimization, Backtests, Liquid-F
+I don't know if I'm showing too much code now but whatever. Let's talk about the remaining concepts
+that we have implemented on our web server.
+
+<figure>
+<img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/ParticleSwarmArrowsAnimation.gif" loading="lazy" />
+<figcaption>
+<center>
+A particle swarm searching for the global minimum of a function from the
+<a href=https://en.wikipedia.org/wiki/Particle_swarm_optimization>wiki</a>.
+</center>
+</figcaption>
+</figure>
+
+**Particle Swarm Optimization** (PSO) is a kind of evolutionaly algorithm that try to mimick bird flock 
+or fish school. It work by having a population of candidate solutions called *particles*, then we try to
+move these particles through search-space according to some math with the particles's position and velocity.
+
+<br>
+
+In our implementation, we use simple a local best PSO to tune the linguistic variable of each 
+fuzzy technical indicator. By using this objective function
+$$
+f = 
+\begin{cases}
+    \infty & |\text{trades}| = 0 \\
+    -1 \times ((\text{np} - \text{np}_r) + (\text{mdd}_r - \text{mdd})) & \text{otherwise} \\ 
+\end{cases}
+$$
+
+<br>
+
+**Backtests**
+
+<br>
+
+**Liquid-F** 
+
 
 ### Frontend
 
