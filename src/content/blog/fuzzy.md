@@ -3,7 +3,7 @@ title: Fuzzy Technical Indicator
 description: My bachelor's final project at Chiang Mai Univerisity.
 slug: fuzzy
 createdAt: '2024-03-30'
-updatedAt: '2024-04-17'
+updatedAt: '2024-04-19'
 ---
 
 This blog will be about my graduation project for my Bachelor of Engineering, Computer Engineering
@@ -331,7 +331,7 @@ crate.
 
 > **Rayon** is a data-parallelism library that makes it easy to convert sequential computations into parallel.
 >
-> -- Rayon README --
+> -- rayon README --
 
 Basically, when we use `map` on `par_iter` we can split the works to each threads (this is often equal
 to number of cpu cores, and you can set how many you want to use) by a technique called **work stealing**
@@ -548,9 +548,19 @@ async fn get_settings(
     Ok(HttpResponse::Ok().json(result))
 }
 ```
-##### Particle Swarm Optimization, Backtests, Liquid-F
-I don't know if I'm showing too much code now but whatever. Let's talk about the remaining concepts
-that we have implemented on our web server.
+##### Particle Swarm Optimization, Backtesting, Liquid-F
+Now, let's talk about the remaining concepts that we have implemented on our web server.
+
+<br>
+
+**Backtesting** is a simulation of some strategy apply over historical data, in our case it's the 
+strategy that is using our fuzzy technical indicator. The algorithm in our implementation is simple
+just 
+```
+loop over market data from t0 to t1 then
+    1. realize any open positions (if it have reached take profit or stop loss)
+    2. if we should enter a new position then enter it otherwise do nothing
+```
 
 <figure>
 <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/ParticleSwarmArrowsAnimation.gif" loading="lazy" />
@@ -569,7 +579,8 @@ move these particles through search-space according to some math with the partic
 <br>
 
 In our implementation, we use simple a local best PSO to tune the linguistic variable of each 
-fuzzy technical indicator. By using this objective function
+fuzzy technical indicator. We also use rayon to make the performance much better by splitting the 
+training of each group to each thread using `par_iter`. And by using this objective function
 $$
 f = 
 \begin{cases}
@@ -577,14 +588,49 @@ f =
     -1 \times ((\text{np} - \text{np}_r) + (\text{mdd}_r - \text{mdd})) & \text{otherwise} \\ 
 \end{cases}
 $$
+where 
+- $\text{np}$ is net profit (%) of all trades when we do a backtest.
+- $\text{mdd}$ is [maximum drawdown](https://www.investopedia.com/terms/m/maximum-drawdown-mdd.asp) 
+(%) from when we do a backtest.  
+- $|\text{trades}|$ is a number of trades that we have done.
+- $\text{np}_r$ and $\text{mdd}_r$ are references from the initial backtest with the start's configuration.
+We use these references to fix a problem where PSO does not make the fuzzy technical indicator better by
+enforcing them to have a better objective function iff its backtest result is better in term of net profit
+and maximum drawdown.
+
+We are trying to optimize the linguistic variables of our fuzzy technical indicator to make it able to
+gain more profit while having low drawdown. Actually, we could change the objective function to make
+it better in other aspects but this idea should be in further development.
+
+<figure>
+<img src="https://imgur.com/dOmQy57.png" loading="lazy" />
+<figcaption>
+<center>Parameters of the linguistic variable that we will tune via PSO (a, b, c)</center>
+</figcaption>
+</figure>
 
 <br>
 
-**Backtests**
+**Liquid-F** is a money management strategy that derived from optimal-f by Ralph Vince. Its idea 
+is simple
+- Increasing the percentage of money to invest when we are frequently winning the trade.
+- Decreasing it when losing trades become frequent.
 
-<br>
+So, how does it work. By first find $f \in (0, 1)$ such that it maximize $\text{TWR}$ (terminal wealth relative)
+which is 
+$$
+\text{TWR}(f) = \Pi_{i=1}^{n} \text{HPR}_i(f)
+$$
+$$
+\text{HPR}_i(f) = 1 + \frac{f \cdot p_i(\text{realizedPnL})}{\text{riskFactor}}
+$$
+where 
+- $n$ is the total number of positions
+- $\text{HPR}$ (holding period return) is a ratio of profit and loss of each position.
+- $p_i(\text{realizedPnL})$ is the profit and loss at position $i$
+- $\text{riskFactor}$ is the absolute value of the worst $p_i(\text{realizedPnL})$
 
-**Liquid-F** 
+TODO
 
 
 ### Frontend
