@@ -611,9 +611,9 @@ it better in other aspects but this idea should be in further development.
 
 <br>
 
-**Liquid-F** is a money management strategy that derived from optimal-f by Ralph Vince. Its idea 
-is simple
-- Increasing the percentage of money to invest when we are frequently winning the trade.
+**Liquid-F** is a money management strategy from this [paper](https://onlinelibrary.wiley.com/doi/abs/10.1002/int.21734) 
+from Rodrigo Naranjo. Its idea is simple
+- Increasing the percentage of money to invest when we are frequently winning the trades.
 - Decreasing it when losing trades become frequent.
 
 So, how does it work. By first find $f \in (0, 1)$ such that it maximize $\text{TWR}$ (terminal wealth relative)
@@ -630,14 +630,92 @@ where
 - $p_i(\text{realizedPnL})$ is the profit and loss at position $i$
 - $\text{riskFactor}$ is the absolute value of the worst $p_i(\text{realizedPnL})$
 
-TODO
+We find the value $f$ by simply looping through $0.01, 0.02, ..., 0.98, 0.99$ to find the value that
+has maximum $\text{TWR}$. And then we use it to calculate
+$$
+\text{liquid}_f = 0.1f
+$$
+$$
+\text{size} = \text{liquid}_f + \frac{(\text{output} - \text{threshold}) \cdot (f - \text{liquid}_f)}{\text{output}_{\text{max}} - \text{threshold}}
+$$
+where
+- $\text{size}$ is the value that determine the size of a new position we will enter e.g. if we have 1000$
+and the $\text{size} = 0.1$ then a new position will worth 100$. The term after $\text{liquid}_f$ means
+greater signal strength → bigger size.
+- $\text{liquid}_f$ is a base size, we only use 10% of the value $f$ because it's less risky.
+- $\text{output}$ and $\text{output}_{\text{max}}$ is the signal strength from our technical indicator.
+- $\text{threshold}$ is the value that when our signal reached it, we will enter a new position.
 
+#### Remarks
+Most of our work are in the backend part and there are much more implementation details that 
+I didn't talk about. If you want to, you can checkout the code at 
+[our repository](https://github.com/Fuzzy-Technical-Indicator/backend).
 
 ### Frontend
+<figure>
+<img src="https://imgur.com/6aukWw6.png" loading="lazy" />
+<figcaption>
+<center>One page of our website with candlestick graph of the market and our fuzzy technical indicator.</center>
+</figcaption>
+</figure>
 
-- api call, ddns trip, server shits
+We do our frontend with [SvelteKit](https://kit.svelte.dev/) which is a framework for developing 
+a web application using [Svelte](https://svelte.dev/). It's similar to Next from React ecosystem 
+or Nuxt from Vue ecosystem. Basically, Svelte is what render the UI using a **compiler** to transform
+your `.svelte` code to javascript that will render HTML with CSS which is different from React and Vue.
+And SvelteKit is other things that we need on the web such as router, build optimizations, ssr, etc.
+You can read more about Svelte and SvelteKit on this [article](https://kit.svelte.dev/docs/introduction).
+
+<br>
+
+The graph shown on the figure above is powered by [lightweight-charts](https://github.com/tradingview/lightweight-charts)
+from TradingView (which I think it's the number one in financial graph) and [svelte-lightweight-charts](https://github.com/trash-and-fire/svelte-lightweight-charts)
+which is a wrapper from wrapper for lightweigt-charts in Svelte. If you guys remember the `f64::NAN` 
+from the backend code on the section above, it's for this library to show an empty value.
+
+<br>
+
+One more interesting thing is how we communicate with the backend. As you know, we are deploying 
+both frontend and backend on my old laptop so if we do server-side rendering we should be able to 
+call the API within local network right? Yep, I didn't think about this when we are doing it at first so
+the website is almost all client-side rendering 🤦‍♂️. 
+This results in the website being super slow because we need to call the API over 
+`http://tanat.3bbddns.com:50711/` which needs to go through ISP DDNS server (which is also not very fast)
+, then ISP needs to route back to my old laptop which takes some time again and the response also 
+need to route back to the client again.
+
+<br>
+
+The solution is simple, change to server-side rendering and deal with session state using cookies. 
+Now, we can fetch the data directly in the same network by running both frontend and backend 
+in the same [docker network](https://docs.docker.com/network/).
+```ts
+// exammple of the code for fetching data from the backend on SvelteKit
+export const load: PageServerLoad = async ({ fetch, cookies }) => {
+	const username = cookies.get('session-username');
+
+	const client = api(fetch, API_SERVER_URL);
+	const options: RequestInit = {
+		keepalive: true,
+		headers: { Authorization: `Bearer ${username}` }
+	};
+	const presets = await client.getPresets(options);
+	const bb = await client.bb(options);
+	const users = await client.getUserSettings(options);
+
+	return { presets, bb, users };
+};
+```
+The remaining things that I haven't talked about is not that interesting, it's just normal
+UI/UX thing. If you are interested, you can check out our [frontend repoitory](https://github.com/Fuzzy-Technical-Indicator/frontend).
 
 ## Experiments & Results
+Now, let's see if our project actually work or nah. We have done the experiments on both stocks 
+and crypto currency market but I'll show only the crypto currency one (because I think it's the most
+interesting). So the setup will be like this
+- Backtest on BTC, ETH, BNB from 1 October 2023 to 8 March 2024
+- Start with 3000$ split among those markets
+
 
 ## Some more interesting shits
 Good story -> Price go up, for crypto currency. What if we can scrape some social media posts to 
