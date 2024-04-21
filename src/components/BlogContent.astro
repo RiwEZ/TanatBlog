@@ -51,10 +51,7 @@ const content = markdown.render(body);
   }
 
   article :global(pre) {
-    padding-left: 1rem;
-    padding-right: 1rem;
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
+    padding: 1rem;
     margin-bottom: 0.6rem;
     margin-top: 0.6rem;
     overflow-x: scroll;
@@ -90,6 +87,7 @@ const content = markdown.render(body);
     text-decoration: underline;
     text-underline-offset: 1px;
     color: #60a5fa;
+    overflow-wrap: break-word;
   }
 
   article :global(a:hover),
@@ -177,5 +175,9 @@ const content = markdown.render(body);
     color: #d1d5db;
     font-style: italic;
     margin-bottom: 0.7rem;
+  }
+
+  article :global(.katex-display) {
+    overflow: auto hidden;
   }
 </style>

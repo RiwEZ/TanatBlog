@@ -8,7 +8,6 @@ import hljs from "highlight.js";
 // @ts-expect-error no types for this dependencies
 import hljs_svelte from "highlightjs-svelte";
 
-
 hljs_svelte(hljs);
 const markdown: MarkdownIt = MarkdownIt({
   html: true,
@@ -17,7 +16,8 @@ const markdown: MarkdownIt = MarkdownIt({
     if (lang && hljs.getLanguage(lang)) {
       try {
         return (
-          `<pre class="hljs relative"><u class="absolute top-1 right-2">${lang}</u><code>` +
+          `<pre class="hljs relative !pt-10"><span class="absolute top-0 
+          left-0 bg-slate-800 rounded-br-lg p-1 px-2">${lang}</span><code>` +
           hljs.highlight(str, {
             language: lang,
             ignoreIllegals: true,

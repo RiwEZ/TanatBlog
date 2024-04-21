@@ -710,16 +710,147 @@ The remaining things that I haven't talked about is not that interesting, it's j
 UI/UX thing. If you are interested, you can check out our [frontend repoitory](https://github.com/Fuzzy-Technical-Indicator/frontend).
 
 ## Experiments & Results
-Now, let's see if our project actually work or nah. We have done the experiments on both stocks 
-and crypto currency market but I'll show only the crypto currency one (because I think it's the most
+<figure>
+<img src="https://imgur.com/0HBlxHW.png" loading="lazy" />
+<figcaption>
+<center>Variations of indicators we used.</center>
+</figcaption>
+</figure>
+
+Now, let's see if our project actually work or nah. Wa are trying to show that 
+when using technical indicators to trade, fuzzy logic can provide better result than using
+fixed numbers like classical one. We have done the experiments on both stocks 
+and crypto currency market but I'll only show the crypto currency one (because I think it's the most
 interesting). So the setup will be like this
-- Backtest on BTC, ETH, BNB from 1 October 2023 to 8 March 2024
-- Start with 3000$ split among those markets
+- Test on BTC, ETH, BNB with 1 hour time interval from 1 October 2023 to 8 March 2024 (uptrend).
+- Start with 3000$ split among those 3 coins, result in 1000$ each.
+- Minimum position size is 30$, normal position size is 5% of remaning capital if we can.
+- Take profit at 20% and stop loss at 10%
 
+We will also test our indicators on side way and downtrend market to check how is the result but this
+will only be on ETH only for 3000$. We did the experimentations on 2 fuzzy technical indicators that we have created AROON-MACD and RSI-BB. 
+So let's check it out
 
-## Some more interesting shits
-Good story -> Price go up, for crypto currency. What if we can scrape some social media posts to 
-check the current story sentimental.
+<br>
+
+*B&H on the figures means Buy & Hold, it's how the market move.*
+
+#### AROON-MACD
+This is a kind of trend following indicator that use aroon to identify the trend and macd to find
+the entry chance. We'll enter a new position if the signal is greater than 30. The classical variation
+will be
+```
+if ((macd > 65.0 &&  macd< 85.0) || (macd > 35.0 || macd < 65.0)) 
+    && aroon_up > 80.0:
+    Enter Long
+
+if ((macd > 15.0 && macd < 35.0) || (macd > 35.0 || macd < 65.0)) 
+    && aroon_down > 80.0:
+    Enter Short
+```
+I'll omit the details about the linguistic variables and fuzzy rules of fuzzy variations but the 
+idea is simple, it's very similar to classical one but we are using fuzzy sets instead.
+
+<figure>
+<img src="https://imgur.com/5oml3PT.png" loading="lazy" />
+<figcaption>
+<center>AROON-MACD backtesting result on BTC, ETH, BNB while market is in uptrend.</center>
+</figcaption>
+</figure>
+
+<figure>
+<img src="https://imgur.com/K0Utm1u.png" loading="lazy" />
+<figcaption>
+<center>AROON-MACD backtest result on ETH while market is in downtrend.</center>
+</figcaption>
+</figure>
+
+<figure>
+<img src="https://imgur.com/JTHhxbE.png" loading="lazy" />
+<figcaption>
+<center>AROON-MACD backtest result on ETH while market is in sideway.</center>
+</figcaption>
+</figure>
+
+#### RSI-BB
+The idea of this indicator is mean reversion, by using rsi and bollinger band (bb) we can determine
+when the price is too far from the mean and take advantage of it. We'll enter a new position if 
+the signal is greater than 25 for this indicator. The classical variation will be
+```
+If rsi < 30 && bb < -80:
+	Enter Long
+
+If rsi > 70 && bb > 80:
+	Enter Short
+```
+I'll omit the details about the linguistic variables and fuzzy rules of fuzzy variations for 
+the same reason on AROON-MACD too.
+
+<figure>
+<img src="https://imgur.com/yu9KwuL.png" loading="lazy" />
+<figcaption>
+<center>RSI-BB backtesting result on BTC, ETH, BNB while market is in uptrend.</center>
+</figcaption>
+</figure>
+
+<figure>
+<img src="https://imgur.com/JKAmbae.png" loading="lazy" />
+<figcaption>
+<center>RSI-BB backtest result on ETH while market is in downtrend.</center>
+</figcaption>
+</figure>
+
+<figure>
+<img src="https://imgur.com/S0My2yz.png" loading="lazy" />
+<figcaption>
+<center>RSI-BB backtest result on ETH while market is in sideway.</center>
+</figcaption>
+</figure>
+
+#### Short Analyis
+From 6 figures of the backtesting result above, fuzzy variations perform much better 
+than the classical variation on 3 figures and on the other 3 figures the result is not that much
+difference (except RSI-BB on sideway). And the fuzzy variations are especially doing well on 
+uptrend market as we can see on the result of both AROON-MACD and RSI-BB uptrend figures. Overall,
+we can say that the fuzzy variations is better than the classical variation.
+
+#### Remarks
+There are many details on theexperimentations that I have omitted for the sake of keeping this 
+blog as short as possible (and more into the technical stuffs). If you can read Thai 
+(sadly, no English version) and want to check the full report you can check it out on 
+this [report repository](https://github.com/Fuzzy-Technical-Indicator/report).
+
+## Conclusion & More Ideas
+The result from experimentations show that our fuzzy logic indicators perform better classical one
+most of the times but PSO and liquid-f don't seems to significantly help. I think the reason why
+fuzzy logic variations perform better is because of fuzzy logic capabilities to deal with 
+vague and uncertain data. Instead of only 1 and 0 for classical one, our signal could have 
+ranges of confident which is super helpful. I believe this tools/ideas will be helpful in trading
+if you know what rules, linguistic varialbles to set up.
+
+<br>
+
+*I also actually try using this with real money, it actually help me get about 60$ profit. I think 
+it could actually work.*
+
+#### Further Developments
+- We didn't separate development environment from production environment (we have only 1 mongoDB instance),
+when we change the schema of some collections, the production is broken. 
+Actually we could have local mongoDB instance for development.
+- Maybe we could use GPU to do some tasks like backtesting or PSO.
+- Add more markets such as SET, Nikkie, Forex etc.
+- Use PSO or other computational intelligence e.g. genetic algorithm to modify our fuzzy technical 
+indicator based on the data more. We could also trying to change fuzzy rules too.
+- More money management strategy is always a good idea.
+- More kind of linguistic variables such as risk level, social media sentimental, news sentimental,
+ranking of the asset, story of the asset.
+
+<br>
+
+When doing this project, I've learned so many things about Rust, SvelteKit, web server, threading, 
+PSO, Fuzzy Logic, and more which make me love this field even more. Lastly, thank you for my friend 
+[Thanawat](https://github.com/0736b), my advisor [Sansanee](https://myweb.cmu.ac.th/sansanee.a/CV.htm) 
+and everyone that have involved in this project.
 
 ## References
 - [https://en.wikipedia.org/wiki/Fuzzy_set](https://en.wikipedia.org/wiki/Fuzzy_set)
