@@ -10,6 +10,8 @@ links:
     text: Backend Code
   - href: https://github.com/Fuzzy-Technical-Indicator/frontend
     text: Frontend Code
+  - href: https://riwez.github.io/TanatBlog/blog/fuzzy
+    text: Blog
 body: >-
   My bachelor's thesis about how we can improve the effectiveness of various technical indicators 
   in trading by using fuzzy logic, particle swarm optimization and other statistical methods. 
