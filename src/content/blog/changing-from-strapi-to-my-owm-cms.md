@@ -1,7 +1,6 @@
 ---
 title: Changing from Strapi to my owm CMS.
 description: How I implement my own CMS and why I do it.
-createdAt: '2022-06-03T12:12:26.069Z'
 updatedAt: '2022-06-03T12:26:34.917Z'
 ---
 In this blog, I'll tell you how I build my own CMS to manage my contents on this website.

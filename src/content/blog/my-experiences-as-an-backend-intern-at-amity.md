@@ -2,7 +2,6 @@
 title: My Experiences As An Backend Intern at Amity
 description: A very brief summary of my intern experience.
 slug: my-experiences-as-an-backend-intern-at-amity
-createdAt: '2023-11-04T15:18:07.118Z'
 updatedAt: '2023-11-12T22:35:02.889Z'
 ---
 

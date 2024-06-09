@@ -1,7 +1,6 @@
 ---
 title: How I use Strapi as CMS for this blog.
 description: Using Strapi to create blog posts api endpoints and host it on Heroku or Render
-createdAt: '2022-04-10T11:45:46.229Z'
 updatedAt: '2022-04-10T11:45:46.229Z'
 ---
 
