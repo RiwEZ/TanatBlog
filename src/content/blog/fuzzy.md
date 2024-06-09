@@ -2,7 +2,6 @@
 title: Fuzzy Technical Indicator
 description: My bachelor's final project at Chiang Mai Univerisity.
 slug: fuzzy
-createdAt: '2024-03-30'
 updatedAt: '2024-04-21'
 ---
 
