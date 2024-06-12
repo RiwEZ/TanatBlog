@@ -39,7 +39,7 @@ are vauge and lack certainty.
 
 We think that Fuzzy Logic can help improving technical indicator usage.
 <figure>
-<img src="https://imgur.com/XeQJjYB.png" loading="lazy" />
+<img src="https://i.imgur.com/XeQJjYB.png" loading="lazy" />
 <figcaption>
 <center>
 Simple example of Fuzzy Logic used with RSI
@@ -77,7 +77,7 @@ from my friend (yes, it's in Thai). Right now, I'm currently not hosting the web
 not visit it. 
 
 <figure>
-<img src="https://imgur.com/puSZftM.png" loading="lazy" />
+<img src="https://i.imgur.com/puSZftM.png" loading="lazy" />
 <figcaption>
 <center>
 Architecture Overview
@@ -172,7 +172,7 @@ We can think of linguistic variable as a collection of fuzzy sets with the same 
 to describe fuzzy system inputs and outputs.
 
 <figure>
-<img src="https://imgur.com/XgIAwAN.png" loading="lazy" />
+<img src="https://i.imgur.com/XgIAwAN.png" loading="lazy" />
 <figcaption>
 <center>
 Linguistic Variable Example
@@ -283,7 +283,7 @@ The idea is TradingView already has a good API interface for creating varios tec
 PineScript, we can actually just copy the API interface and implemented its logic ourself.
 
 <figure>
-<img src="https://imgur.com/c253FWe.png" loading="lazy" />
+<img src="https://i.imgur.com/c253FWe.png" loading="lazy" />
 <figcaption>
 <center>
 Technical Indicator Example (RSI)
@@ -344,7 +344,7 @@ happen in so many more places in our code.
 
 #### Web Server
 <figure>
-<img src="https://imgur.com/WNpAb5R.png" loading="lazy" />
+<img src="https://i.imgur.com/WNpAb5R.png" loading="lazy" />
 <figcaption>
 <center>
 Overview of how each thread work together.
@@ -602,7 +602,7 @@ gain more profit while having low drawdown. Actually, we could change the object
 it better in other aspects but this idea should be in further development.
 
 <figure>
-<img src="https://imgur.com/dOmQy57.png" loading="lazy" />
+<img src="https://i.imgur.com/dOmQy57.png" loading="lazy" />
 <figcaption>
 <center>Parameters of the linguistic variable that we will tune via PSO (a, b, c)</center>
 </figcaption>
@@ -652,7 +652,7 @@ I didn't talk about. If you want to, you can checkout the code at
 
 ### Frontend
 <figure>
-<img src="https://imgur.com/6aukWw6.png" loading="lazy" />
+<img src="https://i.imgur.com/6aukWw6.png" loading="lazy" />
 <figcaption>
 <center>One page of our website with candlestick graph of the market and our fuzzy technical indicator.</center>
 </figcaption>
@@ -710,7 +710,7 @@ UI/UX thing. If you are interested, you can check out our [frontend repoitory](h
 
 ## Experiments & Results
 <figure>
-<img src="https://imgur.com/0HBlxHW.png" loading="lazy" />
+<img src="https://i.imgur.com/0HBlxHW.png" loading="lazy" />
 <figcaption>
 <center>Variations of indicators we used.</center>
 </figcaption>
@@ -751,21 +751,21 @@ I'll omit the details about the linguistic variables and fuzzy rules of fuzzy va
 idea is simple, it's very similar to classical one but we are using fuzzy sets instead.
 
 <figure>
-<img src="https://imgur.com/5oml3PT.png" loading="lazy" />
+<img src="https://i.imgur.com/5oml3PT.png" loading="lazy" />
 <figcaption>
 <center>AROON-MACD backtesting result on BTC, ETH, BNB while market is in uptrend.</center>
 </figcaption>
 </figure>
 
 <figure>
-<img src="https://imgur.com/K0Utm1u.png" loading="lazy" />
+<img src="https://i.imgur.com/K0Utm1u.png" loading="lazy" />
 <figcaption>
 <center>AROON-MACD backtest result on ETH while market is in downtrend.</center>
 </figcaption>
 </figure>
 
 <figure>
-<img src="https://imgur.com/JTHhxbE.png" loading="lazy" />
+<img src="https://i.imgur.com/JTHhxbE.png" loading="lazy" />
 <figcaption>
 <center>AROON-MACD backtest result on ETH while market is in sideway.</center>
 </figcaption>
@@ -786,21 +786,21 @@ I'll omit the details about the linguistic variables and fuzzy rules of fuzzy va
 the same reason on AROON-MACD too.
 
 <figure>
-<img src="https://imgur.com/yu9KwuL.png" loading="lazy" />
+<img src="https://i.imgur.com/yu9KwuL.png" loading="lazy" />
 <figcaption>
 <center>RSI-BB backtesting result on BTC, ETH, BNB while market is in uptrend.</center>
 </figcaption>
 </figure>
 
 <figure>
-<img src="https://imgur.com/JKAmbae.png" loading="lazy" />
+<img src="https://i.imgur.com/JKAmbae.png" loading="lazy" />
 <figcaption>
 <center>RSI-BB backtest result on ETH while market is in downtrend.</center>
 </figcaption>
 </figure>
 
 <figure>
-<img src="https://imgur.com/S0My2yz.png" loading="lazy" />
+<img src="https://i.imgur.com/S0My2yz.png" loading="lazy" />
 <figcaption>
 <center>RSI-BB backtest result on ETH while market is in sideway.</center>
 </figcaption>
