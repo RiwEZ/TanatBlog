@@ -49,7 +49,7 @@ And the works I do are mainly
 
 ### The new technology that I learned
 
-![tech](https://imgur.com/CeBkIAn.png)
+![tech](https://i.imgur.com/CeBkIAn.png)
 
 I have little experience writing a backend in JS/TS (express 🤣) and I still
 don't think it's a good choice to write backend in JS/TS because we don't have
