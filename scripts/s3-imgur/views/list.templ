@@ -1,0 +1,12 @@
+package views
+
+templ List(keys []string) {
+<div>
+  S3 Objects
+  <ul>
+    for _, key := range keys {
+    <li>{ key }</li>
+    }
+  </ul>
+</div>
+}

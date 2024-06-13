@@ -1,0 +1,6 @@
+tmp/
+*.csv
+
+# AWS 
+config
+credentials
