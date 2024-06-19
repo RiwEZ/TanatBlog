@@ -42,7 +42,6 @@ text(2.5em)[*Tanat Tangun*],
     - MongoDB, SQLite, Redis, AWS
     - SvelteKit / Svelte
     - Next.js / React
-    - Moleculer
     - Node.js, Bun, Deno
     - Pandas, Plotly, Keras, SciKit-Learn
     - Compiler, Machine Learning
@@ -53,7 +52,7 @@ text(2.5em)[*Tanat Tangun*],
 
     #line(length: 100%)
     = Education 
-    Chiang Mai University, Thailand
+    Chiang Mai University, Thailand 2021 - 2024
     - Bachelor of Engineering (Computer Engineering)
     - 3.82 GPAX, First Class Honour
   ], 
@@ -62,9 +61,9 @@ text(2.5em)[*Tanat Tangun*],
     == Amity Technologies (05/2023 - 10/2023)
     #set par(justify: true)
     *Backend Developer Intern* 
-    - Developing a new feature using Moleculer (JS microservice framework), 
+    - Developed a new feature using Moleculer (JS microservice framework), 
       AWS, MongoDB, Redis, Kubernetes and other relevant technologies.
-    - Fixing any bugs that customers have raised or we've found
+    - Fixed bugs that customers have raised or we've found
     - Technical debts work such as dependencies updating, improving unit test coverage,
       fixing flaky test cases
     - Any other tasks e.g. conducted a knowledge sharing session
@@ -84,7 +83,7 @@ text(2.5em)[*Tanat Tangun*],
 
     = Projects & Awards
     == Fuzzy Technical Indicator (2023 - 2024)
-    My bachelor's final project is how we can improve the effectiveness of various technical indicators 
+    My bachelor's final project on how we can improve the effectiveness of various technical indicators 
     in trading by using fuzzy logic, particle swarm optimization and other statistical methods. 
     I'm involved in developing Backend using MongoDB and Actix on Rust with various optimizations 
     such as multithreading, caching. Also, I’m involved in developing the Frontend by using SvelteKit. 

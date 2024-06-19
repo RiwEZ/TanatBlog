@@ -1,0 +1,27 @@
+package views
+
+import (
+	c "github.com/RiwEz/TanatBlog/s3-imgur/views/components"
+)
+
+templ Layout(breadcrumbs []string) {
+	<!DOCTYPE html>
+	<html lang="en" data-theme="night">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width"/>
+			<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css"/>
+			<script src="https://cdn.tailwindcss.com"></script>
+			<script src="https://cdn.jsdelivr.net/gh/gnat/surreal@main/surreal.js"></script>
+			<script src="https://unpkg.com/htmx.org@1.9.12"></script>
+			<script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/response-targets.js"></script>
+			<title>S3 Imgur</title>
+		</head>
+		<body>
+			<main class="mx-auto mt-10 p-4 sm:max-w-3xl lg:p-2 3xl:max-w-7xl">
+				@c.BreadCrumbs(breadcrumbs)
+				{ children... }
+			</main>
+		</body>
+	</html>
+}

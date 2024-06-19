@@ -2,35 +2,52 @@ package main
 
 import (
 	"context"
+	"mime/multipart"
+	"net/http"
+	"strings"
 
 	"github.com/a-h/templ"
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 
+	"github.com/RiwEz/TanatBlog/s3-imgur/services"
 	views "github.com/RiwEz/TanatBlog/s3-imgur/views"
 )
 
-func renderView(c echo.Context, component templ.Component) error {
+var S3Bucket = "tanatblog"                                  // TODO: put this into some config
+var cloudfrontURL = "https://deuykboxmuiw2.cloudfront.net/" // TODO, move to config file
+
+func renderView(c echo.Context, code int, component templ.Component) error {
 	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
+	c.Response().WriteHeader(code)
+
 	return component.Render(c.Request().Context(), c.Response().Writer)
 }
 
-func ListObjects(ctx context.Context, client *s3.Client) []string {
-	output, err := client.ListObjectsV2(ctx, &s3.ListObjectsV2Input{
-		Bucket: aws.String("tanatblog"), // this need to be configurable
-	})
-	if err != nil {
-		panic(err)
+func getFolderName(url string) string {
+	t := strings.Split(url, "/")
+	return t[len(t)-1]
+}
+
+func parseAndValidateAddFolder(c echo.Context) (string, *multipart.FileHeader, map[string]string) {
+	errs := map[string]string{}
+
+	folderName := c.FormValue("folderName")
+	if folderName == "" {
+		errs["folderName"] = "Folder name is empty!"
 	}
 
-	result := []string{}
-	for _, object := range output.Contents {
-		result = append(result, *object.Key)
+	file, err := c.FormFile("file")
+	if err != nil {
+		errs["fileInput"] = "You did not upload the file!"
+	} else {
+		if !services.IsFileNameValid(file.Filename) {
+			errs["fileInput"] = "Invalid File Type"
+		}
 	}
-	return result
+
+	return folderName, file, errs
 }
 
 func main() {
@@ -47,11 +64,65 @@ func main() {
 	client := s3.NewFromConfig(cfg)
 
 	e := echo.New()
-	e.Use(middleware.Logger())
 
-	component := views.List(ListObjects(ctx, client))
+	s3Service := services.NewS3Service(client, S3Bucket, cloudfrontURL)
+	if err = s3Service.SyncFolders(ctx); err != nil {
+		panic(err)
+	}
+
 	e.GET("/", func(c echo.Context) error {
-		return renderView(c, component)
+		return renderView(c, http.StatusOK, views.Index(s3Service.GetFolders(ctx)))
+	})
+
+	e.POST("/folders", func(c echo.Context) error {
+		folderName, file, errs := parseAndValidateAddFolder(c)
+		if len(errs) > 0 {
+			return renderView(c, http.StatusUnprocessableEntity, views.FolderForm(folderName, errs))
+		}
+		err = s3Service.AddMedia(ctx, folderName, file)
+		if err != nil {
+			errs["fileInput"] = err.Error()
+		}
+		if len(errs) > 0 {
+			return renderView(c, http.StatusUnprocessableEntity, views.FolderForm(folderName, errs))
+		}
+		return renderView(c, http.StatusOK, views.FolderFormWithOOB(s3Service.GetFolders(ctx)))
+	})
+
+	e.GET("/:folder", func(c echo.Context) error {
+		folder := c.Param("folder")
+		return renderView(c, http.StatusOK, views.FolderIndex(folder, s3Service.GetMedias(ctx, folder)))
+	})
+
+	e.POST("/folders/files", func(c echo.Context) error {
+		file, err := c.FormFile("file")
+		if err != nil {
+			return renderView(c, http.StatusUnprocessableEntity, views.FileForm("Please specify a file"))
+		}
+
+		url := c.Request().Header.Get("Hx-Current-Url")
+		folderName := getFolderName(url)
+
+		err = s3Service.AddMedia(ctx, folderName, file)
+		if err != nil {
+			return renderView(c,
+				http.StatusUnprocessableEntity,
+				views.FileForm(err.Error()))
+		}
+		return renderView(c, http.StatusOK, views.FileFormWithOOB(s3Service.GetMedias(ctx, folderName)))
+	})
+
+	e.DELETE("/folders/files/:fileName", func(c echo.Context) error {
+		url := c.Request().Header.Get("Hx-Current-Url")
+		folderName := getFolderName(url)
+
+		fileName := c.Param("fileName")
+		err := s3Service.DeleteMedia(ctx, folderName, fileName)
+		if err != nil {
+			return renderView(c, http.StatusInternalServerError, views.Medias(s3Service.GetMedias(ctx, folderName)))
+		}
+
+		return renderView(c, http.StatusOK, views.Medias(s3Service.GetMedias(ctx, folderName)))
 	})
 
 	e.Logger.Fatal(e.Start(":1212"))

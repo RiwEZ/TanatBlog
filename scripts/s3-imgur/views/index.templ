@@ -1,0 +1,91 @@
+package views
+
+import (
+	c "github.com/RiwEz/TanatBlog/s3-imgur/views/components"
+	"github.com/RiwEz/TanatBlog/s3-imgur/services"
+	"fmt"
+)
+
+type Folders = map[string]*services.FolderMetadata
+
+templ FolderList(folders Folders) {
+	<div id="folderList" class="mt-4 flex flex-col space-y-4" hx-swap-oob="true">
+		for folder, metadata := range folders {
+			<div class="flex flex-row space-x-4">
+				<a href={ templ.URL("/" + folder) } class="link">{ folder }</a>
+				<span>{ metadata.LastModified.String() } </span>
+				<span>{ fmt.Sprint(metadata.TotalSize) } Bytes</span>
+			</div>
+		}
+	</div>
+}
+
+script openModal() {
+me("dialog").showModal();
+}
+
+script closeModal() {
+me("dialog").close();
+}
+
+templ FolderForm(folderName string, errs map[string]string) {
+	<form
+		class="flex flex-col space-y-4"
+		hx-post="/folders"
+		hx-swap="outerHTML transition:true"
+		hx-ext="response-targets"
+		hx-target="this"
+		hx-target-error="this"
+		hx-encoding="multipart/form-data"
+	>
+		<label class="form-control">
+			<input
+				value={ folderName }
+				name="folderName"
+				type="text"
+				placeholder="Folder Name"
+				class="input input-bordered"
+				required="true"
+			/>
+			if errs["folderName"] != "" {
+				<div class="label">
+					<span class="label-text-alt text-red-600">{ errs["folderName"] }</span>
+				</div>
+			} else {
+				<div class="label">
+					<span class="label-text-alt">Required</span>
+				</div>
+			}
+		</label>
+		@c.FileInput(errs["fileInput"])
+		<div class="flex">
+			<button type="button" onclick={ closeModal() } class="btn btn-warning flex-1">Close</button>
+			<button type="submit" class="btn btn-success flex-1 ml-2">OK</button>
+		</div>
+	</form>
+}
+
+templ FolderFormWithOOB(folders Folders) {
+	@FolderForm("", map[string]string{})
+	@FolderList(folders)
+}
+
+templ Index(folders Folders) {
+	@Layout([]string{}) {
+		<dialog class="modal">
+			<script>
+      let dialog = me(); 
+      dialog.addEventListener("htmx:afterRequest", 
+        (evt) => { if (evt.detail.xhr.status == 200) { dialog.close(); } }
+      )
+      </script>
+			<div class="modal-box flex flex-col space-y-4">
+				@FolderForm("", map[string]string{})
+			</div>
+		</dialog>
+		<button onclick={ openModal() } class="btn btn-primary">
+			Add Folder
+		</button>
+		@FolderList(folders)
+	}
+}
