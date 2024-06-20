@@ -3,10 +3,11 @@ package services
 import (
 	"context"
 	"errors"
+	"fmt"
 	"mime/multipart"
 	"regexp"
+	"slices"
 	"strings"
-	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -19,14 +20,13 @@ var (
 	ErrFileAlreadyExist = errors.New("File Already Exist")
 )
 
-type FolderMetadata struct {
-	TotalSize    int64
-	LastModified time.Time
+type folderMetadata struct {
+	totalSize int64
 }
 
 type S3Service struct {
 	folders         map[string][]string
-	foldersMetadata map[string]*FolderMetadata
+	foldersMetadata map[string]*folderMetadata
 	metadataDirty   bool
 	s3Client        *s3.Client
 	bucket          string
@@ -48,7 +48,7 @@ func getPrefix(key string) (string, error) {
 func NewS3Service(s3Client *s3.Client, bucket, cfURL string) S3Service {
 	return S3Service{
 		folders:         map[string][]string{},
-		foldersMetadata: map[string]*FolderMetadata{},
+		foldersMetadata: map[string]*folderMetadata{},
 		s3Client:        s3Client,
 		bucket:          bucket,
 		cfURL:           cfURL,
@@ -64,7 +64,8 @@ func (s *S3Service) SyncFolders(ctx context.Context) error {
 	}
 
 	folders := map[string][]string{}
-	foldersMetadata := map[string]*FolderMetadata{}
+	foldersMetadata := map[string]*folderMetadata{}
+
 	for _, object := range output.Contents {
 		folderName, err := getPrefix(*object.Key)
 		if err != nil {
@@ -79,19 +80,13 @@ func (s *S3Service) SyncFolders(ctx context.Context) error {
 			folders[folderName] = append(folders[folderName], fileURL)
 		}
 
-		folderMetadataEntry, ok := foldersMetadata[folderName]
+		_, ok = foldersMetadata[folderName]
 		if !ok {
-			foldersMetadata[folderName] = &FolderMetadata{
-				TotalSize:    *object.Size,
-				LastModified: *object.LastModified,
+			foldersMetadata[folderName] = &folderMetadata{
+				totalSize: *object.Size,
 			}
 		} else {
-			folderMetadataEntry.TotalSize += *object.Size
-			// use most recent last modified
-			objectLastModified := *object.LastModified
-			if objectLastModified.Compare(folderMetadataEntry.LastModified) >= 1 {
-				folderMetadataEntry.LastModified = objectLastModified
-			}
+			foldersMetadata[folderName].totalSize += *object.Size
 		}
 	}
 
@@ -100,7 +95,12 @@ func (s *S3Service) SyncFolders(ctx context.Context) error {
 	return nil
 }
 
-func (s *S3Service) GetFolders(ctx context.Context) map[string]*FolderMetadata {
+type Folder struct {
+	Name      string
+	TotalSize int64
+}
+
+func (s *S3Service) GetFolders(ctx context.Context) []Folder {
 	if s.metadataDirty {
 		err := s.SyncFolders(ctx)
 		if err != nil {
@@ -109,7 +109,22 @@ func (s *S3Service) GetFolders(ctx context.Context) map[string]*FolderMetadata {
 		s.metadataDirty = false
 	}
 
-	return s.foldersMetadata
+	result := []Folder{}
+	for name, metadata := range s.foldersMetadata {
+		result = append(result, Folder{Name: name, TotalSize: metadata.totalSize})
+	}
+
+	slices.SortFunc(
+		result,
+		func(a, b Folder) int {
+			if a.Name < b.Name {
+				return -1
+			}
+			return 1
+		},
+	)
+
+	return result
 }
 
 func IsFileNameValid(fileName string) bool {
@@ -167,7 +182,7 @@ func (s *S3Service) AddMedia(ctx context.Context, folderName string, file *multi
 }
 
 func (s *S3Service) GetMedias(ctx context.Context, folderName string) []string {
-  entry, ok := s.folders[folderName]
+	entry, ok := s.folders[folderName]
 	if ok {
 		return entry
 	}
@@ -189,9 +204,9 @@ func (s *S3Service) DeleteMedia(ctx context.Context, folderName, fileName string
 		return err
 	}
 	f, ok := s.folders[folderName]
-  if !ok {
-    panic("folder not found")
-  }
+	if !ok {
+		panic("folder not found")
+	}
 
 	var idx int
 	for i, fileURL := range f {

@@ -50,7 +50,7 @@ templ Media(url string) {
 }
 
 templ Medias(urls []string) {
-	<div id="medias" class="space-y-4" hx-swap-oob="true">
+	<div id="medias" class="space-y-4">
 		for _, url := range urls {
 			@Media(url)
 		}

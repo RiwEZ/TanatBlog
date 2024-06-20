@@ -6,18 +6,29 @@ import (
 	"fmt"
 )
 
-type Folders = map[string]*services.FolderMetadata
+type Folders = []services.Folder
 
 templ FolderList(folders Folders) {
-	<div id="folderList" class="mt-4 flex flex-col space-y-4" hx-swap-oob="true">
-		for folder, metadata := range folders {
-			<div class="flex flex-row space-x-4">
-				<a href={ templ.URL("/" + folder) } class="link">{ folder }</a>
-				<span>{ metadata.LastModified.String() } </span>
-				<span>{ fmt.Sprint(metadata.TotalSize) } Bytes</span>
-			</div>
-		}
-	</div>
+	<table id="folderList" class="table mt-4" hx-swap-oob="true">
+		<thead>
+			<tr>
+				<th>Folder Name</th>
+				<th>Size</th>
+			</tr>
+		</thead>
+		<tbody>
+			for _, folder := range folders {
+				<tr>
+					<th>
+						<a href={ templ.URL("/" + folder.Name) } class="link">{ folder.Name }</a>
+					</th>
+					<th>
+						<span class="self-end">{ fmt.Sprint(folder.TotalSize / 1000) } KB</span>
+					</th>
+				</tr>
+			}
+		</tbody>
+	</table>
 }
 
 script openModal() {

@@ -20,14 +20,3 @@ templ FileInput(errMsg string) {
 		</div>
 	</label>
 }
-
-templ BreadCrumbs(breadcrumbs []string) {
-	<div class="breadcrumbs mb-4">
-		<ul>
-			<li><a href="/">Main</a></li>
-			for _, breadcrumb := range breadcrumbs {
-				<li><a href={ templ.URL("/" + breadcrumb) }>{ breadcrumb }</a></li>
-			}
-		</ul>
-	</div>
-}

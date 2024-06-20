@@ -1,9 +1,5 @@
 package views
 
-import (
-	c "github.com/RiwEz/TanatBlog/s3-imgur/views/components"
-)
-
 templ Layout(breadcrumbs []string) {
 	<!DOCTYPE html>
 	<html lang="en" data-theme="night">
@@ -16,11 +12,28 @@ templ Layout(breadcrumbs []string) {
 			<script src="https://unpkg.com/htmx.org@1.9.12"></script>
 			<script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/response-targets.js"></script>
 			<title>S3 Imgur</title>
+			<script>
+        addEventListener("pageshow", (event) => {
+          if (event.persisted) {
+            window.location.reload();
+          }
+        })
+      </script>
 		</head>
 		<body>
 			<main class="mx-auto mt-10 p-4 sm:max-w-3xl lg:p-2 3xl:max-w-7xl">
-				@c.BreadCrumbs(breadcrumbs)
+				<div class="breadcrumbs text-lg">
+					<ul>
+						<li><a href="/">Main</a></li>
+						for _, breadcrumb := range breadcrumbs {
+							<li><a href={ templ.URL("/" + breadcrumb) }>{ breadcrumb }</a></li>
+						}
+					</ul>
+				</div>
+				<div class="divider mt-2"></div>
 				{ children... }
+				<div class="divider"></div>
+				<div class="footer footer-center mb-4">Hope this help make life easier.</div>
 			</main>
 		</body>
 	</html>
