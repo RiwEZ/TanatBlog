@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"regexp"
 	"strings"
@@ -28,6 +29,13 @@ func GetFileName(url string) (string, error) {
 	return "", errors.New("The URL is not valid")
 }
 
+func IsUrlValid(urlStr string) bool {
+	if _, err := url.ParseRequestURI(urlStr); err != nil {
+		return false
+	}
+	return true
+}
+
 func FindUrls(content []byte, pattern string) []string {
 	urls := []string{}
 
@@ -37,7 +45,10 @@ func FindUrls(content []byte, pattern string) []string {
 	}
 	for _, match := range r.FindAllSubmatch(content, -1) {
 		// we have only one capture group, get it at index 1
-		urls = append(urls, string(match[1]))
+		url := string(match[1])
+		if IsUrlValid(url) {
+			urls = append(urls, string(match[1]))
+		}
 	}
 
 	return urls
@@ -55,7 +66,7 @@ func GetMediasUrl(content []byte) []string {
 
 func DownloadMedias(urls []string) ([]Media, error) {
 	results := []Pair[string, []byte]{}
-  client := &http.Client{}
+	client := &http.Client{}
 
 	for _, url := range urls {
 		filename, err := GetFileName(url)
@@ -67,24 +78,24 @@ func DownloadMedias(urls []string) ([]Media, error) {
 		if err != nil {
 			return nil, err
 		}
-    req.Header.Set("Connection", "keep-alive")
-    req.Header.Set("User-Agent", "TanatBlog/0.0.1")
+		req.Header.Set("Connection", "keep-alive")
+		req.Header.Set("User-Agent", "TanatBlog/0.0.1")
 
-    resp, err := client.Do(req)
-    if err != nil {
-      return nil, err
-    }
+		resp, err := client.Do(req)
+		if err != nil {
+			return nil, err
+		}
 
 		bytes, err := io.ReadAll(resp.Body)
-    if err != nil {
-      return nil, err
-    }
+		if err != nil {
+			return nil, err
+		}
 		results = append(results, Media{filename, bytes})
 
-    // sleep for 100 ms, if we recently used imgur 
-    if strings.Contains(url, "imgur") {
-      time.Sleep(100 * time.Millisecond)
-    }
+		// sleep for 100 ms, if we recently used imgur
+		if strings.Contains(url, "imgur") {
+			time.Sleep(100 * time.Millisecond)
+		}
 	}
 
 	return results, nil
@@ -93,7 +104,7 @@ func DownloadMedias(urls []string) ([]Media, error) {
 func WriteMedias(dir string, medias []Media) error {
 	if _, err := os.Stat(dir); err != nil {
 		if os.IsNotExist(err) {
-			err := os.MkdirAll(dir, 0777)
+			err := os.MkdirAll(dir, 0766)
 			if err != nil {
 				return err
 			}
@@ -103,7 +114,7 @@ func WriteMedias(dir string, medias []Media) error {
 	}
 
 	for _, v := range medias {
-		err := os.WriteFile(dir+v.Fst, v.Snd, 0666)
+		err := os.WriteFile(dir+v.Fst, v.Snd, 0644)
 		if err != nil {
 			return err
 		}
@@ -123,10 +134,10 @@ func main() {
 		panic(err)
 	}
 
-  currTime := time.Now().Format("2006-01-02T15:04:05")
+	currTime := time.Now().Format("2006-01-02T15:04:05")
 	backupsPath := currTime + "-medias/"
 	for _, file := range files {
-		fmt.Printf("backuping for" + file + ": ")
+		fmt.Printf("backuping for " + file + ": ")
 
 		content, err := os.ReadFile(blogsPath + file)
 		if err != nil {
