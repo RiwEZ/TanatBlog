@@ -41,8 +41,7 @@ templ Media(url string) {
 			<button
 				class="btn btn-warning ml-2"
 				hx-delete={ fileRoute(url) }
-				hx-swap="outerHTML transition:true"
-				hx-target="#medias"
+				hx-swap="none outerHTML transition:true"
 				hx-confirm="Are you sure?"
 			>Delete</button>
 		</figcaption>
@@ -50,7 +49,7 @@ templ Media(url string) {
 }
 
 templ Medias(urls []string) {
-	<div id="medias" class="space-y-4">
+	<div id="medias" class="space-y-4" hx-swap-oob="true">
 		for _, url := range urls {
 			@Media(url)
 		}

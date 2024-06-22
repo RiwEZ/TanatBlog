@@ -6,3 +6,4 @@ tmp/
 # AWS 
 config
 credentials
+.env

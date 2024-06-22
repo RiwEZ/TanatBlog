@@ -2,21 +2,21 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"mime/multipart"
 	"net/http"
 	"strings"
 
 	"github.com/a-h/templ"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/labstack/echo/v4"
+	"github.com/spf13/viper"
 
 	"github.com/RiwEz/TanatBlog/s3-imgur/services"
 	views "github.com/RiwEz/TanatBlog/s3-imgur/views"
 )
-
-var S3Bucket = "tanatblog"                                  // TODO: put this into some config
-var cloudfrontURL = "https://deuykboxmuiw2.cloudfront.net/" // TODO, move to config file
 
 func renderView(c echo.Context, code int, component templ.Component) error {
 	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
@@ -51,12 +51,31 @@ func parseAndValidateAddFolder(c echo.Context) (string, *multipart.FileHeader, m
 }
 
 func main() {
+	viper.SetConfigFile(".env")
+	viper.AddConfigPath(".")
+
+	if err := viper.ReadInConfig(); err != nil {
+		panic(err)
+	}
+
+	var S3Bucket = viper.GetString("S3BUCKET")
+	var cloudfrontURL = viper.GetString("CLOUDFRONT_URL")
+
 	// setting up AWS SDK
 	ctx := context.Background()
 	cfg, err := config.LoadDefaultConfig(
 		ctx,
-		config.WithSharedConfigFiles([]string{"./config"}),
-		config.WithSharedCredentialsFiles([]string{"./credentials"}),
+		config.WithCredentialsProvider(
+			aws.CredentialsProviderFunc(
+				func(ctx context.Context) (aws.Credentials, error) {
+					return aws.Credentials{
+						AccessKeyID:     viper.GetString("AWS_ACCESS_KEY_ID"),
+						SecretAccessKey: viper.GetString("AWS_SECRET_ACCESS_KEY"),
+						CanExpire:       false,
+					}, nil
+				},
+			)),
+		config.WithRegion(viper.GetString("REGION ")),
 	)
 	if err != nil {
 		panic(err)
@@ -125,5 +144,6 @@ func main() {
 		return renderView(c, http.StatusOK, views.Medias(s3Service.GetMedias(ctx, folderName)))
 	})
 
+	fmt.Println("Starting a server at http://localhost:1212")
 	e.Logger.Fatal(e.Start(":1212"))
 }
