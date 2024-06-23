@@ -2,7 +2,7 @@
 title: Things I've Learned 2
 description: Medias Backup Script and S3 Imgur in Go
 slug: til2
-updatedAt: '2024-06-22'
+updatedAt: '2024-06-23'
 ---
 
 Yayyy, the continuation of "Things I've Learned" series. Now, I'll also included all my small 
@@ -51,26 +51,49 @@ d | rwx | rwx | rwx |
 This idea comes from the previous [Thing I've Learned](/TanatBlog/blog/til1) too. So, instead of 
 using AWS root account to upload a media for my blog I implement a basic interface for managing 
 medias using S3 as a data store. Actually, it's just a simple CMS that is implenmented by using
-Go, Templ and HTMX which I have want to try for so long.
+Go, templ and HTMX which I have want to try for so long.
 
 <figure>
 <video controls="true" class="w-full" />
 <source src="https://deuykboxmuiw2.cloudfront.net/til2--2024-06-22 15-44-29.mp4" type="video/mp4">
 </video>
 <figcaption>
-<center>An overview of how s3-imgur work.</center>
+<center>An overview of how my s3-imgur work.</center>
 </figcaption>
 </figure>
 
-Now, I'll explain how all of this works
+#### How does it work?
 <figure>
 <img src="https://deuykboxmuiw2.cloudfront.net/til2--htmx-templ.png" loading="lazy" />
 <figcaption>
-<center>Lorem</center>
+<center>Overview of how <code>GET /</code> work.</center>
 </figcaption>
 </figure>
 
-HTMX Part ..., Templ Part ...
+The s3-imgur is just a simple web server developed using [Echo](https://github.com/labstack/echo)
+that will return a HTML when there's a request to it. For example when we `GET /`
+1. Check if we have `/` route register or not, if not return `404`
+2. Pass the necessary data to [templ](https://github.com/a-h/templ) to generate the HTML that will
+be returned. (This is similar to SvelteKit data loading)
+    > templ is a tool for building HTML with Go, it's similar to JSX in React but not exactly the
+    > same.
+3. For interactivity inside the HTML, we use HTMX and some JavaScript. HTMX will handle all 
+of fetching and reactivity after the fetch e.g. when you add a new folder, the folder list need to 
+be updated we can do something like
+    ```html
+    <form hx-post="/" hx-target="#folderList">
+    ...
+    </form>
+    ```
+    When we submit this form and got `200`, HTMX will replace the element with id `folderList` with 
+    the returned response. You can see that it is pretty similar how we fetch data in React, 
+    when we fetch data in React we need to update some states and React will handle the re-render but
+    in HTMX we don't need to handle any client states. (if we don't need it :D)
+
+Yep, that's it. The S3 usage is also simple, we can simulate the folder structure by adding a 
+prefix to the filename e.g. we have `pic.png` in folder `others`, this will be save in S3 as 
+`others--pic.png`. I also implemented basic caching for s3 query so we do not need to always 
+query s3 bucket by saving the necessary data on Go `map`.
 
 <br>
 
@@ -88,27 +111,84 @@ environment variables.
 5. Run the binary and start interacting with the application.
 
 ## Lineman Wongnai Interview
+Last week, I also have a chance to get interviewd by [Lineman Wongnai](https://lmwn.com/) 
+head of engineer of POS team (P'Sharp). And there are 2 interesting questions that I want to share.
 
-1. How to do rolling deployment in detail? 
-    nginx & pod changing, redireciting traffick via DNS
+#### Q1 How to deploy a new release with no down time? 
+So, I need to answer this question as a developer in details about what steps I need to take. 
+My idea at the interview time, is Rolling Deployment. I don't remember the exact details of my answer
+so I'll try to answer it again here.
 
-2. How to update the API to have new status while there's miliion of user using it
-- Old app use API with an old flag
-- New app use API with a new flag
-- How to migrate large DB?, rolling shits 
-- What happend when u read the old version document -> update it too
-- You need to be able to tell a story about all of this process in a detailed steps
+<br>
 
-- deploy steps, 1. deploy code 2. migrate db 3. others thing
+First, I think we need to have a redundancy for that service like having 3 programs that do the same thing
+but running in different machine, we can do this in Kubernetes by making it a 
+[pod](https://kubernetes.io/docs/concepts/workloads/pods/). And then we need an API Gateway / Load Balancer
+to handle all traffics that will go through that service. (I give NGINX as an example)
 
+<br>
 
-## TODO
-- Backend, Node & PHP & Vue
+Now, when we're doing the deployment we can just patch each pod and gradually route request for new 
+release to that pod. Then we can shutdown remaining old pods. Now, that I write it down I think 
+there are some problems that I can think of e.g. how do we know which request is for new release?
+how about roll back, how should we do it? 
 
-Setup postgres, and do some basic API shits with NodeJS
+<br>
 
-Condo Research Website
+Let's continue, don't think about those problems yet. The interviewer then ask me how do we update 
+the NGINX?. Yep, I'm stunned and thinking like ugh how do we do this? And I ask for a hint then 
+he tell me "DNS" and I like yes we can update the DNS record and prepared a new NGINX to wait 
+for DNS update to finished.
 
-- A map with condo location with list of rent prices?
-- Add it manually via some kind of thing
+<br>
 
+After the interview, I also look out for more ideas and I found thie [video](https://www.youtube.com/watch?v=AWVTKBUnoIg)
+super useful.
+
+#### Q2 How to update the API to support new data on existing field with no down time?
+The question is similar to previous questions, but with details on database, deployment order, 
+how should we do this with others? and there're million of users using it how to 
+make sure that it has no downtime? (I think it's look like those questions, I'm not too sure lol)
+
+<br>
+
+My answer looks like this 
+
+- If we need to change a schema in database, the database need to have version field so we know
+what version of the document we are reading.
+- If we need to migrate the database, we will do rolling migration by gradually updating the 
+document in database to matched new requirements.
+- When developing a new API, maybe we can add a flag to tell that this is a reqeust for new data
+so we can keep backward compatibility.
+
+And then the interviewer ask me another question.
+"What happend when the old API read old data? The update need to be reflected on the user right now."
+I then answer "I think we can just update the document when reading the old data from our API, 
+but make sure that the behavior of the API is not changed" 
+
+<br>
+
+And then he tell me to summarize all of this and tell the order of deployment which I messed up lol
+The deploy steps should be 
+
+1. Deploy the application code first.
+2. Migrate the database.
+3. Remaining things
+
+I told him we need to migrate the database first 🤦‍♂️ which is wrong because the old code 
+can break when they're reading new database schema.
+
+<br>
+
+When I'm writing this I think I structured the answer much better than the time that I got interviewed.
+So maybe for next interview, write it down first and then tell the story of it.
+
+<br>
+
+Some remarks, I think I'll be able to answer all of these questions better if I have a real
+experience solving these problems. Yeah, long experiences of work definitely sold better than 
+new graduate like me 🗿.
+
+## What's next for me? 
+I'm still unemployed at the time of writing, I hope I got an interesting job soon. If you're interested
+in me, feels free to contact me via my email [ttangun1@gmail.com](ttangun1@gmail.com)
