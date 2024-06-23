@@ -1,0 +1,9 @@
+tmp/
+*.csv
+*.txt
+*_templ.go
+
+# AWS 
+config
+credentials
+.env

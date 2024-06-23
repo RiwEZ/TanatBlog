@@ -1,0 +1,83 @@
+package views
+
+import (
+	"strings"
+	c "github.com/RiwEz/TanatBlog/s3-imgur/views/components"
+)
+
+func isVideo(url string) bool {
+	return strings.Contains(url, "mp4")
+}
+
+func fileRoute(url string) string {
+	splited := strings.Split(url, "/")
+	return "/folders/files/" + splited[len(splited)-1]
+}
+
+script copyToClipboard(url string) {
+navigator.clipboard.writeText(url);
+}
+
+templ Media(url string) {
+	<figure>
+		if isVideo(url) {
+			<video class="w-full" controls="true">
+				<source src={ url } type="video/mp4"/>
+			</video>
+		} else {
+			<img class="w-full" src={ url } loading="lazy"/>
+		}
+		<figcaption class="mt-2">
+			<button onclick={ copyToClipboard(url) } class="btn btn-neutral w-20">
+				Copy
+				<script>me().on("click", ev => {
+          ev.target.innerText = "Copied";
+          setTimeout(() => {
+            ev.target.innerText = "Copy"
+          }, 1000)
+        })</script>
+			</button>
+			{ url }
+			<button
+				class="btn btn-warning ml-2"
+				hx-delete={ fileRoute(url) }
+				hx-swap="none outerHTML transition:true"
+				hx-confirm="Are you sure?"
+			>Delete</button>
+		</figcaption>
+	</figure>
+}
+
+templ Medias(urls []string) {
+	<div id="medias" class="space-y-4" hx-swap-oob="true">
+		for _, url := range urls {
+			@Media(url)
+		}
+	</div>
+}
+
+templ FileForm(errMsg string) {
+	<form
+		hx-post="/folders/files"
+		hx-swap="outerHTML"
+		hx-ext="response-targets"
+		hx-target="this"
+		hx-target-error="this"
+		hx-encoding="multipart/form-data"
+		class="flex space-x-4 mb-4"
+	>
+		@c.FileInput(errMsg)
+		<button class="btn btn-primary">Upload</button>
+	</form>
+}
+
+templ FileFormWithOOB(urls []string) {
+	@FileForm("")
+	@Medias(urls)
+}
+
+templ FolderIndex(folderName string, urls []string) {
+	@Layout([]string{folderName}) {
+		@FileFormWithOOB(urls)
+	}
+}

@@ -1,0 +1,106 @@
+#set page(margin: 1.5cm)
+#set text(font: "linux libertine")
+
+#grid(columns: (1fr, 1fr), 
+text(2.5em)[*Tanat Tangun*],
+[
+  #set align(right + bottom)
+  Thailand, +66 95-027-7733, \
+  ttangun1\@gmail.com, #link("https://github.com/RiwEz")[#underline[github.com/RiwEz]] \
+])
+
+#line(length: 100%)
+#grid(
+  columns: (1fr, 2fr), 
+  column-gutter: 20pt,
+  [
+    = Summary
+    #par(justify: true, [
+    I just recently finished my bachelor's degree as a Computer Engineering student 
+    at Chiang Mai University. I'm usually a leader/initiator when working on a group's project.
+    And I also believe in "can do" attitude if the problem is not proven to be impossible.
+    I love to build a robust software to solve people's problems.
+    ])
+
+    #line(length: 100%)
+    = Skills
+    == Technical Skills
+    Languages I'm proficient in
+    - Go
+    - TypeScript/JavaScript
+    - HTML, CSS
+    - Rust
+    - Python
+    Languages I have used 
+    - SQL
+    - Java
+    - C++
+    - Haskell
+    - Ocaml
+    Others
+    - Git, Docker, Linux
+    - MongoDB, SQLite, Redis, AWS
+    - SvelteKit / Svelte
+    - Next.js / React
+    - Node.js, Bun, Deno
+    - Pandas, Plotly, Keras, SciKit-Learn
+    - Compiler, Machine Learning
+
+    == Languages
+    - Thai: Native
+    - English: IELTs Academic 7.0
+
+    #line(length: 100%)
+    = Education 
+    Chiang Mai University, Thailand 2021 - 2024
+    - Bachelor of Engineering (Computer Engineering)
+    - 3.82 GPAX, First Class Honour
+  ], 
+  [
+    = Work Experiences
+    == Amity Technologies (05/2023 - 10/2023)
+    #set par(justify: true)
+    *Backend Developer Intern* 
+    - Developed a new feature using Moleculer (JS microservice framework), 
+      AWS, MongoDB, Redis, Kubernetes and other relevant technologies.
+    - Fixed bugs that customers have raised or we've found
+    - Technical debts work such as dependencies updating, improving unit test coverage,
+      fixing flaky test cases
+    - Any other tasks e.g. conducted a knowledge sharing session
+    == Logixed Co, LTD
+    *GoGo Expert Team.*
+    Conducted workshops on coding and robotics on GoGo board and provided assistance
+    for children and parent who were interested.
+    == Chiang Mai University 
+    *Teaching Assistant*
+    - Data Analytics for Non-IT: provided assistance and 
+      follow-up classes about Python, pandas, sklearn, and plotly for data analytics tasks.
+    - Object-Oriented Programming: graded, provided assistance, 
+      and conducted a teaching session on JUnit5.
+    - Basic Computer Engineering: graded and provided assistance with Scratch and Python.
+
+    #line(length: 100%)
+
+    = Projects & Awards
+    == Fuzzy Technical Indicator (2023 - 2024)
+    My bachelor's final project on how we can improve the effectiveness of various technical indicators 
+    in trading by using fuzzy logic, particle swarm optimization and other statistical methods. 
+    I'm involved in developing Backend using MongoDB and Actix on Rust with various optimizations 
+    such as multithreading, caching. Also, I’m involved in developing the Frontend by using SvelteKit. 
+
+    == Personal Blog Website
+    A personal blog created by Astro for publishing technical blogs about the things I am doing 
+    or interested in. It's on #link("https://riwez.github.io/TanatBlog")[
+    #underline[riwez.github.io/TanatBlog]]
+
+    == 1st place team on IEEEXtreme 17 in Thailand (10/2023)
+    IEEEXtreme is a global challenge in which teams of IEEE Student members compete in a 24-hour 
+    time span against each other to solve a set of programming problems. I joined this event
+    with my friends and got the 877th world ranking and 1st in Thailand ranking.
+
+    == 4th place team of Kibo RPC (2022)
+    Write a java program to make the Astrobee robot do designated tasks on the ISS
+    simulation which there's a need to do image processing, robot movement error handling, 
+    and robot route planning.
+  ]
+)

@@ -1,0 +1,22 @@
+package components
+
+templ FileInput(errMsg string) {
+	<label class="form-control">
+		<input
+			type="file"
+			name="file"
+			class="file-input file-input-bordered"
+			accept=".jpg,.png,.gif,.mp4"
+			multiple="false"
+			required="true"
+		/>
+		<div class="label">
+			if errMsg != "" {
+				<span class="text-red-600 label-text-alt">Support .png, .jpg, .gif, .mp4</span>
+				<span class="text-red-600 label-text-alt">{ errMsg }</span>
+			} else {
+				<span class="label-text-alt">Support .png, .jpg, .gif, .mp4</span>
+			}
+		</div>
+	</label>
+}

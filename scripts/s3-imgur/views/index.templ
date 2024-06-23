@@ -1,0 +1,102 @@
+package views
+
+import (
+	c "github.com/RiwEz/TanatBlog/s3-imgur/views/components"
+	"github.com/RiwEz/TanatBlog/s3-imgur/services"
+	"fmt"
+)
+
+type Folders = []services.Folder
+
+templ FolderList(folders Folders) {
+	<table id="folderList" class="table mt-4" hx-swap-oob="true">
+		<thead>
+			<tr>
+				<th>Folder Name</th>
+				<th>Size</th>
+			</tr>
+		</thead>
+		<tbody>
+			for _, folder := range folders {
+				<tr>
+					<th>
+						<a href={ templ.URL("/" + folder.Name) } class="link">{ folder.Name }</a>
+					</th>
+					<th>
+						<span class="self-end">{ fmt.Sprint(folder.TotalSize / 1000) } KB</span>
+					</th>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+script openModal() {
+me("dialog").showModal();
+}
+
+script closeModal() {
+me("dialog").close();
+}
+
+templ FolderForm(folderName string, errs map[string]string) {
+	<form
+		class="flex flex-col space-y-4"
+		hx-post="/folders"
+		hx-swap="outerHTML transition:true"
+		hx-ext="response-targets"
+		hx-target="this"
+		hx-target-error="this"
+		hx-encoding="multipart/form-data"
+	>
+		<label class="form-control">
+			<input
+				value={ folderName }
+				name="folderName"
+				type="text"
+				placeholder="Folder Name"
+				class="input input-bordered"
+				required="true"
+			/>
+			if errs["folderName"] != "" {
+				<div class="label">
+					<span class="label-text-alt text-red-600">{ errs["folderName"] }</span>
+				</div>
+			} else {
+				<div class="label">
+					<span class="label-text-alt">Required</span>
+				</div>
+			}
+		</label>
+		@c.FileInput(errs["fileInput"])
+		<div class="flex">
+			<button type="button" onclick={ closeModal() } class="btn btn-warning flex-1">Close</button>
+			<button type="submit" class="btn btn-success flex-1 ml-2">OK</button>
+		</div>
+	</form>
+}
+
+templ FolderFormWithOOB(folders Folders) {
+	@FolderForm("", map[string]string{})
+	@FolderList(folders)
+}
+
+templ Index(folders Folders) {
+	@Layout([]string{}) {
+		<dialog class="modal">
+			<script>
+      let dialog = me(); 
+      dialog.addEventListener("htmx:afterRequest", 
+        (evt) => { if (evt.detail.xhr.status == 200) { dialog.close(); } }
+      )
+      </script>
+			<div class="modal-box flex flex-col space-y-4">
+				@FolderForm("", map[string]string{})
+			</div>
+		</dialog>
+		<button onclick={ openModal() } class="btn btn-primary">
+			Add Folder
+		</button>
+		@FolderList(folders)
+	}
+}

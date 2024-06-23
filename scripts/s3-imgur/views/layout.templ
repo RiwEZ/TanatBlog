@@ -1,0 +1,40 @@
+package views
+
+templ Layout(breadcrumbs []string) {
+	<!DOCTYPE html>
+	<html lang="en" data-theme="night">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width"/>
+			<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css"/>
+			<script src="https://cdn.tailwindcss.com"></script>
+			<script src="https://cdn.jsdelivr.net/gh/gnat/surreal@main/surreal.js"></script>
+			<script src="https://unpkg.com/htmx.org@1.9.12"></script>
+			<script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/response-targets.js"></script>
+			<title>S3 Imgur</title>
+			<script>
+        addEventListener("pageshow", (event) => {
+          if (event.persisted) {
+            window.location.reload();
+          }
+        })
+      </script>
+		</head>
+		<body>
+			<main class="mx-auto mt-10 p-4 sm:max-w-3xl lg:p-2 3xl:max-w-7xl">
+				<div class="breadcrumbs text-lg">
+					<ul>
+						<li><a href="/">Main</a></li>
+						for _, breadcrumb := range breadcrumbs {
+							<li><a href={ templ.URL("/" + breadcrumb) }>{ breadcrumb }</a></li>
+						}
+					</ul>
+				</div>
+				<div class="divider mt-2"></div>
+				{ children... }
+				<div class="divider"></div>
+				<div class="footer footer-center mb-4">Hope this help make life easier.</div>
+			</main>
+		</body>
+	</html>
+}
