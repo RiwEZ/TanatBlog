@@ -1,6 +1,6 @@
 ---
 title: Things I've Learned 2
-description: Medias Backup Script and S3 Imgur in Go
+description: Medias Backup Script, S3-Imgur in Go and LMWN interview.
 slug: til2
 updatedAt: '2024-06-23'
 ---
@@ -51,7 +51,8 @@ d | rwx | rwx | rwx |
 This idea comes from the previous [Thing I've Learned](/TanatBlog/blog/til1) too. So, instead of 
 using AWS root account to upload a media for my blog I implement a basic interface for managing 
 medias using S3 as a data store. Actually, it's just a simple CMS that is implenmented by using
-Go, templ and HTMX which I have want to try for so long.
+Go, templ and HTMX which I have want to try for so long. 
+(This [repoitory](https://github.com/emarifer/go-echo-templ-htmx) help me so much while I'm developing)
 
 <figure>
 <video controls="true" class="w-full" />
