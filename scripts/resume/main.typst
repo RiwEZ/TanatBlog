@@ -1,5 +1,5 @@
 #set page(margin: 1.5cm)
-#set text(font: "linux libertine")
+#set text(font: "Libertinus Serif")
 
 #grid(columns: (1fr, 1fr), 
 text(2.5em)[*Tanat Tangun*],
@@ -14,34 +14,34 @@ text(2.5em)[*Tanat Tangun*],
   columns: (1fr, 2fr), 
   column-gutter: 20pt,
   [
-    = Summary
+    = About Me
     #par(justify: true, [
-    I just recently finished my bachelor's degree as a Computer Engineering student 
-    at Chiang Mai University. I'm usually a leader/initiator when working on a group's project.
-    And I also believe in "can do" attitude if the problem is not proven to be impossible.
-    I love to build a robust software to solve people's problems.
+    I'm currently LINE MAN Wongnai software engineer working on POS (Point of Sale) team
+    working on both backend and frontend (web). And I also believe in "can do" attitude 
+    if the problem is not proven to be impossible. I love to build robust softwares to 
+    solve people's problems.
     ])
 
     #line(length: 100%)
     = Skills
     == Technical Skills
     Languages I'm proficient in
-    - Go
-    - TypeScript/JavaScript
-    - HTML, CSS
     - Rust
+    - TypeScript/JavaScript
+    - Go
+    - HTML, CSS
+    - PHP
+    - SQL
     - Python
     Languages I have used 
-    - SQL
     - Java
     - C++
     - Haskell
     - Ocaml
     Others
     - Git, Docker, Linux
-    - MongoDB, SQLite, Redis, AWS
-    - SvelteKit / Svelte
-    - Next.js / React
+    - PostgreSQL, MongoDB, Redis, AWS
+    - SvelteKit / Svelte, React, Vue
     - Node.js, Bun, Deno
     - Pandas, Plotly, Keras, SciKit-Learn
     - Compiler, Machine Learning
@@ -58,26 +58,24 @@ text(2.5em)[*Tanat Tangun*],
   ], 
   [
     = Work Experiences
+    == LINE MAN Wongnai (08/2024 - Present) 
+    *Software Engineer (Mostly Backend)* 
+    - I worked on merging two backend services by implementing database migration tools, 
+      moving endpoints to one service, conducting regression tests, fixing existing bugs, 
+      and performing some refactoring. 
+      I believe I played a significant role in ensuring we met the deadline for this project.
+    - I improved the developer experience by enhancing the CI pipeline speed and enabling LSP 
+      to work in a pure JavaScript repository.
+    - I rewrote one service to make it much cleaner and more maintainable by changing the code 
+      structure and adding unit tests.
     == Amity Technologies (05/2023 - 10/2023)
     #set par(justify: true)
     *Backend Developer Intern* 
-    - Developed a new feature using Moleculer (JS microservice framework), 
-      AWS, MongoDB, Redis, Kubernetes and other relevant technologies.
-    - Fixed bugs that customers have raised or we've found
-    - Technical debts work such as dependencies updating, improving unit test coverage,
-      fixing flaky test cases
-    - Any other tasks e.g. conducted a knowledge sharing session
-    == Logixed Co, LTD
-    *GoGo Expert Team.*
-    Conducted workshops on coding and robotics on GoGo board and provided assistance
-    for children and parent who were interested.
-    == Chiang Mai University 
-    *Teaching Assistant*
-    - Data Analytics for Non-IT: provided assistance and 
-      follow-up classes about Python, pandas, sklearn, and plotly for data analytics tasks.
-    - Object-Oriented Programming: graded, provided assistance, 
-      and conducted a teaching session on JUnit5.
-    - Basic Computer Engineering: graded and provided assistance with Scratch and Python.
+    - I developed a new feature using Moleculer (a JavaScript microservice framework), 
+      along with AWS, MongoDB, Redis, Kubernetes, and other relevant technologies.
+    - I addressed technical debt by updating dependencies, improving unit test coverage, 
+      and fixing flaky test cases.
+    - Additionally, I conducted a knowledge-sharing session and resolved various bugs.
 
     #line(length: 100%)
 
@@ -86,12 +84,12 @@ text(2.5em)[*Tanat Tangun*],
     My bachelor's final project on how we can improve the effectiveness of various technical indicators 
     in trading by using fuzzy logic, particle swarm optimization and other statistical methods. 
     I'm involved in developing Backend using MongoDB and Actix on Rust with various optimizations 
-    such as multithreading, caching. Also, I’m involved in developing the Frontend by using SvelteKit. 
+    such as multithreading, caching. Also, I’m involved in developing the Frontend by using SvelteKit too. 
 
     == Personal Blog Website
     A personal blog created by Astro for publishing technical blogs about the things I am doing 
     or interested in. It's on #link("https://riwez.github.io/TanatBlog")[
-    #underline[riwez.github.io/TanatBlog]]
+    #underline[riwez.github.io/TanatBlog]], please check it out if you want to know more about my works.
 
     == 1st place team on IEEEXtreme 17 in Thailand (10/2023)
     IEEEXtreme is a global challenge in which teams of IEEE Student members compete in a 24-hour 
@@ -99,7 +97,7 @@ text(2.5em)[*Tanat Tangun*],
     with my friends and got the 877th world ranking and 1st in Thailand ranking.
 
     == 4th place team of Kibo RPC (2022)
-    Write a java program to make the Astrobee robot do designated tasks on the ISS
+    I write a java program to make the Astrobee robot do designated tasks on the ISS
     simulation which there's a need to do image processing, robot movement error handling, 
     and robot route planning.
   ]
