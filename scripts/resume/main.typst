@@ -71,7 +71,7 @@ text(2.5em)[*Tanat Tangun*],
     == Amity Technologies (05/2023 - 10/2023)
     #set par(justify: true)
     *Backend Developer Intern* 
-    - I developed a new feature using Moleculer (a JavaScript microservice framework), 
+    - I developed new features using Moleculer (a JavaScript microservice framework), 
       along with AWS, MongoDB, Redis, Kubernetes, and other relevant technologies.
     - I addressed technical debt by updating dependencies, improving unit test coverage, 
       and fixing flaky test cases.
