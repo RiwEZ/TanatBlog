@@ -21,7 +21,7 @@ const post = Astro.props;
     <div class="mb-10 sm:max-w-3xl 3xl:max-w-7xl">
       <h1 class="text-4xl font-bold leading-tight">{post.data.title}</h1>
       <p class="mt-1 text-zinc-400">
-        {Math.ceil(readingTime(post.body).minutes)} miutes read • Last updated
+        {Math.ceil(readingTime(post.body).minutes)} minutes read • Last updated
         <b
           >{
             post.data.updatedAt.toLocaleDateString("en-gb", {

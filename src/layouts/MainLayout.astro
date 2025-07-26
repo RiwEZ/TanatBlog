@@ -54,7 +54,7 @@ const { title, description } = Astro.props;
     >
       <Nav />
       <slot />
-      <div class="flex justify-center items-center space-x-2 mt-8 mb-2">
+      <div class="flex justify-center items-center space-x-2 mt-8 mb-4">
         <p>( ͡° ͜ʖ ͡°)</p>
         <p>Tanat Tangun</p>
         <svg viewBox="0 0 72 72" width="32px" xmlns="http://www.w3.org/2000/svg"
@@ -70,11 +70,6 @@ const { title, description } = Astro.props;
             stroke-width="2"></path></svg
         >
       </div>
-      <center class="mb-4">
-        <a href="https://notbyai.fyi" target="_blank"
-          ><img src={notbyaiSvg.src} /></a
-        >
-      </center>
     </div>
   </body>
 </html>

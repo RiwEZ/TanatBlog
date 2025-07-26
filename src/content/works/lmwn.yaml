@@ -1,0 +1,19 @@
+start: August 2024
+end: March 2025
+title: Software Engineer (Mostly Backend) at LMWN
+tags:
+  - Backend
+  - PHP
+  - Go
+  - JS/TS
+  - React
+body: >-
+    - I worked on merging two backend services by implementing database migration tools, 
+      moving endpoints to one service, conducting regression tests, fixing existing bugs, 
+      and performing some refactoring. 
+      I believe I played a significant role in ensuring we met the deadline for this project.
+    - I improved the developer experience by enhancing the CI pipeline speed and enabling LSP 
+      to work in a pure JavaScript repository via JSDoc.
+    - I rewrote one service to make it much cleaner and more maintainable by changing the code 
+      structure and adding unit tests.
+
